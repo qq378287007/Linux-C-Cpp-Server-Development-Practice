@@ -1,0 +1,11 @@
+﻿  Validating sources
+  Copying sources remotely to '192.168.0.153'
+  Validating architecture
+  Starting remote build
+  Compiling sources:
+  main.cpp
+E:\ebook\linux\ref\highNet\code\ch07\7.3\tcpForkServer\tcpForkServer\main.cpp(71,27): warning : conversion from ‘ssize_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+E:\ebook\linux\ref\highNet\code\ch07\7.3\tcpForkServer\tcpForkServer\main.cpp(71,27): warning :    71 |    while ((recv_len = recv(connfd, recv_buf, sizeof(recv_buf), 0)) > 0)
+E:\ebook\linux\ref\highNet\code\ch07\7.3\tcpForkServer\tcpForkServer\main.cpp(71,27): warning :       |                       ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Linking objects
+  tcpForkServer.vcxproj -> E:\ebook\linux\ref\highNet\code\ch07\7.3\tcpForkServer\tcpForkServer\bin\x64\Debug\tcpForkServer.out

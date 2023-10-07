@@ -1,0 +1,11 @@
+﻿  Validating sources
+  Copying sources remotely to '192.168.0.153'
+  Validating architecture
+  Starting remote build
+  Compiling sources:
+  main.cpp
+E:\ebook\linux\ref\highNet\code\ch07\7.7\srv\srv\main.cpp(126,23): warning : conversion from ‘int’ to ‘char’ may change value [-Wconversion]
+E:\ebook\linux\ref\highNet\code\ch07\7.7\srv\srv\main.cpp(126,23): warning :   126 |       buf[j] = toupper(buf[j]); //���ڼ򵥵�תΪ��д
+E:\ebook\linux\ref\highNet\code\ch07\7.7\srv\srv\main.cpp(126,23): warning :       |                ~~~~~~~^~~~~~~~
+  Linking objects
+  srv.vcxproj -> E:\ebook\linux\ref\highNet\code\ch07\7.7\srv\srv\bin\x64\Debug\srv.out

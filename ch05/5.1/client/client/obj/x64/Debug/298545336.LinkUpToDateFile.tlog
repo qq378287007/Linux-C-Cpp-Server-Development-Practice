@@ -1,0 +1,1 @@
+g++ -o "/root/projects/client/bin/x64/Debug/client.out" -Wl,--no-undefined -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack /root/projects/client/obj/x64/Debug/main.o

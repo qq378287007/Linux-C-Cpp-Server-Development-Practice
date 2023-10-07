@@ -1,0 +1,1 @@
+g++ -o "/root/projects/srv/bin/x64/Debug/srv.out" -Wl,--no-undefined -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack /root/projects/srv/obj/x64/Debug/main.o

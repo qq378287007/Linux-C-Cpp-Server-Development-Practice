@@ -1,0 +1,17 @@
+﻿  Validating sources
+  Copying sources remotely to '192.168.0.153'
+  Validating architecture
+  Starting remote build
+  Compiling sources:
+  main.cpp
+E:\ebook\linux\ref\highNet\code\ch07\7.6\srv\srv\main.cpp(114,17): warning : conversion from ‘ssize_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+E:\ebook\linux\ref\highNet\code\ch07\7.6\srv\srv\main.cpp(114,17): warning :   114 |       ret = read(fds[i].fd, buffer, 1024);
+E:\ebook\linux\ref\highNet\code\ch07\7.6\srv\srv\main.cpp(114,17): warning :       |             ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~
+E:\ebook\linux\ref\highNet\code\ch07\7.6\srv\srv\main.cpp(141,17): warning : conversion from ‘ssize_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+E:\ebook\linux\ref\highNet\code\ch07\7.6\srv\srv\main.cpp(141,17): warning :   141 |      ret = write(fds[i].fd, resp, sizeof(resp));
+E:\ebook\linux\ref\highNet\code\ch07\7.6\srv\srv\main.cpp(141,17): warning :       |            ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+E:\ebook\linux\ref\highNet\code\ch07\7.6\srv\srv\main.cpp(47,12): warning : unused variable ‘addrLen’ [-Wunused-variable]
+E:\ebook\linux\ref\highNet\code\ch07\7.6\srv\srv\main.cpp(47,12): warning :    47 |  socklen_t addrLen = sizeof(addr);
+E:\ebook\linux\ref\highNet\code\ch07\7.6\srv\srv\main.cpp(47,12): warning :       |            ^~~~~~~
+  Linking objects
+  srv.vcxproj -> E:\ebook\linux\ref\highNet\code\ch07\7.6\srv\srv\bin\x64\Debug\srv.out

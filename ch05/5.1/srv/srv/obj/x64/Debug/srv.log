@@ -1,0 +1,11 @@
+﻿  Validating sources
+  Copying sources remotely to '192.168.0.153'
+  Validating architecture
+  Starting remote build
+  Compiling sources:
+  main.cpp
+E:\ebook\linux\ref\highNet\code\ch05\5.1\srv\srv\main.cpp(45,16): warning : conversion from ‘ssize_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+E:\ebook\linux\ref\highNet\code\ch05\5.1\srv\srv\main.cpp(45,16): warning :    45 |  ret = recvfrom(sockfd, rbuf, 50, 0, (struct sockaddr*)&raddr, (socklen_t*)&val);
+E:\ebook\linux\ref\highNet\code\ch05\5.1\srv\srv\main.cpp(45,16): warning :       |        ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Linking objects
+  srv.vcxproj -> E:\ebook\linux\ref\highNet\code\ch05\5.1\srv\srv\bin\x64\Debug\srv.out

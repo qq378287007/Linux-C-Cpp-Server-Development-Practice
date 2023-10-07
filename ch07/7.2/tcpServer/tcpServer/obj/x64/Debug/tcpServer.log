@@ -1,0 +1,17 @@
+﻿  Validating sources
+  Copying sources remotely to '192.168.0.153'
+  Validating architecture
+  Starting remote build
+  Compiling sources:
+  main.cpp
+E:\ebook\linux\ref\highNet\code\ch07\7.2\tcpServer\tcpServer\main.cpp(58,13): warning : conversion from ‘ssize_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+E:\ebook\linux\ref\highNet\code\ch07\7.2\tcpServer\tcpServer\main.cpp(58,13): warning :    58 |   len = recv(clisock, rbuf, sizeof(rbuf), 0);
+E:\ebook\linux\ref\highNet\code\ch07\7.2\tcpServer\tcpServer\main.cpp(58,13): warning :       |         ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+E:\ebook\linux\ref\highNet\code\ch07\7.2\tcpServer\tcpServer\main.cpp(17,20): warning : unused variable ‘pse’ [-Wunused-variable]
+E:\ebook\linux\ref\highNet\code\ch07\7.2\tcpServer\tcpServer\main.cpp(17,20): warning :    17 |  struct  servent  *pse;    /* server information    */
+E:\ebook\linux\ref\highNet\code\ch07\7.2\tcpServer\tcpServer\main.cpp(17,20): warning :       |                    ^~~
+E:\ebook\linux\ref\highNet\code\ch07\7.2\tcpServer\tcpServer\main.cpp(18,20): warning : unused variable ‘ppe’ [-Wunused-variable]
+E:\ebook\linux\ref\highNet\code\ch07\7.2\tcpServer\tcpServer\main.cpp(18,20): warning :    18 |  struct  protoent *ppe;    /* proto information     */
+E:\ebook\linux\ref\highNet\code\ch07\7.2\tcpServer\tcpServer\main.cpp(18,20): warning :       |                    ^~~
+  Linking objects
+  tcpServer.vcxproj -> E:\ebook\linux\ref\highNet\code\ch07\7.2\tcpServer\tcpServer\bin\x64\Debug\tcpServer.out

@@ -1,0 +1,6 @@
+﻿  ClientSocket.cpp
+  clientDlg.cpp
+e:\ebook\linux\ref\cserver\code\11\11.3\myclient\client\clientdlg.cpp(178): warning C4101: “port”: 未引用的局部变量
+e:\ebook\linux\ref\cserver\code\11\11.3\myclient\client\clientdlg.cpp(221): warning C4101: “port”: 未引用的局部变量
+  正在生成代码...
+  client.vcxproj -> E:\ebook\linux\ref\cServer\code\11\11.3\myclient\Debug\client.exe

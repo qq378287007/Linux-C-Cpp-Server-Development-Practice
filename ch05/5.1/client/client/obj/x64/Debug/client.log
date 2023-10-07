@@ -1,0 +1,13 @@
+﻿  Validating sources
+  Copying sources remotely to '192.168.0.153'
+  Validating architecture
+  Starting remote build
+  Compiling sources:
+  main.cpp
+E:\ebook\linux\ref\highNet\code\ch05\5.1\client\client\main.cpp(35,14): warning : conversion from ‘ssize_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+E:\ebook\linux\ref\highNet\code\ch05\5.1\client\client\main.cpp(35,14): warning :    35 |  ret = sendto(sockfd, wbuf, sizeof(wbuf), 0, (struct sockaddr*)&saddr,
+E:\ebook\linux\ref\highNet\code\ch05\5.1\client\client\main.cpp(35,14): warning :       |        ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+E:\ebook\linux\ref\highNet\code\ch05\5.1\client\client\main.cpp(35,14): warning :    36 |   sizeof(struct sockaddr)); //������Ϣ�����ն�
+E:\ebook\linux\ref\highNet\code\ch05\5.1\client\client\main.cpp(35,14): warning :       |   ~~~~~~~~~~~~~~~~~~~~~~~~
+  Linking objects
+  client.vcxproj -> E:\ebook\linux\ref\highNet\code\ch05\5.1\client\client\bin\x64\Debug\client.out

@@ -1,0 +1,5 @@
+{
+    "code-runner.executorMap": {
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -L /usr/lib/x86_64-linux-gnu -levent && $dir$fileNameWithoutExt"
+    }
+}

@@ -1,0 +1,14 @@
+﻿  Validating sources
+  Copying sources remotely to '192.168.0.118'
+  Validating architecture
+  Starting remote build
+  Compiling sources:
+  main.cpp
+E:\ebook\linux\ref\highNet\code\ch06\6.1\rcver\rcver\main.cpp(71,17): warning : conversion from ‘ssize_t’ {aka ‘long int’} to ‘int’ may change value [-Wconversion]
+E:\ebook\linux\ref\highNet\code\ch06\6.1\rcver\rcver\main.cpp(71,17): warning :    71 |   ret = recvfrom(sockfd, rbuf, 500, 0, (struct sockaddr*)&raddr, (socklen_t*)&val);
+E:\ebook\linux\ref\highNet\code\ch06\6.1\rcver\rcver\main.cpp(71,17): warning :       |         ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+E:\ebook\linux\ref\highNet\code\ch06\6.1\rcver\rcver\main.cpp(80,7): warning : unused variable ‘srcp’ [-Wunused-variable]
+E:\ebook\linux\ref\highNet\code\ch06\6.1\rcver\rcver\main.cpp(80,7): warning :    80 |   int srcp = ntohs(udph.m_usSourPort);
+E:\ebook\linux\ref\highNet\code\ch06\6.1\rcver\rcver\main.cpp(80,7): warning :       |       ^~~~
+  Linking objects
+  rcver.vcxproj -> E:\ebook\linux\ref\highNet\code\ch06\6.1\rcver\rcver\bin\x64\Debug\rcver.out
