@@ -9,8 +9,7 @@ using namespace std;
 // #define TEST
 
 #ifdef TEST
-#define testout(msg) cout << msg << endl \
-                          << flush
+#define testout(msg) cout << msg << endl << flush
 #else
 #define testout(msg)
 #endif
@@ -19,8 +18,14 @@ class XTask
 {
 public:
     virtual ~XTask() {}
+
+	// 一客户端一个base
     // struct event_base *base = 0;
+
+     // 线程池id
     // int thread_id = 0;
+    
+	// 初始化任务
     virtual bool Init(int arg) = 0;
 };
 
@@ -138,15 +143,19 @@ private:
     std::vector<XThread *> threads;
 };
 
-static XThreadPool threadpool;
-
 int main()
 {
-    CMyTask task[10];
+    {
+#define N 10
+        XThreadPool threadpool;
+        threadpool.Init(N); // 初始化线程池
 
-    threadpool.Init(10);
-    for (int i = 0; i < 10; i++)
-        threadpool.Dispatch(&task[i], i);
+        CMyTask task[N];
+
+        for (int i = 0; i < N; i++)
+            threadpool.Dispatch(&task[i], i); // 分配任务
+#undef N
+    }
 
     return 0;
 }
