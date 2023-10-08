@@ -43,8 +43,8 @@ int main()
 				printf("%c", recvBuf[i]);
 			printf("\n");
 		}
-		else if (iRes == 0) 
-			puts("\nThe server has closed the send connection.\n");
+		else if (iRes == 0) {
+			puts("\nThe server has closed the send connection.\n");}
 		else
 		{
 			printf("recv failed:%d\n", errno);

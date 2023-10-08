@@ -23,7 +23,7 @@ int main()
 
 	char recvBuf[100] = {0};
 	recv(sockClient, recvBuf, 100, 0);
-	printf("receive server's msg:%s\n", recvBuf);
+	printf("receive server's msg: %s\n", recvBuf);
 
 	char msg[] = "hi,server";
 	send(sockClient, msg, strlen(msg) + 1, 0);

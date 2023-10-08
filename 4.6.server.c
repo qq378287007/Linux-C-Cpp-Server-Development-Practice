@@ -30,8 +30,9 @@ int main()
 	bind(sockSrv, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
 	listen(sockSrv, 5);
 
+	const int len = sizeof(SOCKADDR);
+
 	SOCKADDR_IN addrClient;
-	int len = sizeof(SOCKADDR);
 
 	while (1)
 	{
@@ -42,7 +43,7 @@ int main()
 		for (int i = 0; i < 10; i++)
 		{
 			memset(sendBuf, 0, sizeof(sendBuf));
-			sprintf(sendBuf, "N0.%d Welcome to the server. What is 1 + 1=?(client IP:%s)\n", i + 1, inet_ntoa(addrClient.sin_addr));
+			sprintf(sendBuf, "N0.%d Welcome to the server. What is 1 + 1 = ? (client IP: %s)\n", i + 1, inet_ntoa(addrClient.sin_addr));
 			send(sockConn, sendBuf, strlen(sendBuf), 0);
 		}
 
@@ -66,7 +67,9 @@ int main()
 				printf("\n");
 			}
 			else if (iRes == 0)
+			{
 				printf("The client has closed the connection.\n");
+			}
 			else
 			{
 				printf("recv failed with error: %d\n", errno);

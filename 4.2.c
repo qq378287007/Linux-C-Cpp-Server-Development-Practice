@@ -9,10 +9,9 @@ int main()
 	int sfp = socket(AF_INET, SOCK_STREAM, 0);
 	if (-1 == sfp)
 	{
-		printf("socket fail ! \r\n");
+		printf("socket() fail!\n");
 		return -1;
 	}
-
 
 	char on = 1;
 	setsockopt(sfp, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
@@ -26,15 +25,13 @@ int main()
 
 	if (-1 == bind(sfp, (struct sockaddr *)(&s_add), sizeof(struct sockaddr)))
 	{
-		printf("bind fail:%d!\r\n", errno);
+		printf("bind() fail: %d!\n", errno);
 		return -1;
 	}
-	printf("bind ok !\n");
+	printf("bind() ok!\n");
 
 	struct sockaddr_in serv = {0};
-	printf("socket ok !\n");
 	printf("ip=%s, port=%d\n", inet_ntoa(serv.sin_addr), ntohs(serv.sin_port));
-
 	int serv_len = sizeof(serv);
 	getsockname(sfp, (struct sockaddr *)&serv, (socklen_t *)&serv_len);
 	printf("ip=%s, port=%d\n", inet_ntoa(serv.sin_addr), ntohs(serv.sin_port));

@@ -22,31 +22,31 @@ int main()
 
 	if (-1 == bind(sockSrv, (struct sockaddr *)&addrSrv, sizeof(struct sockaddr)))
 	{
-		printf("bind fail:%d!\r\n", errno);
+		printf("bind() fail: %d!\n", errno);
 		return -1;
 	}
 
-	int serv_len = sizeof(struct sockaddr_in);
+	const int len = sizeof(struct sockaddr_in);
+
 	struct sockaddr_in serv;
-	getsockname(sockSrv, (struct sockaddr *)&serv, (socklen_t *)&serv_len);
+	getsockname(sockSrv, (struct sockaddr *)&serv, (socklen_t *)&len);
 	printf("server has started, ip=%s, port=%d\n", inet_ntoa(serv.sin_addr), ntohs(serv.sin_port));
 
 	listen(sockSrv, 5);
 
 	struct sockaddr_in addrClient;
-	int len = sizeof(struct sockaddr_in);
 	while (1)
 	{
 		printf("--------wait for client-----------\n");
 		int sockConn = accept(sockSrv, (struct sockaddr *)&addrClient, (socklen_t *)&len);
 
 		char sendBuf[100];
-		sprintf(sendBuf, "Welcome client(%s) to Server!", inet_ntoa(addrClient.sin_addr));
+		sprintf(sendBuf, "Welcome client(%s: %d) to Server!", inet_ntoa(addrClient.sin_addr), ntohs(addrClient.sin_port));
 		send(sockConn, sendBuf, strlen(sendBuf) + 1, 0);
 
 		char recvBuf[100];
 		recv(sockConn, recvBuf, 100, 0);
-		printf("Receive client's msg:%s\n", recvBuf);
+		printf("Receive client's msg: %s\n", recvBuf);
 
 		close(sockConn);
 		/*

@@ -42,7 +42,9 @@ int main()
 			printf("\n");
 		}
 		else if (iRes == 0)
+		{
 			puts("The server has closed the send connection.\n");
+		}
 		else
 		{
 			printf("recv failed:%d\n", errno);
@@ -55,7 +57,7 @@ int main()
 	for (int i = 0; i < 10; i++)
 	{
 		memset(sendBuf, 0, sizeof(sendBuf));
-		sprintf(sendBuf, "N0.%d I'm the client,1+1=2\n", i + 1);
+		sprintf(sendBuf, "N0.%d I'm the client, 1+1=2\n", i + 1);
 		send(sockClient, sendBuf, strlen(sendBuf) + 1, 0);
 	}
 	puts("Sending data to the server is completed.");

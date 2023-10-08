@@ -18,6 +18,7 @@ int main()
 		printf("Error at socket()\n");
 		return -1;
 	}
+	
 	int optVal;
 	int optLen = sizeof(optVal);
 	if (getsockopt(s, SOL_SOCKET, SO_TYPE, (char *)&optVal, (socklen_t *)&optLen) == -1)

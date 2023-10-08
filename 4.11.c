@@ -28,24 +28,24 @@ int main()
 	int optVal;
 	int optLen = sizeof(optVal);
 	if (getsockopt(s, SOL_SOCKET, SO_RCVBUF, (char *)&optVal, (socklen_t *)&optLen) == -1)
-		printf("getsockopt failed:%d", errno);
+		printf("getsockopt failed: %d", errno);
 	else
 		printf("Size of stream socket receive buffer: %d bytes\n", optVal);
 
 	if (getsockopt(s, SOL_SOCKET, SO_SNDBUF, (char *)&optVal, (socklen_t *)&optLen) == -1)
-		printf("getsockopt failed:%d", errno);
+		printf("getsockopt failed: %d", errno);
 	else
 		printf("Size of streaming socket send buffer: %d bytes\n", optVal);
 
 	if (getsockopt(su, SOL_SOCKET, SO_RCVBUF, (char *)&optVal, (socklen_t *)&optLen) == -1)
-		printf("getsockopt failed:%d", errno);
+		printf("getsockopt failed: %d", errno);
 	else
 		printf("Size of datagram socket receive buffer: %d bytes\n", optVal);
 
 	if (getsockopt(su, SOL_SOCKET, SO_SNDBUF, (char *)&optVal, (socklen_t *)&optLen) == -1)
-		printf("getsockopt failed:%d", errno);
+		printf("getsockopt failed: %d", errno);
 	else
-		printf("Size of datagram socket send buffer:%d bytes\n", optVal);
+		printf("Size of datagram socket send buffer: %d bytes\n", optVal);
 
 	return 0;
 }

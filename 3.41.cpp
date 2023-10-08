@@ -6,41 +6,33 @@
 #include <thread>
 using namespace std;
 
-// #define TEST
-
-#ifdef TEST
-#define testout(msg) cout << msg << endl << flush
-#else
-#define testout(msg)
-#endif
+#define testout(msg) cout << msg << endl
 
 class XTask
 {
 public:
     virtual ~XTask() {}
 
-	// 一客户端一个base
+    // 一客户端一个base
     // struct event_base *base = 0;
 
-     // 线程池id
+    // 线程池id
     // int thread_id = 0;
-    
-	// 初始化任务
-    virtual bool Init(int arg) = 0;
+
+    // 初始化任务
+    virtual void Init(int arg) = 0;
 };
 
 class CMyTask : public XTask
 {
 public:
-    bool Init(int arg)
+    void Init(int arg)
     {
-        long long i = 0;
-        long long c = 0;
-        for (; c < 10000000; c++)
-            while (i < 1000000000)
-                i++;
-        printf("%d---------%lld--------\n", arg, c);
-        return true;
+        for (long long c = 0; c < 10000000; c++)
+            for (long long i = 0; i < 10000000; i++)
+                ;
+
+        printf("%d---------%d--------\n", arg, arg);
     }
 };
 
@@ -57,6 +49,7 @@ public:
     void Start()
     {
         testout(id << " thread At Start()");
+
         thread th(&XThread::Main, this);
         th.detach();
     }
@@ -97,8 +90,8 @@ public:
 
 private:
     // event_base *base = 0;
-    std::list<XTask *> tasks;
-    std::mutex mtx;
+    list<XTask *> tasks;
+    mutex mtx;
 };
 
 class XThreadPool
@@ -140,7 +133,7 @@ public:
 private:
     int threadCount;
     int lastThread = -1;
-    std::vector<XThread *> threads;
+    vector<XThread *> threads;
 };
 
 int main()

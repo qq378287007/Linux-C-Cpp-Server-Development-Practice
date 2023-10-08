@@ -30,8 +30,10 @@ int main()
 	bind(sockSrv, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
 	listen(sockSrv, 5);
 
+	const int len = sizeof(SOCKADDR);
+
 	SOCKADDR_IN addrClient;
-	int len = sizeof(SOCKADDR);
+
 	while (1)
 	{
 		printf("--------wait for client-----------\n");
@@ -59,8 +61,8 @@ int main()
 					printf("%c", recvBuf[i]);
 				printf("\n");
 			}
-			else if (iRes == 0)
-				printf("The client closes the connection.\n");
+			else if (iRes == 0){
+				printf("The client closes the connection.\n");}
 			else
 			{
 				printf("recv failed with error: %d\n", errno);

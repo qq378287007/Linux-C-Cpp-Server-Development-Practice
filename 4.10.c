@@ -38,8 +38,8 @@ int main()
 	if (ret == -1)
 	{
 		long t2 = GetTickCount();
-		printf("time used:%ldms\n", t2 - t1);
-		printf("connect failed...\n");
+		printf("time used: %ldms\n", t2 - t1);
+		printf("connect() failed...\n");
 		if (errno == EINPROGRESS)
 			printf("unblock mode ret code...\n");
 	}
@@ -68,7 +68,7 @@ int main()
 		long t2 = GetTickCount();
 		printf("time used:%ldms\n", t2 - t1);
 		if (errno == EINPROGRESS)
-			printf("unblock mode errno:%d\n", errno);
+			printf("unblock mode errno: %d\n", errno);
 	}
 	else
 		printf("ret code is: %d\n", ret);

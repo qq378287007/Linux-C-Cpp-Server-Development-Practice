@@ -31,14 +31,14 @@ int main()
 	service.sin_port = htons(8000);
 	if (bind(s, (SOCKADDR *)&service, sizeof(service)) == -1)
 	{
-		printf("bind failed:%d\n", errno);
+		printf("bind failed: %d\n", errno);
 		return -1;
 	}
 
 	int optVal;
 	int optLen = sizeof(optVal);
 	if (getsockopt(s, SOL_SOCKET, SO_ACCEPTCONN, (char *)&optVal, (socklen_t *)&optLen) == -1)
-		printf("getsockopt failed:%d", errno);
+		printf("getsockopt failed: %d", errno);
 	else
 		printf("Before listening, The value of SO_ACCEPTCONN:%d, The socket is not listening\n", optVal);
 

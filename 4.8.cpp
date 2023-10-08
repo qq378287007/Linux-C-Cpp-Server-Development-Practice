@@ -11,10 +11,10 @@ struct MyData
 
 int main()
 {
+	cout << "Size of MyData: " << sizeof(MyData) << endl;
+
 	char str[10] = "123456789";
 	int nLen = sizeof(str);
-
-	cout << "Size of MyData: " << sizeof(MyData) << endl;
 
 	MyData *myData = (MyData *)malloc(sizeof(MyData) + nLen);
 

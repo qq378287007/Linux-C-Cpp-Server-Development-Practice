@@ -39,11 +39,11 @@ int main()
 	int optLen = sizeof(int);
 	if (getsockopt(s, SOL_SOCKET, SO_KEEPALIVE, (char *)&optVal, (socklen_t *)&optLen) == -1)
 	{
-		printf("getsockopt failed:%d", errno);
+		printf("getsockopt failed: %d", errno);
 		return -1;
 	}
 	else
-		printf("After bind, the value of SO_KEEPALIVE:%d\n", optVal);
+		printf("After bind, the value of SO_KEEPALIVE: %d\n", optVal);
 
 	optVal = 1;
 	if (setsockopt(s, SOL_SOCKET, SO_KEEPALIVE, (char *)&optVal, optLen) != -1)
@@ -51,10 +51,10 @@ int main()
 
 	if (getsockopt(s, SOL_SOCKET, SO_KEEPALIVE, (char *)&optVal, (socklen_t *)&optLen) == -1)
 	{
-		printf("getsockopt failed:%d", errno);
+		printf("getsockopt failed: %d", errno);
 		return -1;
 	}
 	else
-		printf("After setting,the value of SO_KEEPALIVE:%d\n", optVal);
+		printf("After setting, the value of SO_KEEPALIVE: %d\n", optVal);
 	return 0;
 }
