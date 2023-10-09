@@ -12,9 +12,17 @@ int main()
 		printf("socket() fail!\n");
 		return -1;
 	}
+	printf("socket() ok!\n");
 
 	char on = 1;
 	setsockopt(sfp, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
+
+	struct sockaddr_in serv = {0};
+	int serv_len = sizeof(serv);
+	printf("ip=%s, port=%d\n", inet_ntoa(serv.sin_addr), ntohs(serv.sin_port));
+
+	getsockname(sfp, (struct sockaddr *)&serv, (socklen_t *)&serv_len);
+	printf("ip=%s, port=%d\n", inet_ntoa(serv.sin_addr), ntohs(serv.sin_port));
 
 	unsigned short portnum = 10051;
 	struct sockaddr_in s_add;
@@ -30,9 +38,6 @@ int main()
 	}
 	printf("bind() ok!\n");
 
-	struct sockaddr_in serv = {0};
-	printf("ip=%s, port=%d\n", inet_ntoa(serv.sin_addr), ntohs(serv.sin_port));
-	int serv_len = sizeof(serv);
 	getsockname(sfp, (struct sockaddr *)&serv, (socklen_t *)&serv_len);
 	printf("ip=%s, port=%d\n", inet_ntoa(serv.sin_addr), ntohs(serv.sin_port));
 

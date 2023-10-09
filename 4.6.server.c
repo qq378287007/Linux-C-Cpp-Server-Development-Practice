@@ -43,7 +43,7 @@ int main()
 		for (int i = 0; i < 10; i++)
 		{
 			memset(sendBuf, 0, sizeof(sendBuf));
-			sprintf(sendBuf, "N0.%d Welcome to the server. What is 1 + 1 = ? (client IP: %s)\n", i + 1, inet_ntoa(addrClient.sin_addr));
+			sprintf(sendBuf, "N0.%d Welcome to the server. What is 1 + 1 = ? (client IP: %s, client Port: %d)\n", i + 1, inet_ntoa(addrClient.sin_addr), ntohs(addrClient.sin_port));
 			send(sockConn, sendBuf, strlen(sendBuf), 0);
 		}
 

@@ -10,10 +10,8 @@
 
 int main()
 {
-	int size = sizeof(struct sockaddr_in);
-
 	struct sockaddr_in saddr;
-	memset(&saddr, 0, size);
+	memset(&saddr, 0, sizeof(struct sockaddr_in));
 	saddr.sin_family = AF_INET;
 	saddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 	saddr.sin_port = htons(9999);
@@ -35,9 +33,9 @@ int main()
 		return -1;
 	}
 
-	int val = sizeof(struct sockaddr);
 	puts("waiting data");
 	struct sockaddr_in raddr;
+	int val = sizeof(struct sockaddr);
 	char rbuf[50];
 	ret = recvfrom(sockfd, rbuf, 50, 0, (struct sockaddr *)&raddr, (socklen_t *)&val);
 	if (ret < 0)

@@ -22,7 +22,7 @@ int main()
 	int optVal;
 	int optLen = sizeof(optVal);
 	if (getsockopt(s, SOL_SOCKET, SO_TYPE, (char *)&optVal, (socklen_t *)&optLen) == -1)
-		printf("getsockopt failed:%d", errno);
+		printf("getsockopt failed: %d", errno);
 	else
 	{
 		if (SOCK_STREAM == optVal)
@@ -38,7 +38,7 @@ int main()
 		return -1;
 	}
 	if (getsockopt(su, SOL_SOCKET, SO_TYPE, (char *)&optVal, (socklen_t *)&optLen) == -1)
-		printf("getsockopt failed:%d", errno);
+		printf("getsockopt failed: %d", errno);
 	else
 	{
 		if (SOCK_STREAM == optVal)

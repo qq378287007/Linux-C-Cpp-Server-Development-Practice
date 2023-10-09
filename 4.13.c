@@ -40,20 +40,20 @@ int main()
 	if (getsockopt(s, SOL_SOCKET, SO_ACCEPTCONN, (char *)&optVal, (socklen_t *)&optLen) == -1)
 		printf("getsockopt failed: %d", errno);
 	else
-		printf("Before listening, The value of SO_ACCEPTCONN:%d, The socket is not listening\n", optVal);
+		printf("Before listening, The value of SO_ACCEPTCONN: %d, The socket is not listening\n", optVal);
 
 	if (listen(s, 100) == -1)
 	{
-		printf("listen failed:%d\n", errno);
+		printf("listen failed: %d\n", errno);
 		return -1;
 	}
 
 	if (getsockopt(s, SOL_SOCKET, SO_ACCEPTCONN, (char *)&optVal, (socklen_t *)&optLen) == -1)
 	{
-		printf("getsockopt failed:%d", errno);
+		printf("getsockopt failed: %d", errno);
 		return -1;
 	}
 	else
-		printf("After listening,The value of SO_ACCEPTCONN:%d, The socket is listening\n", optVal);
+		printf("After listening, The value of SO_ACCEPTCONN: %d, The socket is listening\n", optVal);
 	return 0;
 }

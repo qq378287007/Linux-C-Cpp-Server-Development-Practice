@@ -20,12 +20,13 @@ unsigned long GetTickCount()
 
 int main()
 {
-	char ip[] = "127.0.0.1";
+	char ip[] = "192.168.0.88";
+	in_addr_t dwIP = inet_addr(ip);
 	int port = 13334;
+
 	struct sockaddr_in server_address;
 	memset(&server_address, 0, sizeof(server_address));
 	server_address.sin_family = AF_INET;
-	in_addr_t dwIP = inet_addr(ip);
 	server_address.sin_addr.s_addr = dwIP;
 	server_address.sin_port = htons(port);
 
@@ -53,12 +54,15 @@ int main()
 		printf("Error at ioctlsocket(): %d\n", errno);
 		return -1;
 	}
+
 	puts("\nAfter setting non blocking mode:");
-	memset(&server_address, 0, sizeof(server_address));
-	server_address.sin_family = AF_INET;
-	dwIP = inet_addr(ip);
-	server_address.sin_addr.s_addr = dwIP;
-	server_address.sin_port = htons(port);
+
+	/*
+		memset(&server_address, 0, sizeof(server_address));
+		server_address.sin_family = AF_INET;
+		server_address.sin_addr.s_addr = dwIP;
+		server_address.sin_port = htons(port);
+	*/
 
 	t1 = GetTickCount();
 	ret = connect(sock, (struct sockaddr *)&server_address, sizeof(server_address));
@@ -66,7 +70,7 @@ int main()
 	if (ret == -1)
 	{
 		long t2 = GetTickCount();
-		printf("time used:%ldms\n", t2 - t1);
+		printf("time used: %ldms\n", t2 - t1);
 		if (errno == EINPROGRESS)
 			printf("unblock mode errno: %d\n", errno);
 	}

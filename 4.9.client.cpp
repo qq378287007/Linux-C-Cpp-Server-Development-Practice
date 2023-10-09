@@ -36,21 +36,51 @@ int main()
 
 	char recvBuf[BUF_LEN];
 	int cn = 1;
-	while (leftlen > BUF_LEN)
+
+	for (; leftlen > 0; leftlen -= iRes)
 	{
-		iRes = recv(sockClient, recvBuf, BUF_LEN, 0);
+		if (leftlen < BUF_LEN)
+			iRes = recv(sockClient, recvBuf, leftlen, 0);
+		else
+			iRes = recv(sockClient, recvBuf, BUF_LEN, 0);
+			
 		if (iRes > 0)
 		{
-			printf("\nNo.%d:Recv %d bytes:", cn++, iRes);
+			printf("\nNo.%d: Recv %d bytes: ", cn++, iRes);
 			for (int i = 0; i < iRes; i++)
 				printf("%c", recvBuf[i]);
 			printf("\n");
 		}
 		else if (iRes == 0)
+		{
 			puts("\nThe server has closed the send connection.\n");
+		}
 		else
 		{
-			printf("recv failed:%d\n", errno);
+			printf("recv failed: %d\n", errno);
+			close(sockClient);
+			return -1;
+		}
+	}
+
+	/*
+	while (leftlen > BUF_LEN)
+	{
+		iRes = recv(sockClient, recvBuf, BUF_LEN, 0);
+		if (iRes > 0)
+		{
+			printf("\nNo.%d: Recv %d bytes: ", cn++, iRes);
+			for (int i = 0; i < iRes; i++)
+				printf("%c", recvBuf[i]);
+			printf("\n");
+		}
+		else if (iRes == 0)
+		{
+			puts("\nThe server has closed the send connection.\n");
+		}
+		else
+		{
+			printf("recv failed: %d\n", errno);
 			close(sockClient);
 			return -1;
 		}
@@ -61,21 +91,24 @@ int main()
 		iRes = recv(sockClient, recvBuf, leftlen, 0);
 		if (iRes > 0)
 		{
-			printf("\nNo.%d:Recv %d bytes:", cn++, iRes);
+			printf("\nNo.%d: Recv %d bytes: ", cn++, iRes);
 			for (int i = 0; i < iRes; i++)
 				printf("%c", recvBuf[i]);
 			printf("\n");
 		}
 		else if (iRes == 0)
+		{
 			puts("\nThe server has closed the send connection.\n");
+		}
 		else
 		{
-			printf("recv failed:%d\n", errno);
+			printf("recv failed: %d\n", errno);
 			close(sockClient);
 			return -1;
 		}
 		leftlen -= iRes;
 	}
+	*/
 
 	char sendBuf[100];
 	memset(sendBuf, 0, sizeof(sendBuf));

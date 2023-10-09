@@ -29,25 +29,51 @@ int main()
 		return 0;
 	}
 
-	int leftlen = 50 * 111;
 	char recvBuf[BUF_LEN];
 	int iRes;
 	int cn = 1;
+
+	for (int leftlen = 50 * 111; leftlen > 0; leftlen -= iRes)
+	{
+		iRes = recv(sockClient, recvBuf, BUF_LEN, 0);
+		if (iRes > 0)
+		{
+			printf("\nNo.%d: Recv %d bytes: ", cn++, iRes);
+			for (int i = 0; i < iRes; i++)
+				printf("%c", recvBuf[i]);
+			printf("\n");
+		}
+		else if (iRes == 0)
+		{
+			puts("\nThe server has closed the send connection.\n");
+		}
+		else
+		{
+			printf("recv failed: %d\n", errno);
+			close(sockClient);
+			return -1;
+		}
+	}
+
+	/*
+	int leftlen = 50 * 111;
 	while (leftlen > BUF_LEN)
 	{
 		iRes = recv(sockClient, recvBuf, BUF_LEN, 0);
 		if (iRes > 0)
 		{
-			printf("\nNo.%d:Recv %d bytes:", cn++, iRes);
-			for (int i = 0; i < iRes; i++) 
+			printf("\nNo.%d: Recv %d bytes: ", cn++, iRes);
+			for (int i = 0; i < iRes; i++)
 				printf("%c", recvBuf[i]);
 			printf("\n");
 		}
-		else if (iRes == 0) {
-			puts("\nThe server has closed the send connection.\n");}
+		else if (iRes == 0)
+		{
+			puts("\nThe server has closed the send connection.\n");
+		}
 		else
 		{
-			printf("recv failed:%d\n", errno);
+			printf("recv failed: %d\n", errno);
 			close(sockClient);
 			return -1;
 		}
@@ -58,25 +84,28 @@ int main()
 		iRes = recv(sockClient, recvBuf, leftlen, 0);
 		if (iRes > 0)
 		{
-			printf("\nNo.%d:Recv %d bytes:", cn++, iRes);
-			for (int i = 0; i < iRes; i++) 
+			printf("\nNo.%d: Recv %d bytes: ", cn++, iRes);
+			for (int i = 0; i < iRes; i++)
 				printf("%c", recvBuf[i]);
 			printf("\n");
 		}
-		else if (iRes == 0) 
+		else if (iRes == 0)
+		{
 			puts("\nThe server has closed the send connection.\n");
+		}
 		else
 		{
-			printf("recv failed:%d\n", errno);
+			printf("recv failed: %d\n", errno);
 			close(sockClient);
 			return -1;
 		}
 		leftlen -= iRes;
 	}
-
+*/
+	
 	char sendBuf[100];
 	memset(sendBuf, 0, sizeof(sendBuf));
-	sprintf(sendBuf, "Hi,Server,I've finished receiving the data.");
+	sprintf(sendBuf, "Hi, Server, I've finished receiving the data.");
 	send(sockClient, sendBuf, strlen(sendBuf) + 1, 0);
 
 	puts("Sending data to the server is completed");

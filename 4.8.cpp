@@ -13,13 +13,13 @@ int main()
 {
 	cout << "Size of MyData: " << sizeof(MyData) << endl;
 
-	char str[10] = "123456789";
+	char str[10] = "123456";
 	int nLen = sizeof(str);
 
 	MyData *myData = (MyData *)malloc(sizeof(MyData) + nLen);
 
 	myData->nLen = nLen;
-	memcpy(myData->data, str, 10);
+	memcpy(myData->data, str, nLen);
 
 	cout << "myData's Data is: " << myData->data << endl;
 	cout << "Size of MyData: " << sizeof(MyData) << endl;

@@ -10,9 +10,8 @@
 
 int main()
 {
-	int size = sizeof(struct sockaddr_in);
 	struct sockaddr_in saddr;
-	memset(&saddr, 0, size);
+	memset(&saddr, 0, sizeof(struct sockaddr_in));
 	saddr.sin_family = AF_INET;
 	saddr.sin_port = htons(8888);
 	saddr.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -29,7 +28,7 @@ int main()
 
 	int ret;
 	char wbuf[50] = "write to udpserver";
-	while (1)
+	for (int i=0; i<5; i++)
 	{
 		puts("please enter data:");
 		//memset(wbuf, 0, sizeof(wbuf));
@@ -38,6 +37,11 @@ int main()
 		if (ret < 0)
 			perror("sendto failed");
 	}
+	
+	ret = sendto(sockfd, NULL, 0, 0, (struct sockaddr *)&saddr, sizeof(struct sockaddr));
+	if (ret == 0)
+		printf("sendto empty\n");
+
 	close(sockfd);
 	return 0;
 }

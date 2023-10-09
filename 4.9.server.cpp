@@ -35,15 +35,16 @@ int main()
 
 	SOCKADDR_IN addrClient;
 	int len = sizeof(SOCKADDR);
-	int cn;
+	int cn = 5550;
 	struct MyData *mydata;
 	int iRes;
+	char recvBuf[BUF_LEN];
 	while (1)
 	{
 		printf("--------wait for client-----------\n");
 		int sockConn = accept(sockSrv, (SOCKADDR *)&addrClient, (socklen_t *)&len);
 		printf("--------client comes-----------\n");
-		cn = 5550;
+
 		mydata = (MyData *)malloc(sizeof(MyData) + cn);
 		mydata->nLen = htonl(cn);
 		memset(mydata->data, 'a', cn);
@@ -51,19 +52,20 @@ int main()
 		send(sockConn, (char *)mydata, sizeof(MyData) + cn, 0);
 		free(mydata);
 
-		char recvBuf[BUF_LEN];
 		do
 		{
 			iRes = recv(sockConn, recvBuf, BUF_LEN, 0);
 			if (iRes > 0)
 			{
-				printf("\nRecv %d bytes:", iRes);
+				printf("\nRecv %d bytes: ", iRes);
 				for (int i = 0; i < iRes; i++)
 					printf("%c", recvBuf[i]);
 				printf("\n");
 			}
 			else if (iRes == 0)
+			{
 				printf("\nThe client has closed the connection.\n");
+			}
 			else
 			{
 				printf("recv failed with error: %d\n", errno);

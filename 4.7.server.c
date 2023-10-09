@@ -33,23 +33,22 @@ int main()
 	const int len = sizeof(SOCKADDR);
 
 	SOCKADDR_IN addrClient;
+	char sendBuf[111];
+	char recvBuf[BUF_LEN];
 
 	while (1)
 	{
 		printf("--------wait for client-----------\n");
 		int sockConn = accept(sockSrv, (SOCKADDR *)&addrClient, (socklen_t *)&len);
-		char sendBuf[111] = "";
 		printf("--------client comes-----------\n");
-		int cn;
-		for (cn = 0; cn < 50; cn++)
+		memset(sendBuf, 'a', 111);
+		for (int cn = 0; cn < 50; cn++)
 		{
-			memset(sendBuf, 'a', 111);
 			if (cn == 49)
 				sendBuf[110] = 'b';
 			send(sockConn, sendBuf, 111, 0);
 		}
 
-		char recvBuf[BUF_LEN];
 		int iRes;
 		do
 		{
@@ -61,8 +60,10 @@ int main()
 					printf("%c", recvBuf[i]);
 				printf("\n");
 			}
-			else if (iRes == 0){
-				printf("The client closes the connection.\n");}
+			else if (iRes == 0)
+			{
+				printf("The client closes the connection.\n");
+			}
 			else
 			{
 				printf("recv failed with error: %d\n", errno);

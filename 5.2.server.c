@@ -9,9 +9,8 @@
 
 int main()
 {
-	int size = sizeof(struct sockaddr_in);
 	struct sockaddr_in saddr;
-	memset(&saddr, 0, size);
+	memset(&saddr, 0, sizeof(struct sockaddr_in));
 	saddr.sin_family = AF_INET;
 	saddr.sin_port = htons(8888);
 	saddr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -33,18 +32,22 @@ int main()
 		return -1;
 	}
 
-	int val = sizeof(struct sockaddr);
 	struct sockaddr_in raddr;
+	int val = sizeof(struct sockaddr);
 	char rbuf[50];
 	while (1)
 	{
 		puts("waiting data");
 		memset(rbuf, 0, 50);
 		ret = recvfrom(sockfd, rbuf, 50, 0, (struct sockaddr *)&raddr, (socklen_t *)&val);
+		if (ret == 0){
+			printf("recvfrom empty\n");
+			break;
+		}
 		if (ret < 0)
 			perror("recvfrom failed");
 
-		printf("recv data :%s\n", rbuf);
+		printf("recv data: %s\n", rbuf);
 	}
 	close(sockfd);
 	return 0;

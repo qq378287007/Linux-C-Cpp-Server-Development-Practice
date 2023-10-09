@@ -10,9 +10,8 @@
 
 int main()
 {
-	int size = sizeof(struct sockaddr_in);
 	struct sockaddr_in saddr;
-	memset(&saddr, 0, size);
+	memset(&saddr, 0, sizeof(struct sockaddr_in));
 	saddr.sin_family = AF_INET;
 	saddr.sin_port = htons(9999);
 	saddr.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -29,7 +28,7 @@ int main()
 
 	puts("please enter data:");
 	char wbuf[50] = "write to udpserver";
-	// scanf("%s", wbuf, sizeof(wbuf));
+	//scanf("%s", wbuf, sizeof(wbuf));
 	//sscanf(wbuf, "%s", "write to udpserver");
 	int ret = sendto(sockfd, wbuf, sizeof(wbuf), 0, (struct sockaddr *)&saddr, sizeof(struct sockaddr));
 	if (ret < 0)
