@@ -14,7 +14,7 @@ void *thfunc(void *arg)
 	return (void *)0;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	MYSTRUCT mystruct = {110, "hello world"};
 

@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					printf("recive client's data:%s\n", buf);
+					printf("recive client's data: %s\n", buf);
 					for (int j = 0; j < n; j++)
 						buf[j] = toupper(buf[j]);
 					write(sockfd, buf, n);

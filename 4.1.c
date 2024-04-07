@@ -8,6 +8,6 @@ int main()
 
 	printf("ia.s_addr = 0x%x\n", ia.s_addr);
 	printf("real_ip = %s\n", inet_ntoa(ia));
-	
+
 	return 0;
 }

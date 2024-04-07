@@ -23,8 +23,8 @@ int main()
 	setsockopt(sockSrv, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
 
 	SOCKADDR_IN addrSrv;
-	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_family = AF_INET;
+	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_port = htons(8000);
 
 	bind(sockSrv, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
@@ -68,7 +68,8 @@ int main()
 			{
 				printf("recv failed with error: %d\n", errno);
 				close(sockConn);
-				return 1;
+				// return 1;
+				continue;
 			}
 
 		} while (iRes > 0);

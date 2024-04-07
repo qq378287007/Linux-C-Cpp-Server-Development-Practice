@@ -9,11 +9,12 @@
 
 void *client_process(void *arg)
 {
-	int recv_len = 0;
-	char recv_buf[1024] = "";
+	int recv_len;
+	char recv_buf[1024];
 	int connfd = *(int *)arg;
-	while ((recv_len = recv(connfd, recv_buf, sizeof(recv_buf), 0)) > 0)
+	while ((recv_len = recv(connfd, recv_buf, sizeof(recv_buf) - 1, 0)) > 0)
 	{
+		recv_buf[recv_len] = 0;
 		printf("recv_buf: %s\n", recv_buf);
 		send(connfd, recv_buf, recv_len, 0);
 	}
@@ -35,12 +36,13 @@ int main()
 	struct sockaddr_in my_addr;
 	bzero(&my_addr, sizeof(my_addr));
 	my_addr.sin_family = AF_INET;
-	my_addr.sin_port = htons(port);
 	my_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+	my_addr.sin_port = htons(port);
 	printf("Binding server to port %d\n", port);
 
 	char on = 1;
 	setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
+
 	int err_log = bind(sockfd, (struct sockaddr *)&my_addr, sizeof(my_addr));
 	if (err_log != 0)
 	{
@@ -48,6 +50,7 @@ int main()
 		close(sockfd);
 		exit(-1);
 	}
+
 	err_log = listen(sockfd, 10);
 	if (err_log != 0)
 	{

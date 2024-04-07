@@ -12,13 +12,13 @@ int main()
 	struct sockaddr_in saddr;
 	memset(&saddr, 0, sizeof(struct sockaddr_in));
 	saddr.sin_family = AF_INET;
-	saddr.sin_port = htons(8888);
 	saddr.sin_addr.s_addr = htonl(INADDR_ANY);
+	saddr.sin_port = htons(8888);
 
 	int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sockfd < 0)
 	{
-		puts("socket failed");
+		puts("socket failed!");
 		return -1;
 	}
 
@@ -28,7 +28,7 @@ int main()
 	int ret = bind(sockfd, (struct sockaddr *)&saddr, sizeof(struct sockaddr));
 	if (ret < 0)
 	{
-		puts("sbind failed");
+		puts("sbind failed!");
 		return -1;
 	}
 
@@ -40,12 +40,13 @@ int main()
 		puts("waiting data");
 		memset(rbuf, 0, 50);
 		ret = recvfrom(sockfd, rbuf, 50, 0, (struct sockaddr *)&raddr, (socklen_t *)&val);
-		if (ret == 0){
+		if (ret == 0)
+		{
 			printf("recvfrom empty\n");
 			break;
 		}
 		if (ret < 0)
-			perror("recvfrom failed");
+			perror("recvfrom failed!");
 
 		printf("recv data: %s\n", rbuf);
 	}

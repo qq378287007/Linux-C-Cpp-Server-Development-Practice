@@ -37,14 +37,14 @@ static void *thread_start(void *arg)
 	return NULL;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	pthread_t thread_id;
 	int s = pthread_create(&thread_id, NULL, &thread_start, NULL);
 	if (s != 0)
 	{
 		printf("pthread_create failed\n");
-		return 0;
+		return s;
 	}
 	pthread_exit(NULL);
 }

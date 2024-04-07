@@ -1,14 +1,14 @@
 #include <pthread.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <unistd.h> //sleep
 
 void *thfunc(void *arg)
 {
 	printf("in thfunc\n");
-	return 0;
+	return NULL;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	pthread_t tidp;
 	int ret = pthread_create(&tidp, NULL, thfunc, NULL);

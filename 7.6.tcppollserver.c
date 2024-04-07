@@ -1,6 +1,7 @@
 
-// #define _GNU_SOURCE 1
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE
+#endif
 
 #include <time.h>
 #include <sys/socket.h>
@@ -23,8 +24,9 @@ Content-Type: application/json\r\n\
 Content-Length: 13\r\n\
 Date: Thu, 2 Aug 2021 04:02:00 GMT\r\n\
 Keep-Alive: timeout=60\r\n\
-Connection: keep-alive\r\n\r\n\
-[HELLO WORLD]\r\n\r\n";
+Connection: keep-alive\r\n\
+\r\n\
+[HELLO WORLD]";
 
 int main()
 {
@@ -39,9 +41,10 @@ int main()
 	fprintf(stderr, "socket opt set\n");
 
 	const int port = 8888;
-	struct sockaddr_in addr;
-	addr.sin_family = AF_INET, addr.sin_port = htons(port);
+	struct sockaddr_in addr = {0};
+	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = INADDR_ANY;
+	addr.sin_port = htons(port);
 	socklen_t addrLen = sizeof(addr);
 	if (bind(sd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
 		errExit();
@@ -59,11 +62,10 @@ int main()
 	nfds_t nfds = 1;
 	int timeout = -1;
 
-	int ret;
 	fprintf(stderr, "polling\n");
 	while (1)
 	{
-		ret = poll(fds, nfds, timeout);
+		int ret = poll(fds, nfds, timeout);
 		fprintf(stderr, "poll returned with ret value: %d\n", ret);
 		if (ret == -1)
 			errExit();
@@ -143,9 +145,7 @@ int main()
 					ret = write(fds[i].fd, resp, sizeof(resp));
 					fprintf(stderr, "write on: %d returned with value: %d\n", i, ret);
 					if (ret == -1)
-					{
 						errExit();
-					}
 					fds[i].events &= !(POLLOUT);
 				}
 			}

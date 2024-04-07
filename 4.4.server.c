@@ -16,8 +16,8 @@ int main()
 
 	struct sockaddr_in addrSrv;
 	memset(&addrSrv, 0, sizeof(struct sockaddr_in));
-	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_family = AF_INET;
+	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_port = htons(8000);
 
 	if (-1 == bind(sockSrv, (struct sockaddr *)&addrSrv, sizeof(struct sockaddr)))
@@ -40,9 +40,10 @@ int main()
 		printf("--------wait for client-----------\n");
 		int sockConn = accept(sockSrv, (struct sockaddr *)&addrClient, (socklen_t *)&len);
 
-		char sendBuf[100];
+		char sendBuf[100] = {0};
 		sprintf(sendBuf, "Welcome client(%s: %d) to Server!", inet_ntoa(addrClient.sin_addr), ntohs(addrClient.sin_port));
-		send(sockConn, sendBuf, strlen(sendBuf) + 1, 0);
+		// send(sockConn, sendBuf, strlen(sendBuf) + 1, 0);
+		send(sockConn, sendBuf, sizeof(sendBuf), 0);
 
 		char recvBuf[100];
 		recv(sockConn, recvBuf, 100, 0);
@@ -50,12 +51,12 @@ int main()
 
 		close(sockConn);
 		/*
-				puts("continue to listen?(y/n)");
-				char ch[2];
-				scanf("%s", ch, 2);
+		puts("continue to listen?(y/n)");
+		char ch[2];
+		scanf("%s", ch, 2);
 
-				if (ch[0] != 'y')
-					break;
+		if (ch[0] != 'y')
+			break;
 		*/
 	}
 

@@ -19,8 +19,8 @@ int main()
 	int sockClient = socket(AF_INET, SOCK_STREAM, 0);
 
 	SOCKADDR_IN addrSrv;
-	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_family = AF_INET;
+	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_port = htons(8000);
 	int err = connect(sockClient, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
 	if (-1 == err)
@@ -58,7 +58,7 @@ int main()
 	{
 		memset(sendBuf, 0, sizeof(sendBuf));
 		sprintf(sendBuf, "N0.%d I'm the client, 1+1=2\n", i + 1);
-		send(sockClient, sendBuf, strlen(sendBuf) + 1, 0);
+		send(sockClient, sendBuf, strlen(sendBuf), 0);
 	}
 	puts("Sending data to the server is completed.");
 

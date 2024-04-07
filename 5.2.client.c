@@ -13,13 +13,13 @@ int main()
 	struct sockaddr_in saddr;
 	memset(&saddr, 0, sizeof(struct sockaddr_in));
 	saddr.sin_family = AF_INET;
-	saddr.sin_port = htons(8888);
 	saddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	saddr.sin_port = htons(8888);
 
 	int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sockfd < 0)
 	{
-		perror("failed socket");
+		perror("failed socket!");
 		return -1;
 	}
 
@@ -28,16 +28,16 @@ int main()
 
 	int ret;
 	char wbuf[50] = "write to udpserver";
-	for (int i=0; i<5; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		puts("please enter data:");
-		//memset(wbuf, 0, sizeof(wbuf));
-		//scanf("%s", wbuf, sizeof(wbuf));
+		// memset(wbuf, 0, sizeof(wbuf));
+		// scanf("%s", wbuf, sizeof(wbuf));
 		ret = sendto(sockfd, wbuf, sizeof(wbuf), 0, (struct sockaddr *)&saddr, sizeof(struct sockaddr));
 		if (ret < 0)
-			perror("sendto failed");
+			perror("sendto failed!");
 	}
-	
+
 	ret = sendto(sockfd, NULL, 0, 0, (struct sockaddr *)&saddr, sizeof(struct sockaddr));
 	if (ret == 0)
 		printf("sendto empty\n");

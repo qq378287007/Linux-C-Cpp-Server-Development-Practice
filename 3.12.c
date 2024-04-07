@@ -18,9 +18,9 @@ void *thrfunc2(void *arg)
 	return (void *)(&count);
 }
 
-int main(int argc, char *argv[])
+int main()
 {
-	pthread_t pid[PTHREAD_NUM];
+	pthread_t pid[PTHREAD_NUM] = {0};
 
 	int retPid;
 	if ((retPid = pthread_create(&pid[0], NULL, thrfunc1, NULL)) != 0)

@@ -13,13 +13,15 @@ void *thfrunc1(void *arg)
 	printf("thfrunc1 comes \n");
 	int m = 1;
 	pthread_cleanup_push(mycleanfunc, &m);
+
 	int n = 2;
 	pthread_cleanup_push(mycleanfunc, &n);
+	pthread_cleanup_pop(1); // 弹出上一个入栈函数，并执行
 
-	pthread_cleanup_pop(1);
+	printf("thfrunc1 leaves \n");
 
-	pthread_exit(0);
-	//return NULL;
+	pthread_exit(NULL);
+	// return NULL;
 
 	pthread_cleanup_pop(0);
 }

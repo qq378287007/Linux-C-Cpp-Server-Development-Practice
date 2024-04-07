@@ -23,8 +23,8 @@ int main()
 	setsockopt(sockSrv, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
 
 	SOCKADDR_IN addrSrv;
-	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_family = AF_INET;
+	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_port = htons(8000);
 
 	bind(sockSrv, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
@@ -39,12 +39,12 @@ int main()
 		printf("--------wait for client-----------\n");
 
 		int sockConn = accept(sockSrv, (SOCKADDR *)&addrClient, (socklen_t *)&len);
-		char sendBuf[100] = "";
+		char sendBuf[100];
 		for (int i = 0; i < 10; i++)
 		{
 			memset(sendBuf, 0, sizeof(sendBuf));
 			sprintf(sendBuf, "N0.%d Welcome to the server. What is 1 + 1 = ? (client IP: %s, client Port: %d)\n", i + 1, inet_ntoa(addrClient.sin_addr), ntohs(addrClient.sin_port));
-			send(sockConn, sendBuf, strlen(sendBuf), 0);
+			send(sockConn, sendBuf, sizeof(sendBuf), 0);
 		}
 
 		int iRes = shutdown(sockConn, SHUT_WR);

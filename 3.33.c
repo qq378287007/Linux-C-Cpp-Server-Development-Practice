@@ -9,8 +9,8 @@ void *ThreadA(void *p)
 {
 	while (1)
 	{
-		a -= 50; 
-		b += 50; 
+		a -= 50;
+		b += 50;
 	}
 }
 
@@ -26,7 +26,6 @@ void *ThreadB(void *p)
 int main()
 {
 	pthread_t tida, tidb;
-
 	pthread_create(&tida, NULL, ThreadA, NULL);
 	pthread_create(&tidb, NULL, ThreadB, NULL);
 	pthread_join(tida, NULL);

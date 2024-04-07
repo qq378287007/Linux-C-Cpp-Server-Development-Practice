@@ -10,7 +10,7 @@ void *thfunc(void *arg)
 	while (1)
 	{
 		i++;
-		pthread_testcancel();
+		pthread_testcancel(); // 线程取消点
 	}
 	printf("thread end-------- \n");
 
@@ -27,10 +27,10 @@ int main()
 
 	void *ret = NULL;
 	pthread_join(tid, &ret);
-	
+
 	if (ret == PTHREAD_CANCELED)
-		//printf("thread has stopped,and exit code: %d\n", *(int *)ret);
-		printf("thread has stopped,and exit code: %p\n", ret);
+		//printf("thread has stopped, and exit code: %d\n", *(int *)ret);
+		printf("thread has stopped, and exit code: %p\n", ret);
 	else
 		printf("some error occured");
 

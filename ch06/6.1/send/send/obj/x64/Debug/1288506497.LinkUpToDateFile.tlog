@@ -1,1 +1,0 @@
-g++ -o "/root/projects/send/bin/x64/Debug/send.out" -Wl,--no-undefined -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack /root/projects/send/obj/x64/Debug/main.o

@@ -20,7 +20,7 @@ int main()
 	pthread_create(&tid, NULL, thfunc, NULL);
 	sleep(1);
 
-	pthread_cancel(tid);
+	pthread_cancel(tid); // 取消线程失败
 
 	void *ret = NULL;
 	pthread_join(tid, &ret);

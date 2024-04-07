@@ -24,8 +24,9 @@ int main()
 	thread threads[10];
 	for (int i = 0; i < 10; ++i)
 		threads[i] = thread(thfunc, i);
+
 	ready = true;
-	for (auto &th : threads)
+	for (thread &th : threads)
 		th.join();
 
 	cout << '\n';

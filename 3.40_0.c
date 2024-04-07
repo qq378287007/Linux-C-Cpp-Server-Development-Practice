@@ -23,7 +23,7 @@ typedef struct
     int maxNum;                // 最大线程数量
     int busyNum;               // 忙的线程的个数
     int liveNum;               // 存活的线程的个数
-    int exitNum;               // 要销毁的线程个数，= liveNum - busyNum
+    int exitNum;               // 要销毁（闲置）的线程个数，= liveNum - busyNum
     pthread_mutex_t mutexPool; // 锁整个的线程池
     pthread_mutex_t mutexBusy; // 锁busyNum变量
     pthread_cond_t notFull;    // 任务队列是不是满了
@@ -38,6 +38,7 @@ int threadPoolBusyNum(ThreadPool *pool)
     pthread_mutex_lock(&pool->mutexBusy);
     int busyNum = pool->busyNum;
     pthread_mutex_unlock(&pool->mutexBusy);
+
     return busyNum;
 }
 
@@ -47,6 +48,7 @@ int threadPoolAliveNum(ThreadPool *pool)
     pthread_mutex_lock(&pool->mutexPool);
     int aliveNum = pool->liveNum;
     pthread_mutex_unlock(&pool->mutexPool);
+
     return aliveNum;
 }
 
@@ -54,6 +56,7 @@ int threadPoolAliveNum(ThreadPool *pool)
 void threadExit(ThreadPool *pool)
 {
     pthread_t tid = pthread_self();
+
     pthread_mutex_lock(&pool->mutexPool);
     for (int i = 0; i < pool->maxNum; i++)
     {
@@ -118,6 +121,7 @@ void *worker(void *arg)
         pthread_cond_signal(&pool->notFull); // 通知线程池可以添加任务
 
         printf("thread %ld start working...\n", pthread_self());
+
         pthread_mutex_lock(&pool->mutexBusy);
         pool->busyNum++;
         pthread_mutex_unlock(&pool->mutexBusy);
@@ -127,10 +131,11 @@ void *worker(void *arg)
         free(task.arg);
         task.arg = NULL;
 
-        printf("thread %ld end working...\n", pthread_self());
         pthread_mutex_lock(&pool->mutexBusy);
         pool->busyNum--;
         pthread_mutex_unlock(&pool->mutexBusy);
+
+        printf("thread %ld end working...\n", pthread_self());
     }
 
     threadExit(pool);
@@ -154,15 +159,15 @@ void *manager(void *arg)
         printf("liveNum = %d\n", liveNum);
         pthread_mutex_unlock(&pool->mutexPool);
 
-        // 取出忙的线程的数量
+        //  取出忙的线程的数量
         pthread_mutex_lock(&pool->mutexBusy);
         int busyNum = pool->busyNum;
         printf("busyNum = %d\n", busyNum);
         pthread_mutex_unlock(&pool->mutexBusy);
 
         // 添加线程
-        // 任务的个数 > 成活的线程个数 && 存活的线程数 < 最大线程数
-        if (queueSize > liveNum && liveNum < pool->maxNum)
+        // 存活的线程个数 < 任务的个数 && 存活的线程数 < 最大线程数
+        if (liveNum < queueSize && liveNum < pool->maxNum)
         {
             pthread_mutex_lock(&pool->mutexPool);
             for (int i = 0; i < pool->maxNum && pool->liveNum < pool->maxNum; i++)
@@ -177,9 +182,8 @@ void *manager(void *arg)
         }
 
         // 销毁线程
-        // 条件是：忙的线程*2 < 存活的线程数 && 存活的线程 > 最小线程数
-        // 我觉得，释放多余内存
-        if (busyNum * 2 < liveNum && liveNum > pool->minNum)
+        // 存活的线程数 < 忙的线程*2&& 存活的线程 > 最小线程数
+        if (liveNum < busyNum * 2 && liveNum > pool->minNum)
         {
             pthread_mutex_lock(&pool->mutexPool);
             int NUMBER = pool->liveNum - pool->busyNum;
@@ -307,7 +311,9 @@ int threadPoolDestroy(ThreadPool *pool)
         return -1;
 
     // 关闭线程池
+    // pthread_mutex_lock(&pool->mutexBusy);
     pool->shutdown = -1;
+    // pthread_mutex_unlock(&pool->mutexPool);
 
     // 等待管理者线程结束
     pthread_join(pool->managerID, NULL);
@@ -318,7 +324,7 @@ int threadPoolDestroy(ThreadPool *pool)
         pthread_cond_signal(&pool->notEmpty);
 
     // 等待工作线程结束
-    //pthread_mutex_lock(&pool->mutexPool);
+    // pthread_mutex_lock(&pool->mutexPool);
     for (int i = 0; i < pool->maxNum; i++)
     {
         if (pool->threadIDs[i] != 0)
@@ -328,9 +334,8 @@ int threadPoolDestroy(ThreadPool *pool)
             pool->liveNum--;
         }
     }
-    //pthread_mutex_unlock(&pool->mutexPool);
+    // pthread_mutex_unlock(&pool->mutexPool);
     printf("work threads quit!\n");
-    
 
     // 释放堆内存
     if (pool->taskQ)
@@ -360,16 +365,21 @@ void taskFunc(void *arg)
 
 int main()
 {
+#if 1
 #define N 130
-    ThreadPool *pool = threadPoolCreate(5, 15, 100);
-    for (int i = 0; i < N; i++)
     {
-        int *num = (int *)malloc(sizeof(int));
-        *num = i + 100;
-        threadPoolAdd(pool, taskFunc, num);
+        ThreadPool *pool = threadPoolCreate(5, 15, 100);
+        for (int i = 0; i < N; i++)
+        {
+            int *num = (int *)malloc(sizeof(int));
+            *num = i + 100;
+            threadPoolAdd(pool, taskFunc, num);
+        }
+        sleep(1);
+        threadPoolDestroy(pool);
     }
-    sleep(1);
-    threadPoolDestroy(pool);
+#undef N
+#endif
 
     printf("Over!\n");
     return 0;

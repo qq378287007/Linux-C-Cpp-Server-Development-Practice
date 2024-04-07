@@ -1,5 +1,0 @@
-﻿  client.cpp
-e:\ebook\linux\ref\highnet\code\ch07\7.1\client\client\client.cpp(21): warning C4101: “type”: 未引用的局部变量
-e:\ebook\linux\ref\highnet\code\ch07\7.1\client\client\client.cpp(18): warning C4101: “pse”: 未引用的局部变量
-e:\ebook\linux\ref\highnet\code\ch07\7.1\client\client\client.cpp(17): warning C4101: “phe”: 未引用的局部变量
-  client.vcxproj -> E:\ebook\linux\ref\highNet\code\ch07\7.1\client\Debug\client.exe

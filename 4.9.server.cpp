@@ -23,13 +23,12 @@ struct MyData
 
 int main()
 {
-	int sockSrv = socket(AF_INET, SOCK_STREAM, 0);
-
 	SOCKADDR_IN addrSrv;
-	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_family = AF_INET;
+	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_port = htons(8000);
 
+	int sockSrv = socket(AF_INET, SOCK_STREAM, 0);
 	bind(sockSrv, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
 	listen(sockSrv, 5);
 

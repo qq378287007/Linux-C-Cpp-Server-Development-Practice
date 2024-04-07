@@ -33,17 +33,15 @@ static void *thread_start(void *arg)
 								  : (i == PTHREAD_CREATE_JOINABLE) ? "PTHREAD_CREATE_JOINABLE"
 																   : "???");
 	pthread_attr_destroy(&gattr);
+	return NULL;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	pthread_t thr;
 	int s = pthread_create(&thr, NULL, &thread_start, NULL);
 	if (s != 0)
-	{
 		handle_error_en(s, "pthread_create");
-		return 0;
-	}
 	pthread_join(thr, NULL);
 	return 0;
 }

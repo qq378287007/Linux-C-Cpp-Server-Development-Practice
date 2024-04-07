@@ -13,21 +13,18 @@ void *thfunc(void *arg)
 	ofstream("tmp.file") << "out\n";
 
 	exit(5);
-
-	//return NULL;
-	//return (void *)5;
-
-	//pthread_exit((void *)5);
+	// return (void *)5;
+	// pthread_exit((void *)5);
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	pthread_attr_t thread_attr;
 	int res = pthread_attr_init(&thread_attr);
 	if (res)
 		cout << "pthread_attr_init failed:" << res << endl;
 
-	res = pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
+	// res = pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
 	if (res)
 		cout << "pthread_attr_setdetachstate failed:" << res << endl;
 
@@ -38,8 +35,7 @@ int main(int argc, char *argv[])
 	cout << "main thread will exit" << endl;
 
 	pthread_attr_destroy(&thread_attr);
-	
-	pthread_exit(NULL);
-	
-	//return 0;
+
+	pthread_exit(NULL); // 子线程（无论是否分离）继续执行
+						// return 0;//子线程不再执行
 }

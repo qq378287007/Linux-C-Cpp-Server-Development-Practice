@@ -19,7 +19,7 @@ int main()
 	int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sockfd < 0)
 	{
-		perror("socket() failed");
+		perror("socket() failed!");
 		return -1;
 	}
 
@@ -29,7 +29,7 @@ int main()
 	int ret = bind(sockfd, (struct sockaddr *)&saddr, sizeof(struct sockaddr));
 	if (ret < 0)
 	{
-		perror("bind() failed");
+		perror("bind() failed!");
 		return -1;
 	}
 
@@ -39,9 +39,9 @@ int main()
 	char rbuf[50];
 	ret = recvfrom(sockfd, rbuf, 50, 0, (struct sockaddr *)&raddr, (socklen_t *)&val);
 	if (ret < 0)
-		perror("recvfrom failed");
+		perror("recvfrom failed!");
 	printf("recv data: %s\n", rbuf);
-	
+
 	close(sockfd);
 	return 0;
 }

@@ -57,13 +57,6 @@ int main()
 
 	puts("\nAfter setting non blocking mode:");
 
-	/*
-		memset(&server_address, 0, sizeof(server_address));
-		server_address.sin_family = AF_INET;
-		server_address.sin_addr.s_addr = dwIP;
-		server_address.sin_port = htons(port);
-	*/
-
 	t1 = GetTickCount();
 	ret = connect(sock, (struct sockaddr *)&server_address, sizeof(server_address));
 	printf("connect ret code is: %d\n", ret);

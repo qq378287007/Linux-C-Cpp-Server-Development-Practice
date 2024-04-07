@@ -137,26 +137,27 @@ private:
 
 int main()
 {
-    if (false)
-    {
+#if 0
 #define N 100
+    {
         CMyTask task[N];
         int data[N];
-        XThread t;
+        XThread t[N];
 
         for (int i = 0; i < N; i++)
         {
             data[i] = i;
             task[i].setData((void *)&data[i]);
-            t.AddTask(&task[i]);
+            t[i].AddTask(&task[i]);
         }
         sleep(1);
-#undef N
     }
+#undef N
+#endif
 
-    if (true)
-    {
+#if 1
 #define N 100
+    {
         CMyTask task[N];
         int data[N];
         XThreadPool threadpool;
@@ -168,7 +169,9 @@ int main()
             threadpool.Dispatch(&task[i]);
         }
         sleep(1);
-#undef N
     }
+#undef N
+#endif
+
     return 0;
 }

@@ -12,22 +12,23 @@ void *thfrunc1(void *arg)
 {
 	int m = 1;
 	printf("thfrunc1 comes \n");
+
+	// push和pop必须配对
 	pthread_cleanup_push(mycleanfunc, &m);
-	return (void *)0;
+	return NULL; // 不执行清理函数
 	pthread_cleanup_pop(0);
-	//pthread_exit(0);
 }
 
 void *thfrunc2(void *arg)
 {
 	int m = 2;
-	printf("thfrunc2 comes \n");
 	pthread_cleanup_push(mycleanfunc, &m);
-	pthread_exit(0);
+	printf("thfrunc2 comes \n");
+	pthread_exit(NULL); // 执行清理函数
 	pthread_cleanup_pop(0);
 }
 
-int main(void)
+int main()
 {
 	pthread_t pid1;
 	int res = pthread_create(&pid1, NULL, thfrunc1, NULL);

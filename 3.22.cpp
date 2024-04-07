@@ -7,7 +7,7 @@ void thfunc(int n)
 	cout << "thfunc: " << n << "\n";
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	thread t(thfunc, 1);
 	t.join();

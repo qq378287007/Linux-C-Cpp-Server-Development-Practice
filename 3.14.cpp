@@ -18,7 +18,7 @@ void *thfunc(void *arg)
 	return (void *)0;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	pthread_t pid;
 	int res = pthread_create(&pid, NULL, thfunc, NULL);

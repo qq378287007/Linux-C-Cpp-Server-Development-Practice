@@ -4,12 +4,11 @@
 void *thfunc(void *arg)
 {
     int n = *(int *)(arg);
-
     printf("in thfunc: n=%d\n", n);
     return (void *)0;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     int n = 110;
 
@@ -21,7 +20,7 @@ int main(int argc, char *argv[])
         return -1;
     }
     pthread_join(tidp, NULL);
-    
+
     printf("in main: thread is created\n");
 
     return 0;

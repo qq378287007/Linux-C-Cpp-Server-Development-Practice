@@ -9,7 +9,7 @@ void *thfunc(void *arg)
 	return (void *)0;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	pthread_t tidp;
 	int ret = pthread_create(&tidp, NULL, thfunc, NULL);
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	}
 	pthread_join(tidp, NULL); // 等待子线程结束
 
-	gn++;						   // 子线程结束后，gn再递增1
+	gn++;							// 子线程结束后，gn再递增1
 	printf("in main: gn=%d\n", gn); // 再次打印全局变量gn值
 
 	return 0;

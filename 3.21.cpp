@@ -4,12 +4,12 @@ using namespace std;
 
 void th_function()
 {
-	std::cout << "i am c++11 thread func" << std::endl;
+	cout << "i am c++11 thread func" << endl;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
-	std::thread t(th_function);
+	thread t(th_function);
 	t.join();
 
 	return 0;

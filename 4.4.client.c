@@ -11,8 +11,8 @@ int main()
 	int sockClient = socket(AF_INET, SOCK_STREAM, 0);
 
 	struct sockaddr_in addrSrv;
-	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_family = AF_INET;
+	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_port = htons(8000);
 	int err = connect(sockClient, (struct sockaddr *)&addrSrv, sizeof(struct sockaddr));
 	if (-1 == err)
@@ -25,8 +25,9 @@ int main()
 	recv(sockClient, recvBuf, 100, 0);
 	printf("receive server's msg: %s\n", recvBuf);
 
-	char msg[] = "hi,server";
-	send(sockClient, msg, strlen(msg) + 1, 0);
+	char msg[100] = "hi,server";
+	// send(sockClient, msg, strlen(msg) + 1, 0);
+	send(sockClient, msg, sizeof(msg), 0);
 
 	close(sockClient);
 

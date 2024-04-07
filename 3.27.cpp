@@ -8,6 +8,7 @@ void fun(int &n)
 	n += 20;
 	this_thread::sleep_for(chrono::milliseconds(10));
 }
+
 int main()
 {
 	int n = 0;

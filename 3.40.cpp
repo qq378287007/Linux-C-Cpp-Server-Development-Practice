@@ -10,7 +10,12 @@ class CTask
 {
 public:
 	CTask(void *ptrData = nullptr) : m_ptrData(ptrData) {}
-	virtual ~CTask() {}
+	virtual ~CTask()
+	{
+		if (m_ptrData != nullptr)
+			free(m_ptrData);
+		m_ptrData = nullptr;
+	}
 
 	virtual void Run() = 0;
 
@@ -46,20 +51,29 @@ protected:
 	// static int MoveToIdle(pthread_t tid);
 	// static int MoveToBusy(pthread_t tid);
 
-	void Create()
-	{
-		pthread_id = new pthread_t[m_iThreadNum];
-		for (int i = 0; i < m_iThreadNum; i++)
-			pthread_create(&pthread_id[i], NULL, ThreadFunc, NULL);
-	}
-
 public:
 	static int getTaskSize();
 
 	CThreadPool(int threadNum) : m_iThreadNum(threadNum)
 	{
 		printf("I will create %d threads.\n", threadNum);
-		Create();
+
+		pthread_id = new pthread_t[m_iThreadNum];
+		for (int i = 0; i < m_iThreadNum; i++)
+			pthread_create(&pthread_id[i], NULL, ThreadFunc, NULL);
+	}
+	~CThreadPool()
+	{
+		/*
+		while (CThreadPool::getTaskSize() == 0)
+		{
+			if (StopAll() == -1)
+			{
+				printf("Thread pool clear, exit.\n");
+				break;
+			}
+		}
+		*/
 	}
 
 	void AddTask(CTask *task)
@@ -140,32 +154,30 @@ void *CThreadPool::ThreadFunc(void *threadData)
 
 int main()
 {
-	if (true)
+	CThreadPool threadpool(5);
+	for (int i = 0; i < 10; i++)
 	{
-		CThreadPool threadpool(5);
-		string str[10];
-		for (int i = 0; i < 10; i++)
-		{
-			str[i] = string("hello ") + to_string(i);
-			threadpool.AddTask(new CMyTask((void *)(str[i].c_str())));
-		}
-
-		while (true)
-		{
-			printf("There are still %d tasks need to handle\n", CThreadPool::getTaskSize());
-
-			if (CThreadPool::getTaskSize() == 0)
-			{
-				if (threadpool.StopAll() == -1)
-				{
-					printf("Thread pool clear, exit.\n");
-					break;
-				}
-			}
-
-			sleep(2);
-			printf("2 seconds later...\n");
-		}
+		char *tmp = (char *)malloc(64);
+		strcpy(tmp, (string("hello ") + to_string(i)).c_str());
+		threadpool.AddTask(new CMyTask((void *)(tmp)));
 	}
+
+	while (true)
+	{
+		printf("There are still %d tasks need to handle\n", CThreadPool::getTaskSize());
+
+		if (CThreadPool::getTaskSize() == 0)
+		{
+			if (threadpool.StopAll() == -1)
+			{
+				printf("Thread pool clear, exit.\n");
+				break;
+			}
+		}
+
+		sleep(2);
+		printf("2 seconds later...\n");
+	}
+
 	return 0;
 }

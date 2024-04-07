@@ -9,7 +9,7 @@ void *thfunc(void *arg)
 	return NULL;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	pthread_attr_t thread_attr;
 	int res = pthread_attr_init(&thread_attr);
@@ -24,9 +24,12 @@ int main(int argc, char *argv[])
 	res = pthread_create(&thread_id, &thread_attr, thfunc, NULL);
 	if (res)
 		cout << "pthread_create failed:" << res << endl;
-	cout << "main thread will exit" << endl;
+	cout << "main thread will exit\n";
 
-	pthread_exit(NULL);
+	pthread_attr_destroy(&thread_attr);
+
+	pthread_exit(NULL); // 主线程退出，进程不会退出，下面语句不会再执行。
+	// 进程资源会为其它线程保持打开，直到其它线程都终止。
 
 	cout << "main thread has exited, this line will not run" << endl;
 	return 0;

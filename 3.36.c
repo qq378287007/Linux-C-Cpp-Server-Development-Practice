@@ -12,14 +12,15 @@ pthread_rwlock_t rwlock;
 
 void *thread_1(void *arg)
 {
-	volatile int a;
-	for (int j = 0; j < 10000000; j++)
+	volatile int a = 1;
+	for (int j = 0; j < 100; j++)
 	{
 		pthread_mutex_lock(&mutex);
-		a = gcn;
+		// a = gcn;
+		gcn = a;
 		pthread_mutex_unlock(&mutex);
 	}
-	pthread_exit((void *)0);
+	pthread_exit(NULL);
 }
 
 void *thread_2(void *arg)
@@ -36,15 +37,16 @@ void *thread_2(void *arg)
 
 void *thread_3(void *arg)
 {
-	volatile int a;
-	for (int j = 0; j < 10000000; j++)
+	volatile int a = 1;
+	for (int j = 0; j < 100; j++)
 	{
-		//pthread_rwlock_wrlock(&rwlock);
-		pthread_rwlock_rdlock(&rwlock);
-		a = gcn;
+		// pthread_rwlock_rdlock(&rwlock);
+		pthread_rwlock_wrlock(&rwlock);
+		// a = gcn;
+		gcn = a;
 		pthread_rwlock_unlock(&rwlock);
 	}
-	pthread_exit((void *)0);
+	pthread_exit(NULL);
 }
 
 void *thread_4(void *arg)
@@ -70,26 +72,26 @@ int mutextVer()
 	int err = pthread_create(&th1, NULL, thread_1, (void *)0);
 	if (err != 0)
 	{
-		printf("create new thread error:%s\n", strerror(err));
+		printf("create new thread error: %s\n", strerror(err));
 		exit(0);
 	}
 	err = pthread_create(&th2, NULL, thread_2, (void *)0);
 	if (err != 0)
 	{
-		printf("create new thread error:%s\n", strerror(err));
+		printf("create new thread error: %s\n", strerror(err));
 		exit(0);
 	}
 
 	err = pthread_join(th1, NULL);
 	if (err != 0)
 	{
-		printf("wait thread done error:%s\n", strerror(err));
+		printf("wait thread done error: %s\n", strerror(err));
 		exit(1);
 	}
 	err = pthread_join(th2, NULL);
 	if (err != 0)
 	{
-		printf("wait thread done error:%s\n", strerror(err));
+		printf("wait thread done error: %s\n", strerror(err));
 		exit(1);
 	}
 

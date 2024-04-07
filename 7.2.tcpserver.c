@@ -52,12 +52,15 @@ int main()
 			printf("accept failed\n");
 			return -1;
 		}
+
 		connum++;
 		printf("%d  client  comes\n", connum);
+
 		memset(rbuf, 0, 64);
 		len = recv(clisock, rbuf, sizeof(rbuf), 0);
 		if (len < 0)
 			perror("recv failed");
+
 		sprintf(buf, "Server has received your data(%s).", rbuf);
 		send(clisock, buf, strlen(buf), 0);
 		close(clisock);

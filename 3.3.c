@@ -3,13 +3,13 @@
 
 void *thfunc(void *arg)
 {
-	//char *str = (char *)arg;
+	// char *str = (char *)arg;
 	const char *str = (const char *)arg;
 	printf("in thfunc: str=%s\n", str);
 	return NULL;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
 	const char *str = "hello world";
 
