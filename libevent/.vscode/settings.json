@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "event.h": "c",
+        "ostream": "c",
+        "string_view": "c"
+    }
+}
