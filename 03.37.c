@@ -6,9 +6,8 @@
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
-int i = 0;
-
-int flag = 1;
+static int i = 0;
+static int flag = 1;
 
 void *thread1(void *junk)
 {

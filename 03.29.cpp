@@ -12,8 +12,7 @@ void thfunc(int id)
 		this_thread::yield();
 
 	for (volatile int i = 0; i < 1000000; ++i)
-	{
-	}
+		;
 	cout << id << ",";
 }
 

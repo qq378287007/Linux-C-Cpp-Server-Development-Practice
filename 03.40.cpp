@@ -138,7 +138,7 @@ void *CThreadPool::ThreadFunc(void *threadData)
 			pthread_exit(NULL);
 		}
 
-		printf("[tid: %lu]\trun: ", tid);
+		printf("[tid: %lu]\trun:\n", tid);
 		vector<CTask *>::iterator iter = m_vecTaskList.begin();
 		CTask *task = *iter;
 		m_vecTaskList.erase(iter);
@@ -155,7 +155,7 @@ void *CThreadPool::ThreadFunc(void *threadData)
 int main()
 {
 	CThreadPool threadpool(5);
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 15; i++)
 	{
 		char *tmp = (char *)malloc(64);
 		strcpy(tmp, (string("hello ") + to_string(i)).c_str());

@@ -2,8 +2,8 @@
 #include <unistd.h>
 #include <pthread.h>
 
-int a = 200;
-int b = 100;
+static int a = 200;
+static int b = 100;
 
 pthread_mutex_t lock;
 

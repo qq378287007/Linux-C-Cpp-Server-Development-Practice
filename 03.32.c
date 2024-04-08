@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-int gcn = 0;
+static int gcn = 0;
 
 void *thread_1(void *arg)
 {
@@ -19,7 +19,7 @@ void *thread_2(void *arg)
 	pthread_exit(NULL);
 }
 
-int main(void)
+int main()
 {
 	int err;
 	pthread_t th1, th2;

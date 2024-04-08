@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-int gcn = 0;
+static int gcn = 0;
 
 pthread_mutex_t mutex;
 pthread_rwlock_t rwlock;
