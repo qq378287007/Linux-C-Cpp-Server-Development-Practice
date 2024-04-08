@@ -142,8 +142,7 @@ void *worker(void *arg)
     // return NULL;
 }
 
-// 管理者线程任务函数
-// 动态增删线程数
+// 管理者线程任务函数，动态增删线程数
 void *manager(void *arg)
 {
     ThreadPool *pool = (ThreadPool *)arg;
@@ -182,7 +181,7 @@ void *manager(void *arg)
         }
 
         // 销毁线程
-        // 存活的线程数 < 忙的线程*2&& 存活的线程 > 最小线程数
+        // 存活的线程数 < 忙的线程*2 && 存活的线程 > 最小线程数
         if (liveNum < busyNum * 2 && liveNum > pool->minNum)
         {
             pthread_mutex_lock(&pool->mutexPool);
@@ -191,7 +190,7 @@ void *manager(void *arg)
             pthread_mutex_unlock(&pool->mutexPool);
 
             // 发信号让线程自杀，具体实现就是每个线程的有一个销毁判断
-            // 每次销毁一个，pool->exitNum--,直到为0
+            // 每次销毁一个, pool->exitNum--, 直到为0
             for (int i = 0; i < NUMBER; i++)
                 pthread_cond_signal(&pool->notEmpty);
         }
@@ -212,6 +211,7 @@ ThreadPool *threadPoolCreate(int min, int max, int queueSize)
             printf("malloc ThreadPool failed\n");
             break;
         }
+        memset(pool, 0, sizeof(ThreadPool));
 
         pool->threadIDs = (pthread_t *)malloc(sizeof(pthread_t) * max);
         if (pool->threadIDs == NULL)

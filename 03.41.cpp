@@ -13,14 +13,14 @@ class XTask
 public:
     virtual ~XTask() {}
 
+    // 初始化任务
+    virtual void Init(int arg) = 0;
+
     // 一客户端一个base
     // struct event_base *base = 0;
 
     // 线程池id
     // int thread_id = 0;
-
-    // 初始化任务
-    virtual void Init(int arg) = 0;
 };
 
 class CMyTask : public XTask
@@ -28,8 +28,8 @@ class CMyTask : public XTask
 public:
     void Init(int arg)
     {
-        for (long long c = 0; c < 10000000; c++)
-            for (long long i = 0; i < 10000000; i++)
+        for (long long c = 0; c < 1000; c++)
+            for (long long i = 0; i < 1000; i++)
                 ;
 
         printf("%d---------%d--------\n", arg, arg);
@@ -105,7 +105,7 @@ public:
         lastThread = -1;
         for (int i = 0; i < threadCount; i++)
         {
-            cout << "Create thread" << i << endl;
+            cout << "Create thread " << i << endl;
             XThread *t = new XThread();
             t->id = i;
             t->Start();

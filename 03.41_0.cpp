@@ -15,12 +15,9 @@ class XTask
 public:
     virtual ~XTask() {}
 
-    void setData(void *_data)
-    {
-        data = _data;
-    }
-
     virtual void Run() = 0;
+
+    void setData(void *_data) { data = _data; }
 
 protected:
     void *data = NULL;
@@ -108,7 +105,8 @@ private:
 class XThreadPool
 {
 public:
-    XThreadPool(int _threadCount = 10) : threadCount(_threadCount)
+    XThreadPool(int _threadCount = thread::hardware_concurrency())
+        : threadCount(_threadCount)
     {
         for (int i = 0; i < threadCount; i++)
         {
@@ -139,27 +137,29 @@ int main()
 {
 #if 0
 #define N 100
+#define M 5
     {
-        CMyTask task[N];
         int data[N];
-        XThread t[N];
+        CMyTask task[N];
+        XThread t[M];
 
         for (int i = 0; i < N; i++)
         {
             data[i] = i;
             task[i].setData((void *)&data[i]);
-            t[i].AddTask(&task[i]);
+            t[i%M].AddTask(&task[i]);
         }
         sleep(1);
     }
+#undef M
 #undef N
 #endif
 
 #if 1
 #define N 100
     {
-        CMyTask task[N];
         int data[N];
+        CMyTask task[N];
         XThreadPool threadpool;
 
         for (int i = 0; i < N; i++)
