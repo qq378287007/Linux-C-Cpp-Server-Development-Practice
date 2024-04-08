@@ -8,8 +8,8 @@ using namespace std;
 
 void *thfunc(void *arg)
 {
-	int tm = 50;
-	while (1)
+	int tm = 10;
+	while (tm>0)
 	{
 		cout << "thrfunc--left:" << tm << " s--" << endl;
 		sleep(1);
@@ -32,5 +32,6 @@ int main()
 	else
 		cout << "the specified thread is alive\n";
 
+	pthread_exit(NULL);
 	return 0;
 }

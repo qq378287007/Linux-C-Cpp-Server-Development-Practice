@@ -5,8 +5,7 @@
 #include <iostream>
 using namespace std;
 
-// 信号函数
-static void on_signal_term(int sig)
+static void on_signal_term(int sig) // 信号函数
 {
 	cout << "sub thread will exit" << endl;
 	// pthread_exit(NULL);
@@ -15,8 +14,7 @@ static void on_signal_term(int sig)
 
 void *thfunc(void *arg)
 {
-	// 注册信号函数
-	signal(SIGQUIT, on_signal_term);
+	signal(SIGQUIT, on_signal_term); // 注册信号函数
 
 	int tm = 50;
 	while (true)

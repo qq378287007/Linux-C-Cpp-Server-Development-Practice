@@ -1,6 +1,6 @@
 {
     "code-runner.executorMap": {
-        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -lpthread -levent && $dir$fileNameWithoutExt",
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -lpthread && $dir$fileNameWithoutExt",
         "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt -lpthread && $dir$fileNameWithoutExt"
     },
     "files.associations": {
@@ -58,6 +58,8 @@
         "event.h": "c",
         "bufferevent.h": "c",
         "pthread.h": "c",
-        "thread.h": "c"
+        "thread.h": "c",
+        "unistd.h": "c",
+        "sched.h": "c"
     }
 }

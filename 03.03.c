@@ -3,9 +3,9 @@
 
 void *thfunc(void *arg)
 {
-	// char *str = (char *)arg;
+	//char *str = (char *)arg;
 	const char *str = (const char *)arg;
-	printf("in thfunc: str=%s\n", str);
+	printf("in thfunc: str = %s\n", str);
 	return NULL;
 }
 
@@ -17,7 +17,7 @@ int main()
 	int ret = pthread_create(&tidp, NULL, thfunc, (void *)str);
 	if (ret)
 	{
-		printf("pthread_create failed:%d\n", ret);
+		printf("pthread_create failed: %d\n", ret);
 		return -1;
 	}
 	pthread_join(tidp, NULL);

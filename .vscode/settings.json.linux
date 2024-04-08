@@ -1,5 +1,5 @@
 {
     "code-runner.executorMap": {
-        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -lpthread && $dir$fileNameWithoutExt"
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -lpthread -levent && $dir$fileNameWithoutExt"
     }
 }

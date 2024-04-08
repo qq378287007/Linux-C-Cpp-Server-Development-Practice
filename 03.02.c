@@ -4,7 +4,7 @@
 void *thfunc(void *arg)
 {
     int n = *(int *)(arg);
-    printf("in thfunc: n=%d\n", n);
+    printf("in thfunc: n = %d\n", n);
     return (void *)0;
 }
 

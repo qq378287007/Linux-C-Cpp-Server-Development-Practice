@@ -21,7 +21,7 @@ static void *thread_start(void *arg)
 	if (res)
 		printf("pthread_getattr_np failed\n");
 
-	printf("Default stack size is %lu byte; minimum is %d byte\n", stack_size, PTHREAD_STACK_MIN);
+	printf("Default stack size is %lu byte; minimum is %lu byte\n", stack_size, PTHREAD_STACK_MIN);
 
 	pthread_attr_destroy(&gattr);
 	return NULL;

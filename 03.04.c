@@ -10,7 +10,7 @@ typedef struct // 定义结构体的类型
 void *thfunc(void *arg)
 {
 	MYSTRUCT *p = (MYSTRUCT *)arg;
-	printf("in thfunc: n=%d, str=%s\n", p->n, p->str); // 打印结构体的内容
+	printf("in thfunc: n = %d, str = %s\n", p->n, p->str); // 打印结构体的内容
 	return (void *)0;
 }
 

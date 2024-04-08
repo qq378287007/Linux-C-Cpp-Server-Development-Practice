@@ -27,6 +27,7 @@ static void *thread_start(void *arg)
 	s = pthread_getattr_np(pthread_self(), &gattr);
 	if (s != 0)
 		printf("pthread_getattr_np failed\n");
+
 	s = pthread_attr_getdetachstate(&gattr, &i);
 	if (s)
 		printf(" pthread_attr_getdetachstate failed");
