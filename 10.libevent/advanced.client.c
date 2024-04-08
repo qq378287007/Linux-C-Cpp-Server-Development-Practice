@@ -25,15 +25,15 @@ int tcp_connect_server(const char *server_ip, int port)
         errno = EINVAL;
         return -1;
     }
-    int sockfd = ::socket(PF_INET, SOCK_STREAM, 0);
+    int sockfd = socket(PF_INET, SOCK_STREAM, 0);
     if (sockfd == -1)
         return sockfd;
-    status = ::connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr));
+    status = connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr));
     int save_errno;
     if (status == -1)
     {
         save_errno = errno;
-        ::close(sockfd);
+        close(sockfd);
         errno = save_errno; // the close may be error
         return -1;
     }

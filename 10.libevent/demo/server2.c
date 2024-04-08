@@ -48,8 +48,8 @@ void MainLoop(int fd)
 
     event_add(listen, NULL);
     event_base_dispatch(base);
-
     event_del(listen);
+    
     event_free(listen);
     event_base_free(base);
 }

@@ -78,7 +78,7 @@ int main()
 		exit(-1);
 	}
 
-	struct event *ev = event_new(base, sfd, EV_READ | EV_PERSIST, func, base);
+	struct event *ev = event_new(base, sfd, EV_READ | EV_PERSIST, func, (void *)base);
 	if (ev == NULL)
 	{
 		printf("event\n");
@@ -92,8 +92,8 @@ int main()
 	event_base_dispatch(base);
 
 	// free
-	event_base_free(base);
 	event_free(ev);
+	event_base_free(base);
 
 	close(sfd);
 

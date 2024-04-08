@@ -13,7 +13,6 @@ XTask *XFtpFactory::CreateTask()
 	XFtpServerCMD *x = new XFtpServerCMD();
 
 	x->Reg("USER", new XFtpUSER());
-
 	x->Reg("PORT", new XFtpPORT());
 
 	XFtpTask *list = new XFtpLIST();
@@ -23,12 +22,15 @@ XTask *XFtpFactory::CreateTask()
 	x->Reg("CDUP", list);
 
 	x->Reg("RETR", new XFtpRETR());
-
 	x->Reg("STOR", new XFtpSTOR());
 
 	return x;
 }
 
-XFtpFactory::XFtpFactory()
+XFtpFactory *XFtpFactory::Get()
 {
+	static XFtpFactory f;
+	return &f;
 }
+
+XFtpFactory::XFtpFactory() {}

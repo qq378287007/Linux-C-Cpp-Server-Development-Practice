@@ -1,2 +1,3 @@
 g++ *.cpp -o ftpSrv -L/opt/libevent/lib/ -levent -lpthread -I/opt/libevent/include/ 
 
+g++ *.cpp -o ftpSrv -levent -lpthread

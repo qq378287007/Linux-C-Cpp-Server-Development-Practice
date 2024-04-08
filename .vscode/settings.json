@@ -54,6 +54,10 @@
         "typeinfo": "cpp",
         "ws2tcpip.h": "c",
         "string.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "event.h": "c",
+        "bufferevent.h": "c",
+        "pthread.h": "c",
+        "thread.h": "c"
     }
 }

@@ -10,9 +10,7 @@ using namespace std;
 #include "XThread.h"
 #include "XTask.h"
 
-/*
- *  线程监听主线程对自己的通知
- */
+// 线程监听主线程对自己的通知
 static void Notify_cb(evutil_socket_t fd, short which, void *arg)
 {
 	XThread *t = (XThread *)arg;
@@ -30,9 +28,7 @@ void XThread::Notify(evutil_socket_t fd, short which)
 	cout << id << " thread recv" << buf << endl;
 }
 
-/*
- *  启动线程
- */
+//  启动线程
 void XThread::Start()
 {
 	testout(id << " thread At Start()");
@@ -41,9 +37,7 @@ void XThread::Start()
 	th.detach();
 }
 
-/*
- *  线程流持续处理任务的地方
- */
+// 线程流持续处理任务的地方
 void XThread::Main()
 {
 	cout << id << " thread::Main() begin" << endl;
@@ -52,9 +46,7 @@ void XThread::Main()
 	cout << id << " thread::Main() end" << endl;
 }
 
-/*
- *  安装线程
- */
+//  安装线程
 bool XThread::Setup()
 {
 	testout(id << " thread At Setup");
@@ -88,19 +80,15 @@ bool XThread::Setup()
 	return true;
 }
 
-/*
- *  激活线程
- */
+//  激活线程
 void XThread::Activate()
 {
 	testout(id << " thread At Activate()");
 
 	int re = write(notify_send_fd, "c", 1);
-
 	if (re <= 0)
-	{
 		cerr << "XThread::Activate() fail" << endl;
-	}
+	
 	// 获取任务，并初始化
 	XTask *t = NULL;
 	tasks_mutex.lock();
@@ -115,9 +103,7 @@ void XThread::Activate()
 	t->Init();
 }
 
-/*
- *  添加任务
- */
+// 添加任务
 void XThread::AddTack(XTask *t)
 {
 	if (!t)
@@ -129,11 +115,4 @@ void XThread::AddTack(XTask *t)
 	tasks_mutex.lock();
 	tasks.push_back(t);
 	tasks_mutex.unlock();
-}
-
-XThread::XThread()
-{
-}
-XThread::~XThread()
-{
 }
