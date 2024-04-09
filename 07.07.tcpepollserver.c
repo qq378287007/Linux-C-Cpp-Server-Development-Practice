@@ -12,16 +12,18 @@
 #define SERV_PORT 8888
 #define OPEN_MAX 1024
 
-int main(int argc, char *argv[])
+int main()
 {
-	int listenfd = socket(AF_INET, SOCK_STREAM, 0);
 	struct sockaddr_in servaddr;
 	bzero(&servaddr, sizeof(servaddr));
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	servaddr.sin_port = htons(SERV_PORT);
+
+	int listenfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (-1 == bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr)))
 		perror("bind");
+	puts("bind ok");
 	if (-1 == listen(listenfd, 20))
 		perror("listen");
 	puts("listen ok");
@@ -65,11 +67,13 @@ int main(int argc, char *argv[])
 
 				int j;
 				for (j = 0; j < OPEN_MAX; j++)
+				{
 					if (client[j] < 0)
 					{
 						client[j] = connfd;
 						break;
 					}
+				}
 
 				if (j == OPEN_MAX)
 					perror("too many clients");
@@ -116,8 +120,8 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	close(efd);
 	close(listenfd);
 
-	close(efd);
 	return 0;
 }

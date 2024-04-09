@@ -36,7 +36,7 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
-	//Ìí¼ÓµÄº¯Êý
+	//æ·»åŠ çš„å‡½æ•°
     void ListContent(LPCTSTR );
 	void GetLastDiretory(CString &str);
 // Implementation

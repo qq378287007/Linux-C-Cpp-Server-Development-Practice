@@ -39,7 +39,7 @@ int main()
 	while (1)
 	{
 		puts("waiting data");
-		
+
 		memset(rbuf, 0, 50);
 		ret = recvfrom(sockfd, rbuf, 50, 0, (struct sockaddr *)&raddr, (socklen_t *)&val);
 		if (ret < 0)

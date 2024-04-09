@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -8,7 +9,13 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
-#include <malloc.h>
+
+#define min(x, y)           \
+	({                      \
+		typeof(x) _x = (x); \
+		typeof(y) _y = (y); \
+		_x < _y ? _x : _y;  \
+	})
 
 #define BUF_LEN 250
 
@@ -17,30 +24,26 @@ typedef struct sockaddr SOCKADDR;
 
 int main()
 {
+	int sockClient = socket(AF_INET, SOCK_STREAM, 0);
+
 	SOCKADDR_IN addrSrv;
 	addrSrv.sin_family = AF_INET;
 	addrSrv.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrSrv.sin_port = htons(8000);
-
-	int sockClient = socket(AF_INET, SOCK_STREAM, 0);
 	int err = connect(sockClient, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
 	if (-1 == err)
 	{
-		printf("Failed to connect to the server: %d\n", errno);
+		printf("Failed to connect to the server:%d\n", errno);
 		return -1;
 	}
 
-	int leftlen;
-	int iRes = recv(sockClient, (char *)&leftlen, sizeof(int), 0);
-	leftlen = ntohl(leftlen);
-	printf("Need to receive %d bytes data.\n", leftlen);
-
 	char recvBuf[BUF_LEN];
+	int iRes;
 	int cn = 1;
 
-	for (; leftlen > 0; leftlen -= iRes)
+	for (int leftlen = 50 * 111; leftlen > 0; leftlen -= iRes)
 	{
-		iRes = recv(sockClient, recvBuf, min(leftlen, BUF_LEN), 0);
+		iRes = recv(sockClient, recvBuf, min(BUF_LEN, leftlen), 0);
 		if (iRes > 0)
 		{
 			printf("\nNo.%d: Recv %d bytes: ", cn++, iRes);
@@ -63,7 +66,7 @@ int main()
 
 	char sendBuf[100];
 	memset(sendBuf, 0, sizeof(sendBuf));
-	sprintf(sendBuf, "I'm the client. I've finished receiving the data.");
+	sprintf(sendBuf, "Hi, Server, I've finished receiving the data.");
 	send(sockClient, sendBuf, strlen(sendBuf), 0);
 
 	puts("Sending data to the server is completed");

@@ -60,6 +60,7 @@
         "pthread.h": "c",
         "thread.h": "c",
         "unistd.h": "c",
-        "sched.h": "c"
+        "sched.h": "c",
+        "winsock2.h": "c"
     }
 }

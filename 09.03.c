@@ -23,12 +23,11 @@ void error_die(const char *sc)
 
 int get_line(int sock, char *buf, int size)
 {
-  char c;
-  int n;
   int i = 0;
   while (i < size - 1)
   {
-    n = recv(sock, &c, 1, 0);
+    char c;
+    int n = recv(sock, &c, 1, 0);
     if (n == 0)
       break;
 
@@ -324,8 +323,9 @@ void execute_cgi(int client, const char *path, const char *method, const char *q
   }
 }
 
-void accept_request(int client)
+void *accept_request(void *arg)
 {
+  int client = *(int *)arg;
   char buf[1024];
   int numchars = get_line(client, buf, sizeof(buf));
   size_t i = 0;
@@ -338,7 +338,7 @@ void accept_request(int client)
   if (strcasecmp(method, "GET") && strcasecmp(method, "POST"))
   {
     unimplemented(client);
-    return;
+    return NULL;
   }
 
   int cgi = 0; // Is this a CGIprogram ?
@@ -395,6 +395,7 @@ void accept_request(int client)
   }
 
   close(client);
+  return NULL;
 }
 
 int main()
@@ -412,7 +413,7 @@ int main()
       error_die("accept");
 
     pthread_t newthread;
-    if (pthread_create(&newthread, NULL, accept_request, client_sock) != 0)
+    if (pthread_create(&newthread, NULL, accept_request, (void *)&client_sock) != 0)
       perror("pthread_create");
   }
 

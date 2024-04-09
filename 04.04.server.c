@@ -42,10 +42,10 @@ int main()
 
 		char sendBuf[100] = {0};
 		sprintf(sendBuf, "Welcome client(%s: %d) to Server!", inet_ntoa(addrClient.sin_addr), ntohs(addrClient.sin_port));
-		// send(sockConn, sendBuf, strlen(sendBuf) + 1, 0);
-		send(sockConn, sendBuf, sizeof(sendBuf), 0);
+		send(sockConn, sendBuf, strlen(sendBuf) + 1, 0);
+		// send(sockConn, sendBuf, sizeof(sendBuf), 0);
 
-		char recvBuf[100];
+		char recvBuf[100] = {0};
 		recv(sockConn, recvBuf, 100, 0);
 		printf("Receive client's msg: %s\n", recvBuf);
 

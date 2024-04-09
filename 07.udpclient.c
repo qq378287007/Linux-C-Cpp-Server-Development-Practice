@@ -18,7 +18,7 @@ int main()
 	struct sockaddr_in saddr;
 	memset(&saddr, 0, sizeof(saddr));
 	saddr.sin_family = AF_INET;
-	saddr.sin_addr.s_addr = inet_addr("192.168.189.131"); // ifconfig
+	saddr.sin_addr.s_addr = inet_addr("127.0.0.1"); // ifconfig
 	saddr.sin_port = htons(PORT);
 
 	/**** get protocol number  from protocol name  ****/

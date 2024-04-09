@@ -104,37 +104,37 @@ language of the operating system.
 
 /////////////////////////////////////////////////////////////////////////////
 //
-Ã»ÓÐ½â¾öµÄÎÊÌâ
-1.·þÎñÆ÷¸Ä±äµ±Ç°Ä¿Â¼µÄÊ±ºò,¿Í»§¶ËÃ»·¨ÓëÖ®Í¬Ê±±ä»¯
-  Ã»°ì·¨½â¾ö
-2.²»ÄÜÉÏ´«´óµÄÎÄ¼þ
-   ¿´ÓÐÃ»ÓÐ¶àÏß³Ì´«
+æ²¡æœ‰è§£å†³çš„é—®é¢˜
+1.æœåŠ¡å™¨æ”¹å˜å½“å‰ç›®å½•çš„æ—¶å€™,å®¢æˆ·ç«¯æ²¡æ³•ä¸Žä¹‹åŒæ—¶å˜åŒ–
+  æ²¡åŠžæ³•è§£å†³
+2.ä¸èƒ½ä¸Šä¼ å¤§çš„æ–‡ä»¶
+   çœ‹æœ‰æ²¡æœ‰å¤šçº¿ç¨‹ä¼ 
 
-3.Èç¹ûÒÑ¾­Á¬ÉÏÁËÄ³·þÎñÆ÷,ÔÙµãÁ¬½Ó,¾Í»áÓÐÎÊÌâÁË
-  m_FtpDlg.Create(IDD_DIALOG2,this);//ÎÊÌâ¹Ø¼ü,µãÍË³öÊ±,²¢Ã»ÓÐÏú·Ñ
-  Ô­ÒòÔÚÓÚ:   CFtpDlgÔÚµ÷ÓÃOnExitº¯ÊýµÄÊ±ºò½ö½öÊÇÒþ²ØÁË¶Ô»°¿ò,²¢Ã»ÓÐÏú»ÙËü,
-              µ¼ÖÂÁËm_FtpDlgµÄÖØ¸´´´½¨
-  ½â¾öÖ®µÀ:   OnExitµ÷ÓÃDestryWindow,¶ø²»ÊÇ CDialg::OnCancel;
+3.å¦‚æžœå·²ç»è¿žä¸Šäº†æŸæœåŠ¡å™¨,å†ç‚¹è¿žæŽ¥,å°±ä¼šæœ‰é—®é¢˜äº†
+  m_FtpDlg.Create(IDD_DIALOG2,this);//é—®é¢˜å…³é”®,ç‚¹é€€å‡ºæ—¶,å¹¶æ²¡æœ‰é”€è´¹
+  åŽŸå› åœ¨äºŽ:   CFtpDlgåœ¨è°ƒç”¨OnExitå‡½æ•°çš„æ—¶å€™ä»…ä»…æ˜¯éšè—äº†å¯¹è¯æ¡†,å¹¶æ²¡æœ‰é”€æ¯å®ƒ,
+              å¯¼è‡´äº†m_FtpDlgçš„é‡å¤åˆ›å»º
+  è§£å†³ä¹‹é“:   OnExitè°ƒç”¨DestryWindow,è€Œä¸æ˜¯ CDialg::OnCancel;
 
-4.ÈçºÎ»ñµÃÎÄ¼þºó×ºÃû
+4.å¦‚ä½•èŽ·å¾—æ–‡ä»¶åŽç¼€å
 
-5.½ø¶ÈµÄÏÔÊ¾
+5.è¿›åº¦çš„æ˜¾ç¤º
 
-6.½øÈë×ÓÄ¿Â¼
+6.è¿›å…¥å­ç›®å½•
   {
     int i=m_FtpFile.GetNextItem(-1,LVNI_SELECTED); 
 	strSub = m_FtpFile.GetItemText(i,0);
     m_pConnection->GetCurrentDirectory(str);
 	m_pConnection->SetCurrentDirectory(str+strSub);
     ListContent("*");
-	Ö»ÄÜ½øÈëµÚ¶þ²ãÄ¿Â¼,¿ÉÒÔÉÏ´«ºÍÏÂÔØ,ÖØÃüÃûºÍÉ¾³ýÓ¦¸ÃÒª¾ø¶ÔÂ·¾­
+	åªèƒ½è¿›å…¥ç¬¬äºŒå±‚ç›®å½•,å¯ä»¥ä¸Šä¼ å’Œä¸‹è½½,é‡å‘½åå’Œåˆ é™¤åº”è¯¥è¦ç»å¯¹è·¯ç»
   }
   
-7.É¾³ýÎÄ¼þ
-  Removeº¯Êý
+7.åˆ é™¤æ–‡ä»¶
+  Removeå‡½æ•°
 
-8.ÖØÃüÃûÎÄ¼þ
-  Renameº¯Êý
+8.é‡å‘½åæ–‡ä»¶
+  Renameå‡½æ•°
 
-9.²Ëµ¥µÄ²Ù×÷»¹Ã»ÓÐÊµÏÖ
+9.èœå•çš„æ“ä½œè¿˜æ²¡æœ‰å®žçŽ°
    

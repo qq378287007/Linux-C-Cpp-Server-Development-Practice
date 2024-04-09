@@ -38,15 +38,11 @@ int main()
 
 	int alen = sizeof(struct sockaddr);
 	struct sockaddr_in fsin;
-	int clisock;
 	int connum = 0;
-	int len;
-	char rbuf[64];
-	char buf[128];
 	while (1)
 	{
 		puts("waiting client...");
-		clisock = accept(s, (struct sockaddr *)&fsin, (socklen_t *)&alen);
+		int clisock = accept(s, (struct sockaddr *)&fsin, (socklen_t *)&alen);
 		if (clisock == -1)
 		{
 			printf("accept failed\n");
@@ -54,13 +50,14 @@ int main()
 		}
 
 		connum++;
-		printf("%d  client  comes\n", connum);
+		printf("%d client comes\n", connum);
 
-		memset(rbuf, 0, 64);
-		len = recv(clisock, rbuf, sizeof(rbuf), 0);
+		char rbuf[64] = {0};
+		int len = recv(clisock, rbuf, sizeof(rbuf), 0);
 		if (len < 0)
 			perror("recv failed");
 
+		char buf[128] = {0};
 		sprintf(buf, "Server has received your data(%s).", rbuf);
 		send(clisock, buf, strlen(buf), 0);
 		close(clisock);

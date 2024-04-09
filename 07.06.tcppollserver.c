@@ -60,11 +60,11 @@ int main()
 	fds[0].fd = sd;
 	fds[0].events = POLLIN;
 	nfds_t nfds = 1;
-	int timeout = -1;
 
 	fprintf(stderr, "polling\n");
 	while (1)
 	{
+		int timeout = -1;
 		int ret = poll(fds, nfds, timeout);
 		fprintf(stderr, "poll returned with ret value: %d\n", ret);
 		if (ret == -1)
@@ -112,7 +112,7 @@ int main()
 				//  read
 				if (fds[i].revents & POLLIN)
 				{
-					char buffer[1024] = {};
+					char buffer[1024] = {0};
 					while (1)
 					{
 						ret = read(fds[i].fd, buffer, 1024);
@@ -122,7 +122,7 @@ int main()
 							fprintf(stderr, "read returned 0(EOF) on: %d, breaking\n", i);
 							break;
 						}
-						if (ret == -1)
+						else if (ret == -1)
 						{
 							const int tmpErrno = errno;
 							if (tmpErrno == EWOULDBLOCK || tmpErrno == EAGAIN)

@@ -22,7 +22,7 @@ typedef struct _IP_HEADER // IP头定义，共20个字节
 	unsigned int m_uiDestIp;	 // 目的IP地址
 } IP_HEADER, *PIP_HEADER;
 
-typedef struct _UDP_HEADER // UDP头定义，共8个字节
+typedef struct _UDP_HEADER // UDP首部定义，共8个字节
 {
 	unsigned short m_usSourPort; // 源端口号16bit
 	unsigned short m_usDestPort; // 目的端口号16bit
@@ -37,11 +37,11 @@ int main()
 	struct sockaddr_in saddr;
 	memset(&saddr, 0, size);
 	saddr.sin_family = AF_INET;
-	saddr.sin_addr.s_addr = inet_addr("192.168.0.153"); // 本机的IP地址，但和发送端设定的目的IP地址不同。
-	saddr.sin_port = htons(8888);
+	saddr.sin_addr.s_addr = htonl(INADDR_ANY);
+	saddr.sin_port = htons(8888); // 这里的端口无所谓
 
 	// 创建udp 的套接字
-	int sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP); // 该原始套接字使用ICMP协议
+	int sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_UDP); // 该原始套接字使用UDP协议
 	if (sockfd < 0)
 	{
 		perror("socket failed");
@@ -56,7 +56,7 @@ int main()
 	int ret = bind(sockfd, (struct sockaddr *)&saddr, sizeof(struct sockaddr));
 	if (ret < 0)
 	{
-		perror("bind failed");
+		perror("sbind failed");
 		return -1;
 	}
 
@@ -71,23 +71,27 @@ int main()
 		ret = recvfrom(sockfd, rbuf, 500, 0, (struct sockaddr *)&raddr, (socklen_t *)&val);
 		if (ret < 0)
 		{
-			printf("recvfrom failed:%d", errno);
+			perror("recvfrom failed");
 			return -1;
 		}
-		memcpy(&iph, rbuf, 20);
-		memcpy(&udph, rbuf + 20, 8);
+		memcpy(&iph, rbuf, 20);		 // 把缓冲区前20个字节拷贝到iph中
+		memcpy(&udph, rbuf + 20, 8); // 把ip包头后的8字节拷贝到udph中
 
 		int srcp = ntohs(udph.m_usSourPort);
 		struct in_addr ias, iad;
 		ias.s_addr = iph.m_uiSourIp;
 		iad.s_addr = iph.m_uiDestIp;
-		char strDip[50] = "";
-		strcpy(strDip, inet_ntoa(iad));
-		printf("(sIp=%s, sPort=%d), \n(dIp=%s, dPort=%d)\n", inet_ntoa(ias), ntohs(udph.m_usSourPort), strDip, ntohs(udph.m_usDestPort));
-		printf("recv data : %s\n", rbuf + 28);
+
+		char dip[100];
+		strcpy(dip, inet_ntoa(iad));
+		printf("(sIp=%s, sPort=%d), \n(dIp=%s, dPort=%d)\n", inet_ntoa(ias), ntohs(udph.m_usSourPort), dip, ntohs(udph.m_usDestPort));
+		printf("recv data: %s\n", rbuf + 28);
 	}
 
 	close(sockfd); // 关闭原始套接字
 
 	return 0;
 }
+
+//sudo ./06.01.rcver
+//echo "xxxx" > /dev/udp/localhost/10001

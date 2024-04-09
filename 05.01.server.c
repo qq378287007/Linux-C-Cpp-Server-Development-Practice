@@ -36,7 +36,7 @@ int main()
 	puts("waiting data");
 	struct sockaddr_in raddr;
 	int val = sizeof(struct sockaddr);
-	char rbuf[50];
+	char rbuf[50] = {0};
 	ret = recvfrom(sockfd, rbuf, 50, 0, (struct sockaddr *)&raddr, (socklen_t *)&val);
 	if (ret < 0)
 		perror("recvfrom failed!");

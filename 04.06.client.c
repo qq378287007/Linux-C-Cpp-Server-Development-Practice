@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-#define BUF_LEN 250
+#define BUF_LEN 300
 
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
@@ -25,43 +25,45 @@ int main()
 	int err = connect(sockClient, (SOCKADDR *)&addrSrv, sizeof(SOCKADDR));
 	if (-1 == err)
 	{
-		printf("Failed to connect to the server:%d\n", errno);
-		return -1;
+		printf("Failed to connect to the server. Please check whether the server is started\n");
+		return 0;
 	}
 
 	char recvBuf[BUF_LEN];
 	int iRes;
-	int cn = 1;
-
-	for (int leftlen = 50 * 111; leftlen > 0; leftlen -= iRes)
+	do
 	{
-		iRes = recv(sockClient, recvBuf, min(BUF_LEN, leftlen), 0);
+		iRes = recv(sockClient, recvBuf, BUF_LEN, 0);
 		if (iRes > 0)
 		{
-			printf("\nNo.%d: Recv %d bytes: ", cn++, iRes);
+			printf("\nRecv %d bytes:", iRes);
 			for (int i = 0; i < iRes; i++)
 				printf("%c", recvBuf[i]);
 			printf("\n");
 		}
 		else if (iRes == 0)
 		{
-			puts("\nThe server has closed the send connection.\n");
-			break;
+			puts("The server has closed the send connection.\n");
 		}
 		else
 		{
-			printf("recv failed: %d\n", errno);
+			printf("recv failed:%d\n", errno);
 			close(sockClient);
-			return -1;
+			return 1;
 		}
-	}
+	} while (iRes > 0);
+	shutdown(sockClient, SHUT_RD);
 
 	char sendBuf[100];
-	memset(sendBuf, 0, sizeof(sendBuf));
-	sprintf(sendBuf, "Hi, Server, I've finished receiving the data.");
-	send(sockClient, sendBuf, strlen(sendBuf), 0);
+	for (int i = 0; i < 10; i++)
+	{
+		memset(sendBuf, 0, sizeof(sendBuf));
+		sprintf(sendBuf, "N0.%d I'm the client, 1+1=2\n", i + 1);
+		send(sockClient, sendBuf, strlen(sendBuf), 0);
+	}
+	puts("Sending data to the server is completed.");
 
-	puts("Sending data to the server is completed");
 	close(sockClient);
+
 	return 0;
 }

@@ -112,7 +112,7 @@ CMyFtpDoc* CMyFtpView::GetDocument() // non-debug version is inline
 // CMyFtpView message handlers
 
 
-BOOL CMyFtpView::OnEraseBkgnd(CDC* pDC)    //ÓÃÓÚÌí¼Ó±³¾°Í¼
+BOOL CMyFtpView::OnEraseBkgnd(CDC* pDC)    //ç”¨äºŽæ·»åŠ èƒŒæ™¯å›¾
 {
 	// TODO: Add your message handler code here and/or call default
 	CBitmap bitmap;
@@ -121,15 +121,15 @@ BOOL CMyFtpView::OnEraseBkgnd(CDC* pDC)    //ÓÃÓÚÌí¼Ó±³¾°Í¼
 	CDC dcCompatible;
 	dcCompatible.CreateCompatibleDC(pDC);
 	
-	//´´½¨Óëµ±Ç°DC(pDC)¼æÈÝµÄDC,ÏÈÓÃdcCompatible×¼±¸Í¼Ïñ,ÔÙ½«Êý¾Ý¸´ÖÆµ½Êµ¼ÊDCÖÐ  
+	//åˆ›å»ºä¸Žå½“å‰DC(pDC)å…¼å®¹çš„DC,å…ˆç”¨dcCompatibleå‡†å¤‡å›¾åƒ,å†å°†æ•°æ®å¤åˆ¶åˆ°å®žé™…DCä¸­  
 	dcCompatible.SelectObject(&bitmap);
 	
 	CRect rect;
-	GetClientRect(&rect);//µÃµ½Ä¿µÄDC¿Í»§Çø´óÐ¡,GetClientRect(&rect);
-	//µÃµ½Ä¿µÄDC¿Í»§Çø´óÐ¡,
-	//pDC->BitBlt(0,0,rect.Width(),rect.Height(),&dcCompatible,0,0,SRCCOPY);//ÊµÏÖ1:1µÄCopy
+	GetClientRect(&rect);//å¾—åˆ°ç›®çš„DCå®¢æˆ·åŒºå¤§å°,GetClientRect(&rect);
+	//å¾—åˆ°ç›®çš„DCå®¢æˆ·åŒºå¤§å°,
+	//pDC->BitBlt(0,0,rect.Width(),rect.Height(),&dcCompatible,0,0,SRCCOPY);//å®žçŽ°1:1çš„Copy
 	
-	BITMAP bmp;//½á¹¹Ìå
+	BITMAP bmp;//ç»“æž„ä½“
 	bitmap.GetBitmap(&bmp);
     pDC->StretchBlt(0,0,rect.Width(),rect.Height(),&dcCompatible,0,0,
 		bmp.bmWidth,bmp.bmHeight,SRCCOPY);
@@ -140,7 +140,7 @@ BOOL CMyFtpView::OnEraseBkgnd(CDC* pDC)    //ÓÃÓÚÌí¼Ó±³¾°Í¼
 void CMyFtpView::OnConnect() 
 {
 	// TODO: Add your command handler code here
-	//Éú³ÉÒ»¸öÄ£Ì¬¶Ô»°¿ò
+	//ç”Ÿæˆä¸€ä¸ªæ¨¡æ€å¯¹è¯æ¡†
 	if (IDOK==m_ConDlg.DoModal())
 	{
 		m_pConnection = NULL;   
@@ -155,9 +155,9 @@ void CMyFtpView::OnConnect()
 			PRE_CONFIG_INTERNET_ACCESS);		
 		try
 		{
-			//ÊÔÍ¼½¨Á¢FTPÁ¬½Ó
-			SetTimer(1,1000,NULL);  //ÉèÖÃ¶¨Ê±Æ÷,Ò»Ãë·¢Ò»´ÎWM_TIMER
-			CString  str="ÕýÔÚÁ¬½ÓÖÐ....";
+			//è¯•å›¾å»ºç«‹FTPè¿žæŽ¥
+			SetTimer(1,1000,NULL);  //è®¾ç½®å®šæ—¶å™¨,ä¸€ç§’å‘ä¸€æ¬¡WM_TIMER
+			CString  str="æ­£åœ¨è¿žæŽ¥ä¸­....";
 			((CMainFrame*)GetParent())->SetMessageText(str);
 			
 			m_pConnection=m_pSession->GetFtpConnection(m_FtpWebSite,
@@ -165,7 +165,7 @@ void CMyFtpView::OnConnect()
 		}
 		catch (CInternetException* e)
 		{
-			//´íÎó´¦Àí
+			//é”™è¯¯å¤„ç†
 			e->Delete();
 			m_pConnection=NULL;
 		}
@@ -179,26 +179,26 @@ void CMyFtpView::OnTimer(UINT nIDEvent)
 	time_out++;
 	if (m_pConnection == NULL)
 	{
-		CString  str="ÕýÔÚÁ¬½ÓÖÐ....";
+		CString  str="æ­£åœ¨è¿žæŽ¥ä¸­....";
 		((CMainFrame*)GetParent())->SetMessageText(str);
 		if (time_out>=60)
 		{
-            ((CMainFrame*)GetParent())->SetMessageText("Á¬½Ó³¬Ê±!");
+            ((CMainFrame*)GetParent())->SetMessageText("è¿žæŽ¥è¶…æ—¶!");
 			KillTimer(1);
-			MessageBox("Á¬½Ó³¬Ê±!","³¬Ê±",MB_OK);		
+			MessageBox("è¿žæŽ¥è¶…æ—¶!","è¶…æ—¶",MB_OK);		
 		}
 	}
 	else
 	{
-        CString str="Á¬½Ó³É¹¦!";       
+        CString str="è¿žæŽ¥æˆåŠŸ!";       
 		((CMainFrame*)GetParent())->SetMessageText(str);
 		
 		KillTimer(1); 
-		//Á¬½Ó³É¹¦Ö®ºó,²»ÓÃ¶¨Ê±Æ÷À´¼àÊÓÁ¬½ÓÇé¿ö
-		//Í¬Ê±Ìø³ö²Ù×÷¶Ô»°¿ò
+		//è¿žæŽ¥æˆåŠŸä¹‹åŽ,ä¸ç”¨å®šæ—¶å™¨æ¥ç›‘è§†è¿žæŽ¥æƒ…å†µ
+		//åŒæ—¶è·³å‡ºæ“ä½œå¯¹è¯æ¡†
 
 		m_FtpDlg.m_pConnection = m_pConnection;
-		//·ÇÄ£Ì¬¶Ô»°¿ò
+		//éžæ¨¡æ€å¯¹è¯æ¡†
 		m_FtpDlg.Create(IDD_DIALOG2,this);
 		m_FtpDlg.ShowWindow(SW_SHOW);
 	}
@@ -210,6 +210,6 @@ void CMyFtpView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
 
-	// TODO: ÔÚ´ËÌí¼Ó×¨ÓÃ´úÂëºÍ/»òµ÷ÓÃ»ùÀà
+	// TODO: åœ¨æ­¤æ·»åŠ ä¸“ç”¨ä»£ç å’Œ/æˆ–è°ƒç”¨åŸºç±»
 	
 }

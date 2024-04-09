@@ -14,36 +14,36 @@
 #define CL_CMD_LOGIN 'l'
 #define CL_CMD_CHAT 'c'
 
-int GetName(char str[],char szName[]) 
-{ 
-	//char str[] ="a,b,c,d*e"; 
-	const char * split = ","; 
-	char * p; 
-	p = strtok (str,split); 
-	int i=0;
-	while(p!=NULL) 
-	{ 
-		printf ("%s\n",p); 
-	    if(i==1) sprintf(szName,p);
+int GetName(char str[], char szName[])
+{
+	// char str[] ="a,b,c,d*e";
+	const char *split = ",";
+	char *p;
+	p = strtok(str, split);
+	int i = 0;
+	while (p != NULL)
+	{
+		printf("%s\n", p);
+		if (i == 1)
+			sprintf(szName, p);
 		i++;
-		p = strtok(NULL,split); 
+		p = strtok(NULL, split);
 	}
 }
 
-//²éÕÒ×Ö·û´®ÖĞÄ³¸ö×Ö·û³öÏÖµÄ´ÎÊı
+// æŸ¥æ‰¾å­—ç¬¦ä¸²ä¸­æŸä¸ªå­—ç¬¦å‡ºç°çš„æ¬¡æ•°
 int countChar(const char *p, const char chr)
-{	
-	int count = 0,i = 0;
-	while(*(p+i))
+{
+	int count = 0, i = 0;
+	while (*(p + i))
 	{
-		if(p[i] == chr)//×Ö·ûÊı×é´æ·ÅÔÚÒ»¿éÄÚ´æÇøÓòÖĞ£¬°´Ë÷ÒıÕÒ×Ö·û£¬Ö¸Õë±¾Éí²»±ä
+		if (p[i] == chr) // å­—ç¬¦æ•°ç»„å­˜æ”¾åœ¨ä¸€å—å†…å­˜åŒºåŸŸä¸­ï¼ŒæŒ‰ç´¢å¼•æ‰¾å­—ç¬¦ï¼ŒæŒ‡é’ˆæœ¬èº«ä¸å˜
 			++count;
-		++i;// °´Êı×éµÄË÷ÒıÖµÕÒµ½¶ÔÓ¦Ö¸Õë±äÁ¿µÄÖµ
+		++i; // æŒ‰æ•°ç»„çš„ç´¢å¼•å€¼æ‰¾åˆ°å¯¹åº”æŒ‡é’ˆå˜é‡çš„å€¼
 	}
-	//printf("×Ö·û´®ÖĞw³öÏÖµÄ´ÎÊı£º%d",count);
+	// printf("å­—ç¬¦ä¸²ä¸­wå‡ºç°çš„æ¬¡æ•°ï¼š%d",count);
 	return count;
 }
- 
 
 int main(int argc, char *argv[])
 {
@@ -51,191 +51,181 @@ int main(int argc, char *argv[])
 	int listenfd, connfd, sockfd;
 	int nready, client[FD_SETSIZE];
 	ssize_t n;
- 
-	char szName[255]="",szPwd[128]="",repBuf[512]="";
-	
-	
-	//Á½¸ö¼¯ºÏ
+
+	char szName[255] = "", szPwd[128] = "", repBuf[512] = "";
+
+	// ä¸¤ä¸ªé›†åˆ
 	fd_set rset, allset;
-	
+
 	char buf[MAXLINE];
 	char str[INET_ADDRSTRLEN]; /* #define INET_ADDRSTRLEN 16 */
 	socklen_t cliaddr_len;
 	struct sockaddr_in cliaddr, servaddr;
-	
-	//´´½¨Ì×½Ó×Ö
-	listenfd = socket(AF_INET, SOCK_STREAM, 0);
-	
-	int val = 1;
-	int ret = setsockopt(listenfd,SOL_SOCKET,SO_REUSEADDR,(void *)&val,sizeof(int));
 
-	//°ó¶¨
+	// åˆ›å»ºå¥—æ¥å­—
+	listenfd = socket(AF_INET, SOCK_STREAM, 0);
+
+	int val = 1;
+	int ret = setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, (void *)&val, sizeof(int));
+
+	// ç»‘å®š
 	bzero(&servaddr, sizeof(servaddr));
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	servaddr.sin_port = htons(SERV_PORT);
 
-
 	bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
-	
-	//¼àÌı
-	listen(listenfd, 20); /* Ä¬ÈÏ×î´ó128 */
-	
-	//ĞèÒª½ÓÊÕ×î´óÎÄ¼şÃèÊö·û
-	maxfd = listenfd; 
-	
-	//Êı×é³õÊ¼»¯Îª-1
-	maxi = -1; 
+
+	// ç›‘å¬
+	listen(listenfd, 20); /* é»˜è®¤æœ€å¤§128 */
+
+	// éœ€è¦æ¥æ”¶æœ€å¤§æ–‡ä»¶æè¿°ç¬¦
+	maxfd = listenfd;
+
+	// æ•°ç»„åˆå§‹åŒ–ä¸º-1
+	maxi = -1;
 	for (i = 0; i < FD_SETSIZE; i++)
 		client[i] = -1;
-	
-	//¼¯ºÏÇåÁã
+
+	// é›†åˆæ¸…é›¶
 	FD_ZERO(&allset);
-	
-	//½«listenfd¼ÓÈëallset¼¯ºÏ
+
+	// å°†listenfdåŠ å…¥allseté›†åˆ
 	FD_SET(listenfd, &allset);
-	
+
 	puts("Chat server is running...");
 
-	
-	for (; ;) 
+	for (;;)
 	{
-		//¹Ø¼üµã3
-		rset = allset; /* Ã¿´ÎÑ­»·Ê±¶¼ÖØĞÂÉèÖÃselect¼à¿ØĞÅºÅ¼¯ */
-		
-		//select·µ»Ørest¼¯ºÏÖĞ·¢Éú¶ÁÊÂ¼şµÄ×ÜÊı  ²ÎÊı1£º×î´óÎÄ¼şÃèÊö·û+1
-		nready = select(maxfd + 1, &rset, NULL, NULL, NULL);	
+		// å…³é”®ç‚¹3
+		rset = allset; /* æ¯æ¬¡å¾ªç¯æ—¶éƒ½é‡æ–°è®¾ç½®selectç›‘æ§ä¿¡å·é›† */
+
+		// selectè¿”å›resté›†åˆä¸­å‘ç”Ÿè¯»äº‹ä»¶çš„æ€»æ•°  å‚æ•°1ï¼šæœ€å¤§æ–‡ä»¶æè¿°ç¬¦+1
+		nready = select(maxfd + 1, &rset, NULL, NULL, NULL);
 		if (nready < 0)
 			puts("select error");
-		
-		//listenfdÊÇ·ñÔÚrset¼¯ºÏÖĞ
+
+		// listenfdæ˜¯å¦åœ¨rseté›†åˆä¸­
 		if (FD_ISSET(listenfd, &rset))
 		{
-			//accept½ÓÊÕ
+			// acceptæ¥æ”¶
 			cliaddr_len = sizeof(cliaddr);
-			//accept·µ»ØÍ¨ĞÅÌ×½Ó×Ö£¬µ±Ç°·Ç×èÈû£¬ÒòÎªselectÒÑ¾­·¢Éú¶ÁĞ´ÊÂ¼ş
+			// acceptè¿”å›é€šä¿¡å¥—æ¥å­—ï¼Œå½“å‰éé˜»å¡ï¼Œå› ä¸ºselectå·²ç»å‘ç”Ÿè¯»å†™äº‹ä»¶
 			connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &cliaddr_len);
- 
-			
-			
+
 			printf("received from %s at PORT %d\n",
-				inet_ntop(AF_INET, &cliaddr.sin_addr, str, sizeof(str)),
-				ntohs(cliaddr.sin_port));
-			
-		 //¹Ø¼üµã1	
+				   inet_ntop(AF_INET, &cliaddr.sin_addr, str, sizeof(str)),
+				   ntohs(cliaddr.sin_port));
+
+			// å…³é”®ç‚¹1
 			for (i = 0; i < FD_SETSIZE; i++)
-				if (client[i] < 0) 
+				if (client[i] < 0)
 				{
-					client[i] = connfd; /* ±£´æaccept·µ»ØµÄÍ¨ĞÅÌ×½Ó×Öconnfd´æµ½client[]Àï */
+					client[i] = connfd; /* ä¿å­˜acceptè¿”å›çš„é€šä¿¡å¥—æ¥å­—connfdå­˜åˆ°client[]é‡Œ */
 					break;
 				}
-				
-            /* ÊÇ·ñ´ïµ½selectÄÜ¼à¿ØµÄÎÄ¼ş¸öÊıÉÏÏŞ 1024 */
-			if (i == FD_SETSIZE) {
+
+			/* æ˜¯å¦è¾¾åˆ°selectèƒ½ç›‘æ§çš„æ–‡ä»¶ä¸ªæ•°ä¸Šé™ 1024 */
+			if (i == FD_SETSIZE)
+			{
 				fputs("too many clients\n", stderr);
 				exit(1);
 			}
-			
-			//¹Ø¼üµã2
-			FD_SET(connfd, &allset); /*Ìí¼ÓÒ»¸öĞÂµÄÎÄ¼şÃèÊö·ûµ½¼à¿ØĞÅºÅ¼¯Àï */
-			
-			//¸üĞÂ×î´óÎÄ¼şÃèÊö·ûÊı
+
+			// å…³é”®ç‚¹2
+			FD_SET(connfd, &allset); /*æ·»åŠ ä¸€ä¸ªæ–°çš„æ–‡ä»¶æè¿°ç¬¦åˆ°ç›‘æ§ä¿¡å·é›†é‡Œ */
+
+			// æ›´æ–°æœ€å¤§æ–‡ä»¶æè¿°ç¬¦æ•°
 			if (connfd > maxfd)
-				maxfd = connfd; /* selectµÚÒ»¸ö²ÎÊıĞèÒª */
+				maxfd = connfd; /* selectç¬¬ä¸€ä¸ªå‚æ•°éœ€è¦ */
 			if (i > maxi)
-				maxi = i; /* ¸üĞÂclient[]×î´óÏÂ±êÖµ */
-			
-			/* Èç¹ûÃ»ÓĞ¸ü¶àµÄ¾ÍĞ÷ÎÄ¼şÃèÊö·û¼ÌĞø»Øµ½ÉÏÃæselect×èÈû¼àÌı,¸ºÔğ´¦ÀíÎ´´¦ÀíÍêµÄ¾ÍĞ÷ÎÄ¼şÃèÊö·û */
+				maxi = i; /* æ›´æ–°client[]æœ€å¤§ä¸‹æ ‡å€¼ */
+
+			/* å¦‚æœæ²¡æœ‰æ›´å¤šçš„å°±ç»ªæ–‡ä»¶æè¿°ç¬¦ç»§ç»­å›åˆ°ä¸Šé¢selecté˜»å¡ç›‘å¬,è´Ÿè´£å¤„ç†æœªå¤„ç†å®Œçš„å°±ç»ªæ–‡ä»¶æè¿°ç¬¦ */
 			if (--nready == 0)
-				continue; 
+				continue;
 		}
-		
-		for (i = 0; i <= maxi; i++) 
-		{ 
-			//¼ì²âclients ÄÄ¸öÓĞÊı¾İ¾ÍĞ÷
+
+		for (i = 0; i <= maxi; i++)
+		{
+			// æ£€æµ‹clients å“ªä¸ªæœ‰æ•°æ®å°±ç»ª
 			if ((sockfd = client[i]) < 0)
 				continue;
-			
-			//sockfd£¨connd£©ÊÇ·ñÔÚrset¼¯ºÏÖĞ
-			if (FD_ISSET(sockfd, &rset)) 
+
+			// sockfdï¼ˆconndï¼‰æ˜¯å¦åœ¨rseté›†åˆä¸­
+			if (FD_ISSET(sockfd, &rset))
 			{
-				//½øĞĞ¶ÁÊı¾İ ²»ÓÃ×èÈûÁ¢¼´¶ÁÈ¡£¨selectÒÑ¾­°ïÃ¦´¦Àí×èÈû»·½Ú£©
+				// è¿›è¡Œè¯»æ•°æ® ä¸ç”¨é˜»å¡ç«‹å³è¯»å–ï¼ˆselectå·²ç»å¸®å¿™å¤„ç†é˜»å¡ç¯èŠ‚ï¼‰
 				if ((n = read(sockfd, buf, MAXLINE)) == 0)
 				{
-                    /* ÎŞÊı¾İÇé¿ö client¹Ø±ÕÁ´½Ó£¬·şÎñÆ÷¶ËÒ²¹Ø±Õ¶ÔÓ¦Á´½Ó */
+					/* æ— æ•°æ®æƒ…å†µ clientå…³é—­é“¾æ¥ï¼ŒæœåŠ¡å™¨ç«¯ä¹Ÿå…³é—­å¯¹åº”é“¾æ¥ */
 					close(sockfd);
-					FD_CLR(sockfd, &allset); /*½â³ıselect¼à¿Ø´ËÎÄ¼şÃèÊö·û */
+					FD_CLR(sockfd, &allset); /*è§£é™¤selectç›‘æ§æ­¤æ–‡ä»¶æè¿°ç¬¦ */
 					client[i] = -1;
 				}
-				else 
+				else
 				{
-					char code= buf[0];
-					switch(code)
+					char code = buf[0];
+					switch (code)
 					{
-					case CL_CMD_REG:   //×¢²áÃüÁî´¦Àí
-						if(1!=countChar(buf,','))
+					case CL_CMD_REG: // æ³¨å†Œå‘½ä»¤å¤„ç†
+						if (1 != countChar(buf, ','))
 						{
 							puts("invalid protocal!");
 							break;
 						}
-						
-						GetName(buf,szName);
-						
-						//ÅĞ¶ÏÃû×ÖÊÇ·ñÖØ¸´
-						if(IsExist(szName))
+
+						GetName(buf, szName);
+
+						// åˆ¤æ–­åå­—æ˜¯å¦é‡å¤
+						if (IsExist(szName))
 						{
-							sprintf(repBuf,"r,exist");
+							sprintf(repBuf, "r,exist");
 						}
 						else
 						{
 							insert(szName);
 							showTable();
-							sprintf(repBuf,"r,ok");
-							printf("reg ok,%s\n",szName);
+							sprintf(repBuf, "r,ok");
+							printf("reg ok,%s\n", szName);
 						}
-						write(sockfd, repBuf, strlen(repBuf));//»Ø¸´¿Í»§¶Ë
+						write(sockfd, repBuf, strlen(repBuf)); // å›å¤å®¢æˆ·ç«¯
 
 						break;
-					case CL_CMD_LOGIN: //µÇÂ¼ÃüÁî´¦Àí
-						if(1!=countChar(buf,','))
+					case CL_CMD_LOGIN: // ç™»å½•å‘½ä»¤å¤„ç†
+						if (1 != countChar(buf, ','))
 						{
 							puts("invalid protocal!");
 							break;
 						}
 
-						GetName(buf,szName);
-						
-						//ÅĞ¶ÏÊÇ·ñ×¢²á¹ı£¬¼´ÊÇ·ñ´æÔÚ
-						if(IsExist(szName))
+						GetName(buf, szName);
+
+						// åˆ¤æ–­æ˜¯å¦æ³¨å†Œè¿‡ï¼Œå³æ˜¯å¦å­˜åœ¨
+						if (IsExist(szName))
 						{
-							sprintf(repBuf,"l,ok");
-							printf("login ok,%s\n",szName);
+							sprintf(repBuf, "l,ok");
+							printf("login ok,%s\n", szName);
 						}
-						else sprintf(repBuf,"l,noexist");
-						write(sockfd, repBuf, strlen(repBuf));//»Ø¸´¿Í»§¶Ë
+						else
+							sprintf(repBuf, "l,noexist");
+						write(sockfd, repBuf, strlen(repBuf)); // å›å¤å®¢æˆ·ç«¯
 						break;
-					case CL_CMD_CHAT://ÁÄÌìÃüÁî´¦Àí
+					case CL_CMD_CHAT: // èŠå¤©å‘½ä»¤å¤„ç†
 						puts("send all");
 
-						//Èº·¢
-						for(i=0;i<=maxi;i++)
-							if(client[i]!=-1)
-								 write(client[i], buf+2, n);//Ğ´»Ø¿Í»§¶Ë£¬+2±íÊ¾È¥µôÃüÁîÍ·(c,)£¬ÕâÑùÖ»·¢ËÍÁÄÌìÄÚÈİ
+						// ç¾¤å‘
+						for (i = 0; i <= maxi; i++)
+							if (client[i] != -1)
+								write(client[i], buf + 2, n); // å†™å›å®¢æˆ·ç«¯ï¼Œ+2è¡¨ç¤ºå»æ‰å‘½ä»¤å¤´(c,)ï¼Œè¿™æ ·åªå‘é€èŠå¤©å†…å®¹
 						break;
-					}//switch
-
-
-
-					
-					
+					} // switch
 				}
 				if (--nready == 0)
 					break;
 			}
-		} 
-			
+		}
 	}
 	close(listenfd);
 	return 0;
 }
- 

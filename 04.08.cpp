@@ -6,7 +6,7 @@ using namespace std;
 struct MyData
 {
 	int nLen;
-	char data[0];
+	char data[0];//0长度数组, 数组名, 不占用存储空间
 };
 
 int main()

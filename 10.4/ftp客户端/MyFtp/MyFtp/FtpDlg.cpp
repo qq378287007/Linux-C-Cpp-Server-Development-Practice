@@ -66,14 +66,14 @@ BOOL CFtpDlg::OnInitDialog()
 	
 	// TODO: Add extra initialization here
 	
-	//ÉèÖÃCListCtrl¶ÔÏóµÄÊôĞÔ
+	//è®¾ç½®CListCtrlå¯¹è±¡çš„å±æ€§
 	m_FtpFile.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	
 	//m_FtpFile.SetBkColor(RGB(22,100,100));
 
-	m_FtpFile.InsertColumn(0,"ÎÄ¼şÃû",LVCFMT_CENTER,200);
-	m_FtpFile.InsertColumn(1,"ÈÕÆÚ",LVCFMT_CENTER,100);
-	m_FtpFile.InsertColumn(2,"×Ö½ÚÊı",LVCFMT_CENTER,100);	
+	m_FtpFile.InsertColumn(0,"æ–‡ä»¶å",LVCFMT_CENTER,200);
+	m_FtpFile.InsertColumn(1,"æ—¥æœŸ",LVCFMT_CENTER,100);
+	m_FtpFile.InsertColumn(2,"å­—èŠ‚æ•°",LVCFMT_CENTER,100);	
 	
     m_pFileFind = new CFtpFileFind(m_pConnection);
 	
@@ -83,13 +83,13 @@ BOOL CFtpDlg::OnInitDialog()
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-//µÃµ½·şÎñÆ÷µ±Ç°Ä¿Â¼µÄÎÄ¼şÁĞ±í
+//å¾—åˆ°æœåŠ¡å™¨å½“å‰ç›®å½•çš„æ–‡ä»¶åˆ—è¡¨
 void CFtpDlg::OnQuary() 
 {
 	ListContent("*");
 }
 
-//ÓÃÓÚÏÔÊ¾µ±Ç°Ä¿Â¼ÏÂËùÓĞµÄ×ÓÄ¿Â¼ÓëÎÄ¼ş
+//ç”¨äºæ˜¾ç¤ºå½“å‰ç›®å½•ä¸‹æ‰€æœ‰çš„å­ç›®å½•ä¸æ–‡ä»¶
 void CFtpDlg::ListContent(LPCTSTR DirName)
 {
 	m_FtpFile.DeleteAllItems();
@@ -97,7 +97,7 @@ void CFtpDlg::ListContent(LPCTSTR DirName)
 	bContinue=m_pFileFind->FindFile(DirName);
 	if (!bContinue)
 	{
-		//²éÕÒÍê±Ï,Ê§°Ü
+		//æŸ¥æ‰¾å®Œæ¯•,å¤±è´¥
 		m_pFileFind->Close();
 		m_pFileFind=NULL;
 	}
@@ -110,8 +110,8 @@ void CFtpDlg::ListContent(LPCTSTR DirName)
 	{		
 		bContinue = m_pFileFind->FindNextFile();
 		
-		strFileName = m_pFileFind->GetFileName(); //µÃµ½ÎÄ¼şÃû
-		//µÃµ½ÎÄ¼ş×îºóÒ»´ÎĞŞ¸ÄµÄÊ±¼ä
+		strFileName = m_pFileFind->GetFileName(); //å¾—åˆ°æ–‡ä»¶å
+		//å¾—åˆ°æ–‡ä»¶æœ€åä¸€æ¬¡ä¿®æ”¹çš„æ—¶é—´
 		FILETIME ft;
 		m_pFileFind->GetLastWriteTime(&ft);       
 		CTime FileTime(ft);
@@ -119,12 +119,12 @@ void CFtpDlg::ListContent(LPCTSTR DirName)
         
 		if (m_pFileFind->IsDirectory())
 		{
-			//Èç¹ûÊÇÄ¿Â¼²»Çó´óĞ¡,ÓÃ<DIR>´úÌæ
+			//å¦‚æœæ˜¯ç›®å½•ä¸æ±‚å¤§å°,ç”¨<DIR>ä»£æ›¿
 			strFileLength = "<DIR>";
 		}	
 		else
 		{
-			//µÃµ½ÎÄ¼ş´óĞ¡
+			//å¾—åˆ°æ–‡ä»¶å¤§å°
 			if (m_pFileFind->GetLength() <1024)
 			{
 				strFileLength.Format("%d B",m_pFileFind->GetLength());
@@ -157,39 +157,39 @@ void CFtpDlg::ListContent(LPCTSTR DirName)
 void CFtpDlg::OnDownload() 
 {
 	// TODO: Add your control notification handler code here
-	//½ûÓÃÒ»µã°´Å¥
+	//ç¦ç”¨ä¸€ç‚¹æŒ‰é’®
 	int i=m_FtpFile.GetNextItem(-1,LVNI_SELECTED); 
 	if (i==-1)
 	{
-        AfxMessageBox("Ã»ÓĞÑ¡ÔñÎÄ¼ş!",MB_OK | MB_ICONQUESTION);
+        AfxMessageBox("æ²¡æœ‰é€‰æ‹©æ–‡ä»¶!",MB_OK | MB_ICONQUESTION);
 	}
 	else
 	{
-        CString strType=m_FtpFile.GetItemText(i,2);   //µÃµ½Ñ¡ÔñÏîµÄÀàĞÍ
-		if (strType!="<DIR>")   //Ñ¡ÔñµÄÊÇÎÄ¼ş
+        CString strType=m_FtpFile.GetItemText(i,2);   //å¾—åˆ°é€‰æ‹©é¡¹çš„ç±»å‹
+		if (strType!="<DIR>")   //é€‰æ‹©çš„æ˜¯æ–‡ä»¶
 		{
 			CString strDestName;
 			CString strSourceName;
-			strSourceName = m_FtpFile.GetItemText(i,0);//µÃµ½ËùÒªÏÂÔØµÄÎÄ¼şÃû
+			strSourceName = m_FtpFile.GetItemText(i,0);//å¾—åˆ°æ‰€è¦ä¸‹è½½çš„æ–‡ä»¶å
 			
 			CFileDialog dlg(FALSE,"",strSourceName);
 			
 			if (dlg.DoModal()==IDOK)
 			{
-				//»ñµÃÏÂÔØÎÄ¼şÔÚ±¾µØ»úÉÏ´æ´¢µÄÂ·¾¶ºÍÃû³Æ
+				//è·å¾—ä¸‹è½½æ–‡ä»¶åœ¨æœ¬åœ°æœºä¸Šå­˜å‚¨çš„è·¯å¾„å’Œåç§°
 				strDestName=dlg.GetPathName();
 				
-				//µ÷ÓÃCFtpConnectÀàÖĞµÄGetFileº¯ÊıÏÂÔØÎÄ¼ş
+				//è°ƒç”¨CFtpConnectç±»ä¸­çš„GetFileå‡½æ•°ä¸‹è½½æ–‡ä»¶
 				if (m_pConnection->GetFile(strSourceName,strDestName))
-					AfxMessageBox("ÏÂÔØ³É¹¦£¡",MB_OK|MB_ICONINFORMATION);
+					AfxMessageBox("ä¸‹è½½æˆåŠŸï¼",MB_OK|MB_ICONINFORMATION);
 				else
-					AfxMessageBox("ÏÂÔØÊ§°Ü£¡",MB_OK|MB_ICONSTOP);
+					AfxMessageBox("ä¸‹è½½å¤±è´¥ï¼",MB_OK|MB_ICONSTOP);
 			}
 		}
 		else
 		{
-			//Ñ¡ÔñµÄÊÇÄ¿Â¼
-			AfxMessageBox("²»ÄÜÏÂÔØÄ¿Â¼!\nÇëÖØÑ¡!",MB_OK|MB_ICONSTOP);
+			//é€‰æ‹©çš„æ˜¯ç›®å½•
+			AfxMessageBox("ä¸èƒ½ä¸‹è½½ç›®å½•!\nè¯·é‡é€‰!",MB_OK|MB_ICONSTOP);
 		}
 	}
 	//	MessageBox(str);
@@ -199,22 +199,22 @@ void CFtpDlg::OnDownload()
 void CFtpDlg::OnUpload() 
 {
 	// TODO: Add your control notification handler code here
-	//»ñµÃµ±Ç°ÊäÈë
-	//½ûÓÃ²éÑ¯°´Å¥	
+	//è·å¾—å½“å‰è¾“å…¥
+	//ç¦ç”¨æŸ¥è¯¢æŒ‰é’®	
 	CString strSourceName;
 	CString strDestName;
 	CFileDialog dlg(TRUE,"","*.*");
 	if (dlg.DoModal()==IDOK)
 	{
-		//»ñµÃ´ıÉÏ´«µÄ±¾µØ»úÎÄ¼şÂ·¾¶ºÍÎÄ¼şÃû
+		//è·å¾—å¾…ä¸Šä¼ çš„æœ¬åœ°æœºæ–‡ä»¶è·¯å¾„å’Œæ–‡ä»¶å
 		strSourceName = dlg.GetPathName();
 		strDestName = dlg.GetFileName();
 		
-		//µ÷ÓÃCFtpConnectÀàÖĞµÄPutFileº¯ÊıÉÏ´«ÎÄ¼ş
+		//è°ƒç”¨CFtpConnectç±»ä¸­çš„PutFileå‡½æ•°ä¸Šä¼ æ–‡ä»¶
 		if (m_pConnection->PutFile(strSourceName,strDestName))
-			AfxMessageBox("ÉÏ´«³É¹¦£¡",MB_OK|MB_ICONINFORMATION);
+			AfxMessageBox("ä¸Šä¼ æˆåŠŸï¼",MB_OK|MB_ICONINFORMATION);
 		else
-			AfxMessageBox("ÉÏ´«Ê§°Ü£¡",MB_OK|MB_ICONSTOP);
+			AfxMessageBox("ä¸Šä¼ å¤±è´¥ï¼",MB_OK|MB_ICONSTOP);
 	}
     OnQuary();
 }
@@ -227,34 +227,34 @@ void CFtpDlg::OnRename()
 	CString strNewName;
 	CString strOldName;
 	
-	int i=m_FtpFile.GetNextItem(-1,LVNI_SELECTED); //µÃµ½CListCtrl±»Ñ¡ÖĞµÄÏî
+	int i=m_FtpFile.GetNextItem(-1,LVNI_SELECTED); //å¾—åˆ°CListCtrlè¢«é€‰ä¸­çš„é¡¹
 	if (i==-1)
 	{
-        AfxMessageBox("Ã»ÓĞÑ¡ÔñÎÄ¼ş!",MB_OK | MB_ICONQUESTION);
+        AfxMessageBox("æ²¡æœ‰é€‰æ‹©æ–‡ä»¶!",MB_OK | MB_ICONQUESTION);
 	}
 	else
 	{
-       	strOldName = m_FtpFile.GetItemText(i,0);//µÃµ½ËùÑ¡ÔñµÄÎÄ¼şÃû
+       	strOldName = m_FtpFile.GetItemText(i,0);//å¾—åˆ°æ‰€é€‰æ‹©çš„æ–‡ä»¶å
 		CNewNameDlg dlg;		
 		if (dlg.DoModal()==IDOK)
 		{
 			strNewName=dlg.m_NewFileName;
 			if (m_pConnection->Rename(strOldName,strNewName))
-				AfxMessageBox("ÖØÃüÃû³É¹¦£¡",MB_OK|MB_ICONINFORMATION);
+				AfxMessageBox("é‡å‘½åæˆåŠŸï¼",MB_OK|MB_ICONINFORMATION);
 			else
-				AfxMessageBox("ÎŞ·¨ÖØÃüÃû£¡",MB_OK|MB_ICONSTOP);
+				AfxMessageBox("æ— æ³•é‡å‘½åï¼",MB_OK|MB_ICONSTOP);
 		}
 	}	
 	OnQuary();
 }
-//É¾³ıÑ¡ÔñµÄÎÄ¼ş
+//åˆ é™¤é€‰æ‹©çš„æ–‡ä»¶
 void CFtpDlg::OnDelete() 
 {
 	// TODO: Add your control notification handler code here
 	int i=m_FtpFile.GetNextItem(-1,LVNI_SELECTED); 
 	if (i==-1)
 	{
-        AfxMessageBox("Ã»ÓĞÑ¡ÔñÎÄ¼ş!",MB_OK | MB_ICONQUESTION);
+        AfxMessageBox("æ²¡æœ‰é€‰æ‹©æ–‡ä»¶!",MB_OK | MB_ICONQUESTION);
 	}
 	else
 	{
@@ -262,14 +262,14 @@ void CFtpDlg::OnDelete()
 		strFileName = m_FtpFile.GetItemText(i,0);
 		if ("<DIR>"==m_FtpFile.GetItemText(i,2))
 		{
-			AfxMessageBox("²»ÄÜÉ¾³ıÄ¿Â¼!",MB_OK | MB_ICONSTOP);
+			AfxMessageBox("ä¸èƒ½åˆ é™¤ç›®å½•!",MB_OK | MB_ICONSTOP);
 		}
 		else
 		{
 			if (m_pConnection->Remove(strFileName))
-				AfxMessageBox("É¾³ı³É¹¦£¡",MB_OK|MB_ICONINFORMATION);
+				AfxMessageBox("åˆ é™¤æˆåŠŸï¼",MB_OK|MB_ICONINFORMATION);
 			else
-				AfxMessageBox("ÎŞ·¨É¾³ı£¡",MB_OK|MB_ICONSTOP);
+				AfxMessageBox("æ— æ³•åˆ é™¤ï¼",MB_OK|MB_ICONSTOP);
 		}
 	}
 	OnQuary();
@@ -283,32 +283,32 @@ void CFtpDlg::OnNextdirectory()
     m_pConnection->GetCurrentDirectory(strCurrentDirectory);
 	strCurrentDirectory+="/";
 	
-	//µÃµ½ËùÑ¡ÔñµÄÎÄ±¾
+	//å¾—åˆ°æ‰€é€‰æ‹©çš„æ–‡æœ¬
 	int i=m_FtpFile.GetNextItem(-1,LVNI_SELECTED); 
 	strSub = m_FtpFile.GetItemText(i,0);
 
 	if (i==-1)
 	{
-        AfxMessageBox("Ã»ÓĞÑ¡ÔñÄ¿Â¼!",MB_OK | MB_ICONQUESTION);
+        AfxMessageBox("æ²¡æœ‰é€‰æ‹©ç›®å½•!",MB_OK | MB_ICONQUESTION);
 	}
 	else
-	{   //ÅĞ¶ÏÊÇ²»ÊÇÄ¿Â¼
+	{   //åˆ¤æ–­æ˜¯ä¸æ˜¯ç›®å½•
 		if ("<DIR>"!=m_FtpFile.GetItemText(i,2))
 		{
-			AfxMessageBox("²»ÊÇ×ÓÄ¿Â¼!",MB_OK | MB_ICONSTOP);
+			AfxMessageBox("ä¸æ˜¯å­ç›®å½•!",MB_OK | MB_ICONSTOP);
 		}
 		else
 		{
-            //ÉèÖÃµ±Ç°Ä¿Â¼
+            //è®¾ç½®å½“å‰ç›®å½•
 			m_pConnection->SetCurrentDirectory(strCurrentDirectory+strSub);
-			//¶Ôµ±Ç°Ä¿Â¼½øĞĞ²éÑ¯
+			//å¯¹å½“å‰ç›®å½•è¿›è¡ŒæŸ¥è¯¢
 			ListContent("*");
 		}
 	}	
 }
 
 
-//·µ»ØÉÏÒ»¼¶Ä¿Â¼
+//è¿”å›ä¸Šä¸€çº§ç›®å½•
 void CFtpDlg::OnLastdirectory() 
 {
 	
@@ -318,18 +318,18 @@ void CFtpDlg::OnLastdirectory()
 
 	if (strCurrentDirectory == "/")
 	{
-		AfxMessageBox("ÒÑ¾­ÊÇ¸ùÄ¿Â¼ÁË!",MB_OK | MB_ICONSTOP);
+		AfxMessageBox("å·²ç»æ˜¯æ ¹ç›®å½•äº†!",MB_OK | MB_ICONSTOP);
 	}
 	else
 	{
         GetLastDiretory(strCurrentDirectory);
-        //ÉèÖÃµ±Ç°Ä¿Â¼
+        //è®¾ç½®å½“å‰ç›®å½•
        	m_pConnection->SetCurrentDirectory(strCurrentDirectory);
-		//¶Ôµ±Ç°Ä¿Â¼½øĞĞ²éÑ¯
+		//å¯¹å½“å‰ç›®å½•è¿›è¡ŒæŸ¥è¯¢
         ListContent("*");
 	}
 }
-//Ò»¹¤¾ßº¯Êı,ÓÃÓÚµÃµ½ÉÏÒ»¼¶Ä¿Â¼µÄ×Ö·û´®±íÊ¾
+//ä¸€å·¥å…·å‡½æ•°,ç”¨äºå¾—åˆ°ä¸Šä¸€çº§ç›®å½•çš„å­—ç¬¦ä¸²è¡¨ç¤º
 void CFtpDlg::GetLastDiretory(CString &str)
 {
 	int LastIndex=0;
@@ -345,14 +345,14 @@ void CFtpDlg::GetLastDiretory(CString &str)
 
 
 
-//µ±Ë«»÷µÄÊ±ºò,µ÷ÓÃÏÂÒ»¼¶Ä¿Â¼´úÂë,¶ÔÎÄ¼ş²»Æğ×÷ÓÃ
+//å½“åŒå‡»çš„æ—¶å€™,è°ƒç”¨ä¸‹ä¸€çº§ç›®å½•ä»£ç ,å¯¹æ–‡ä»¶ä¸èµ·ä½œç”¨
 void CFtpDlg::OnDblclkListFile(NMHDR* pNMHDR, LRESULT* pResult) 
 {
 	// TODO: Add your control notification handler code here
 	OnNextdirectory();
 	*pResult = 0;
 }
-//ÍË³ö¶Ô»°¿òÏìÓ¦º¯Êı
+//é€€å‡ºå¯¹è¯æ¡†å“åº”å‡½æ•°
 void CFtpDlg::OnExit() 
 {
 	// TODO: Add your control notification handler code here

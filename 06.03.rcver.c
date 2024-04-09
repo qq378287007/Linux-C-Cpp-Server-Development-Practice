@@ -82,7 +82,7 @@ int main()
 			if (iphead[12] == 127)
 				continue;
 
-			printf("-----cn=%ld-----\n", cn++);
+			printf("-----cn=%lld-----\n", cn++);
 			printf("%d bytes read\n", n);
 			/*这样也可以得到IP和端口
 			printf("Source host %d.%d.%d.%d\n",iphead[12], iphead[13],
@@ -104,8 +104,8 @@ int main()
 			if (IPPROTO_UDP == iphead[9])
 			{
 				memcpy(&udph, iphead + 20, 8); // 加20是越过IP首部
-				printf("Source,Dest ports %d,%d\n", udph.m_usSourPort, udph.m_usDestPort);
-				printf("Receive UDP package,data:%s\n", iphead + 28); // 越过ip首部和udp首部
+				printf("Source, Dest ports %d,%d\n", udph.m_usSourPort, udph.m_usDestPort);
+				printf("Receive UDP package, data:%s\n", iphead + 28); // 越过ip首部和udp首部
 			}
 
 			if (IPPROTO_TCP == iphead[9])

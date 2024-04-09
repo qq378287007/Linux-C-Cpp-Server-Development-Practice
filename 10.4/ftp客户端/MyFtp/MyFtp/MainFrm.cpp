@@ -66,11 +66,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// TODO: Delete these three lines if you don't want the toolbar to
 	//  be dockable
 	
-    //WS_OVERLAPPED´°¿ÚÊÇÖ¸ÓĞ±êÌâÀ¸ÓĞ±ß¿òµÄ´°¿Ú
+    //WS_OVERLAPPEDçª—å£æ˜¯æŒ‡æœ‰æ ‡é¢˜æ æœ‰è¾¹æ¡†çš„çª—å£
 	MoveWindow(CRect(0, 0, 405 + 150, 205 + 120));
 	CenterWindow();
 	//	SetWindowLong(m_hWnd,GWL_STYLE,GetWindowLong(m_hWnd,GWL_STYLE)&~WS_OVERLAPPED);
-	SetTimer(1,1000,NULL);  //Ò»Ãë·¢ËÍWM_TIMERÏûÏ¢
+	SetTimer(1,1000,NULL);  //ä¸€ç§’å‘é€WM_TIMERæ¶ˆæ¯
 	return 0;
 }
 
@@ -80,7 +80,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		return FALSE;
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
-	//ÉèÖÃ´°¿ÚµÄ´óĞ¡
+	//è®¾ç½®çª—å£çš„å¤§å°
     cs.cx=450;
 	cs.cy=550;
 	
@@ -111,7 +111,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 {
 	// TODO: Add your message handler code here and/or call default
 	
-	//ÓÃÓÚÔÚ×´Ì¬À¸ÏÔÊ¾µ±Ç°Ê±¼ä
+	//ç”¨äºåœ¨çŠ¶æ€æ æ˜¾ç¤ºå½“å‰æ—¶é—´
 	CTime t=CTime::GetCurrentTime();
 	CString str=t.Format("%H:%M:%S");
     
@@ -127,14 +127,14 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 void CMainFrame::OnExit() 
 {
 	// TODO: Add your command handler code here
-	//ÍË³ö³ÌĞòµÄÏìÓ¦º¯Êı
-    if(IDYES==MessageBox("È·¶¨ÒªÍË³ö¿Í»§¶ËÂğ?","¾¯¸æ",MB_YESNO|MB_ICONWARNING))
+	//é€€å‡ºç¨‹åºçš„å“åº”å‡½æ•°
+    if(IDYES==MessageBox("ç¡®å®šè¦é€€å‡ºå®¢æˆ·ç«¯å—?","è­¦å‘Š",MB_YESNO|MB_ICONWARNING))
 		CFrameWnd::OnClose();
 }
 
 void CMainFrame::OnClose() 
 {
 	// TODO: Add your message handler code here and/or call default
-	//WM_CLOSEµÄÏìÓ¦º¯Êı
+	//WM_CLOSEçš„å“åº”å‡½æ•°
 	OnExit();
 }

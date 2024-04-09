@@ -60,16 +60,11 @@ int main()
 	}
 	printf("listen port %d\n", MYPORT);
 
-	fd_set fdsr;
 	int maxsock = sock_fd;
 	struct timeval tv = {30, 0};
-	int ret;
-	int new_fd;
-	struct sockaddr_in client_addr;
-	socklen_t sin_size = sizeof(struct sockaddr_in);
-	char buf[BUF_SIZE];
 	while (1)
 	{
+		fd_set fdsr;
 		FD_ZERO(&fdsr);
 		FD_SET(sock_fd, &fdsr); // 监听套接字
 
@@ -77,7 +72,7 @@ int main()
 			if (fd[i] != 0)
 				FD_SET(fd[i], &fdsr); // 连接套接字
 
-		ret = select(maxsock + 1, &fdsr, NULL, NULL, &tv);
+		int ret = select(maxsock + 1, &fdsr, NULL, NULL, &tv);
 		if (ret < 0)
 		{
 			perror("select error!\n");
@@ -93,6 +88,7 @@ int main()
 		{
 			if (FD_ISSET(fd[i], &fdsr))
 			{
+				char buf[BUF_SIZE];
 				ret = recv(fd[i], buf, sizeof(buf), 0);
 				if (ret <= 0)
 				{
@@ -117,7 +113,9 @@ int main()
 
 		if (FD_ISSET(sock_fd, &fdsr))
 		{
-			new_fd = accept(sock_fd, (struct sockaddr *)&client_addr, &sin_size);
+			struct sockaddr_in client_addr;
+			socklen_t sin_size = sizeof(struct sockaddr_in);
+			int new_fd = accept(sock_fd, (struct sockaddr *)&client_addr, &sin_size);
 			if (new_fd <= 0)
 			{
 				perror("accept error\n");
