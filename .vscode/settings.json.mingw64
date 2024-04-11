@@ -1,5 +1,5 @@
 {
     "code-runner.executorMap": {
-        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -lwsock32 && $dir$fileNameWithoutExt"
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -lwsock32 -ID:/soft/mysql-8.3.0-winx64/include -LD:/soft/mysql-8.3.0-winx64/lib -lmysql && $dir$fileNameWithoutExt"
     }
 }

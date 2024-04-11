@@ -4,13 +4,12 @@
 
 int main()
 {
-	// 初始化连接句柄
 	MYSQL mysql;
-	mysql_init(&mysql);
+	mysql_init(&mysql);// 初始化连接句柄
 
 	// 连接server
 	// MYSQL句柄，serverIP地址，username，password，数据库等
-	if (!mysql_real_connect(&mysql, "localhost", "root", "123456", "test", 0, NULL, 0))
+	if (!mysql_real_connect(&mysql, "localhost", "root", "mali", "test", 0, NULL, 0))
 		printf("Error connecting to Mysql!\n");
 	else
 		printf("Connected Mysql successful!\n");

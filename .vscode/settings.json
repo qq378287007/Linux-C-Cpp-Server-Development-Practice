@@ -1,6 +1,6 @@
 {
     "code-runner.executorMap": {
-        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -lpthread && $dir$fileNameWithoutExt",
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -lpthread -ID:/soft/mysql-8.3.0-winx64/include -LD:/soft/mysql-8.3.0-winx64/lib -lmysql && $dir$fileNameWithoutExt",
         "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt -lpthread && $dir$fileNameWithoutExt"
     },
     "files.associations": {
@@ -61,6 +61,8 @@
         "thread.h": "c",
         "unistd.h": "c",
         "sched.h": "c",
-        "winsock2.h": "c"
+        "winsock2.h": "c",
+        "mysql.h": "c",
+        "client_plugin.h": "c"
     }
 }

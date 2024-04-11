@@ -26,7 +26,7 @@ int insert()
 {
 	MYSQL mysql;
 	mysql_init(&mysql);
-	if (!mysql_real_connect(&mysql, "localhost", "root", "123456", "test", 0, NULL, 0))
+	if (!mysql_real_connect(&mysql, "localhost", "root", "mali", "test", 0, NULL, 0))
 	{
 		printf("Failed to connect to Mysql!\n");
 		return 1;
@@ -38,7 +38,7 @@ int insert()
 	char buf[512] = "";
 	char szName[100] = "Jack2";
 	GetDateTime(cur_time);
-	sprintf(buf, "INSERT INTO student(name,age,SETTIME) VALUES(\'%s\',%d,\'%s\')", szName, 27, cur_time);
+	sprintf(buf, "INSERT INTO student(name, age, SETTIME) VALUES(\'%s\', %d, \'%s\')", szName, 27, cur_time);
 	int r = mysql_query(&mysql, buf);
 	if (r)
 	{
@@ -56,13 +56,12 @@ int insert()
 
 int showTable()
 {
-	// 初始化连接句柄
 	MYSQL mysql;
-	mysql_init(&mysql);
+	mysql_init(&mysql);// 初始化连接句柄
 
 	// 连接server
 	// MYSQL句柄，serverIP地址，username，password，数据库等
-	if (!mysql_real_connect(&mysql, "localhost", "root", "123456", "test", 0, NULL, 0))
+	if (!mysql_real_connect(&mysql, "localhost", "root", "mali", "test", 0, NULL, 0))
 		printf("Error connecting to Mysql!\n");
 	else
 		printf("Connected Mysql successful!\n");
