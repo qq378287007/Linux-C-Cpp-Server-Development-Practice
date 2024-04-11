@@ -1,8 +1,4 @@
-// created by zww
-//  FtpDlg.cpp : implementation file
-//
 
-#include "stdafx.h"
 #include "MyFtp.h"
 #include "FtpDlg.h"
 
@@ -11,9 +7,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-/////////////////////////////////////////////////////////////////////////////
-// CFtpDlg dialog
 
 CFtpDlg::CFtpDlg(CWnd *pParent /*=NULL*/)
 	: CDialog(CFtpDlg::IDD, pParent)

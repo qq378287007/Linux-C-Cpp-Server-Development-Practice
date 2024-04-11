@@ -1,8 +1,3 @@
-// created by zww
-//  MyFtpView.cpp : implementation of the CMyFtpView class
-//
-
-#include "stdafx.h"
 #include "MyFtp.h"
 
 #include "MyFtpDoc.h"
@@ -14,9 +9,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-/////////////////////////////////////////////////////////////////////////////
-// CMyFtpView
 
 IMPLEMENT_DYNCREATE(CMyFtpView, CView)
 

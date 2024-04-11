@@ -13,3 +13,5 @@ CREATE TABLE `qqnum` (
   `name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- source chatdb.sql
