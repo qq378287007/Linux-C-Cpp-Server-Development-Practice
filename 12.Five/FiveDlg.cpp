@@ -1,5 +1,5 @@
-//zww
-// FiveDlg.cpp : implementation file
+// zww
+//  FiveDlg.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -21,7 +21,7 @@ extern CFiveApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 // CFiveDlg dialog
 
-CFiveDlg::CFiveDlg(CWnd* pParent /*=NULL*/)
+CFiveDlg::CFiveDlg(CWnd *pParent /*=NULL*/)
 	: CDialog(CFiveDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CFiveDlg)
@@ -30,7 +30,7 @@ CFiveDlg::CFiveDlg(CWnd* pParent /*=NULL*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CFiveDlg::DoDataExchange(CDataExchange* pDX)
+void CFiveDlg::DoDataExchange(CDataExchange *pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CFiveDlg)
@@ -39,19 +39,19 @@ void CFiveDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CFiveDlg, CDialog)
-	//{{AFX_MSG_MAP(CFiveDlg)
-	ON_WM_PAINT()
-	ON_WM_QUERYDRAGICON()
- 
-	ON_BN_CLICKED(IDC_BTN_BACK, OnBtnBack)
-	ON_COMMAND(ID_MENU_SERVER, OnMenuServer)
-	ON_COMMAND(ID_MENU_CLIENT, OnMenuClient)
-	ON_WM_SETCURSOR()
-	ON_BN_CLICKED(IDC_BTN_HQ, OnBtnHq)
-	ON_BN_CLICKED(IDC_BTN_LOST, OnBtnLost)
-	ON_COMMAND(ID_MENU_EXIT, OnMenuExit)
-	ON_COMMAND(ID_MENU_ABOUT, OnMenuAbout)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CFiveDlg)
+ON_WM_PAINT()
+ON_WM_QUERYDRAGICON()
+
+ON_BN_CLICKED(IDC_BTN_BACK, OnBtnBack)
+ON_COMMAND(ID_MENU_SERVER, OnMenuServer)
+ON_COMMAND(ID_MENU_CLIENT, OnMenuClient)
+ON_WM_SETCURSOR()
+ON_BN_CLICKED(IDC_BTN_HQ, OnBtnHq)
+ON_BN_CLICKED(IDC_BTN_LOST, OnBtnLost)
+ON_COMMAND(ID_MENU_EXIT, OnMenuExit)
+ON_COMMAND(ID_MENU_ABOUT, OnMenuAbout)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -63,53 +63,52 @@ BOOL CFiveDlg::OnInitDialog()
 
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
-	SetIcon(m_hIcon, TRUE);			// Set big icon
-	SetIcon(m_hIcon, FALSE);		// Set small icon
-	
+	SetIcon(m_hIcon, TRUE);	 // Set big icon
+	SetIcon(m_hIcon, FALSE); // Set small icon
+
 	// TODO: Add extra initialization here
-    m_pDlg = NULL;
-    CRect rect(0, 0, 200, 200);
-    m_Table.CreateEx( WS_EX_CLIENTEDGE, _T("ChessTable"), NULL,   WS_VISIBLE | WS_BORDER | WS_CHILD,
-        CRect( 0, 0, 401, 478 ), this, IDC_TABLE );
-    // ÉèÖÃË«·½ĞÕÃû
+	m_pDlg = NULL;
+	CRect rect(0, 0, 200, 200);
+	m_Table.CreateEx(WS_EX_CLIENTEDGE, _T("ChessTable"), NULL, WS_VISIBLE | WS_BORDER | WS_CHILD,
+					 CRect(0, 0, 401, 478), this, IDC_TABLE);
+	// è®¾ç½®åŒæ–¹å§“å
 	m_Table.m_strMe = theApp.m_strName;
-    SetDlgItemText( IDC_ST_ME, m_Table.m_strMe );
-    SetDlgItemText( IDC_ST_ENEMY, _T("ÎŞÍæ¼Ò¼ÓÈë") );
-    // ½ûÓÃ¡°ÔÙÍæ¡±ºÍ¡°Àë¿ª¡±
-    CMenu *pMenu = GetMenu();
-    pMenu->EnableMenuItem( ID_MENU_PLAYAGAIN, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND );
-    pMenu->EnableMenuItem( ID_MENU_LEAVE, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND );
-    // ²¶»ñÁÄÌìÊäÈë¿ò¾ä±ú£¬¹©´¦Àí»Ø³µÊ¹ÓÃ
-	m_hChat = ::FindWindowEx( GetDlgItem( IDC_CMB_CHAT )->GetSafeHwnd(), NULL, _T("Edit"), NULL );
-    ::SendMessage( m_hChat, EM_LIMITTEXT, (WPARAM)128, 0);
-    m_Table.Clear( TRUE );
-    GetDlgItem( IDC_CMB_CHAT )->EnableWindow( FALSE );
-    GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-    GetDlgItem( IDC_BTN_HQ )->EnableWindow( FALSE );
-    GetDlgItem( IDC_BTN_LOST )->EnableWindow( FALSE );
+	SetDlgItemText(IDC_ST_ME, m_Table.m_strMe);
+	SetDlgItemText(IDC_ST_ENEMY, _T("æ— ç©å®¶åŠ å…¥"));
+	// ç¦ç”¨â€œå†ç©â€å’Œâ€œç¦»å¼€â€
+	CMenu *pMenu = GetMenu();
+	pMenu->EnableMenuItem(ID_MENU_PLAYAGAIN, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND);
+	pMenu->EnableMenuItem(ID_MENU_LEAVE, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND);
+	// æ•è·èŠå¤©è¾“å…¥æ¡†å¥æŸ„ï¼Œä¾›å¤„ç†å›è½¦ä½¿ç”¨
+	m_hChat = ::FindWindowEx(GetDlgItem(IDC_CMB_CHAT)->GetSafeHwnd(), NULL, _T("Edit"), NULL);
+	::SendMessage(m_hChat, EM_LIMITTEXT, (WPARAM)128, 0);
+	m_Table.Clear(TRUE);
+	GetDlgItem(IDC_CMB_CHAT)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BTN_HQ)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BTN_LOST)->EnableWindow(FALSE);
 
-    GetDlgItem( IDC_TABLE )->SetFocus();
+	GetDlgItem(IDC_TABLE)->SetFocus();
 
- 
+	if (theApp.m_isCreator == 0)
+		PostMessage(WM_COMMAND, ID_MENU_CLIENT, 0);
+	else if (theApp.m_isCreator == 1)
+		PostMessage(WM_COMMAND, ID_MENU_SERVER, 0);
 
-	if(theApp.m_isCreator==0)  	PostMessage(WM_COMMAND, ID_MENU_CLIENT, 0);
-	else if (theApp.m_isCreator == 1) 	PostMessage(WM_COMMAND, ID_MENU_SERVER, 0);
-
-	 
-	return FALSE;  // return TRUE  unless you set the focus to a control
+	return FALSE; // return TRUE  unless you set the focus to a control
 }
 
 // If you add a minimize button to your dialog, you will need the code below
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CFiveDlg::OnPaint() 
+void CFiveDlg::OnPaint()
 {
 	if (IsIconic())
 	{
 		CPaintDC dc(this); // device context for painting
 
-		SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
+		SendMessage(WM_ICONERASEBKGND, (WPARAM)dc.GetSafeHdc(), 0);
 
 		// Center icon in client rectangle
 		int cxIcon = GetSystemMetrics(SM_CXICON);
@@ -132,134 +131,125 @@ void CFiveDlg::OnPaint()
 //  the minimized window.
 HCURSOR CFiveDlg::OnQueryDragIcon()
 {
-	return (HCURSOR) m_hIcon;
+	return (HCURSOR)m_hIcon;
 }
 
-void CFiveDlg::OnOK() 
+void CFiveDlg::OnOK()
 {
 }
 
-void CFiveDlg::OnCancel() 
+void CFiveDlg::OnCancel()
 {
-	if (IDYES == MessageBox(_T("È·¶¨ÒªÍË³öÂğ£¿"), _T("Îå×ÓÆå"), MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2))
+	if (IDYES == MessageBox(_T("ç¡®å®šè¦é€€å‡ºå—ï¼Ÿ"), _T("äº”å­æ£‹"), MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2))
 	{
 		CString strName, strInfo;
 		int len;
-		strInfo.Format(_T("%c,%s"), CL_CMD_OFFLINE, theApp.m_strName);//ÏÂÏßÍ¨Öª
+		strInfo.Format(_T("%c,%s"), CL_CMD_OFFLINE, theApp.m_strName); // ä¸‹çº¿é€šçŸ¥
 		len = theApp.m_clinetsock.Send(strInfo.GetBuffer(strInfo.GetLength()), 2 * strInfo.GetLength());
 		if (SOCKET_ERROR == len)
-			AfxMessageBox(_T("·¢ËÍ´íÎó"));
+			AfxMessageBox(_T("å‘é€é”™è¯¯"));
 		CDialog::OnCancel();
 	}
 }
 
- 
-
-void CFiveDlg::OnBtnBack() 
+void CFiveDlg::OnBtnBack()
 {
 	// TODO: Add your control notification handler code here
-    m_Table.Back();
+	m_Table.Back();
 }
 
- 
-void CFiveDlg::OnMenuServer() 
-{
-    // TODO: Add your command handler code here
-    m_pDlg = new CServerDlg;
-    m_pDlg->Create( IDD_DLG_SERVER, this );
-    m_pDlg->ShowWindow( SW_SHOW );
-}
-
-void CFiveDlg::OnMenuClient() 
+void CFiveDlg::OnMenuServer()
 {
 	// TODO: Add your command handler code here
-    CClientDlg dlg;
-    if ( IDOK == dlg.DoModal() )
-    {
-        // ·¢ËÍ¼º·½ĞÕÃû
-        MSGSTRUCT msg;
-        msg.uMsg = MSG_INFORMATION;
-        lstrcpy( msg.szMsg, m_Table.m_strMe );
-
-        m_Table.m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
-        // ÉèÖÃ°´Å¥×´Ì¬
-        GetDlgItem( IDC_BTN_HQ )->EnableWindow( TRUE );
-        GetDlgItem( IDC_CMB_CHAT )->EnableWindow( TRUE );
-        GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-        GetDlgItem( IDC_BTN_LOST )->EnableWindow( TRUE );
-        // ÉèÖÃ²Ëµ¥×´Ì¬
-        m_Table.SetMenuState( FALSE );
-    }
+	m_pDlg = new CServerDlg;
+	m_pDlg->Create(IDD_DLG_SERVER, this);
+	m_pDlg->ShowWindow(SW_SHOW);
 }
 
-BOOL CFiveDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+void CFiveDlg::OnMenuClient()
+{
+	// TODO: Add your command handler code here
+	CClientDlg dlg;
+	if (IDOK == dlg.DoModal())
+	{
+		// å‘é€å·±æ–¹å§“å
+		MSGSTRUCT msg;
+		msg.uMsg = MSG_INFORMATION;
+		lstrcpy(msg.szMsg, m_Table.m_strMe);
+
+		m_Table.m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
+		// è®¾ç½®æŒ‰é’®çŠ¶æ€
+		GetDlgItem(IDC_BTN_HQ)->EnableWindow(TRUE);
+		GetDlgItem(IDC_CMB_CHAT)->EnableWindow(TRUE);
+		GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+		GetDlgItem(IDC_BTN_LOST)->EnableWindow(TRUE);
+		// è®¾ç½®èœå•çŠ¶æ€
+		m_Table.SetMenuState(FALSE);
+	}
+}
+
+BOOL CFiveDlg::OnSetCursor(CWnd *pWnd, UINT nHitTest, UINT message)
 {
 	// TODO: Add your message handler code here and/or call default
-    if ( GetDlgItem( IDC_EDT_CHAT ) == pWnd )
-    {
-        // ´¦ÀíÁÄÌì¼ÇÂ¼µÄÊó±êÖ¸Õë
-        SetCursor( LoadCursor( NULL, IDC_ARROW ) );
-        return TRUE;
-    }
-    else
-	    return CDialog::OnSetCursor(pWnd, nHitTest, message);
+	if (GetDlgItem(IDC_EDT_CHAT) == pWnd)
+	{
+		// å¤„ç†èŠå¤©è®°å½•çš„é¼ æ ‡æŒ‡é’ˆ
+		SetCursor(LoadCursor(NULL, IDC_ARROW));
+		return TRUE;
+	}
+	else
+		return CDialog::OnSetCursor(pWnd, nHitTest, message);
 }
 
-BOOL CFiveDlg::PreTranslateMessage(MSG* pMsg) 
+BOOL CFiveDlg::PreTranslateMessage(MSG *pMsg)
 {
 	// TODO: Add your specialized code here and/or call the base class
-	if ( WM_KEYDOWN == pMsg->message && VK_RETURN == pMsg->wParam && m_hChat == pMsg->hwnd )
-    {
-        // ´¦ÀíÁÄÌìÊäÈë´°¿ÚµÄ»Ø³µÏûÏ¢
-        TCHAR str[128];
-        // ·¢ËÍÁÄÌìÄÚÈİ
-        ::GetWindowText( m_hChat, str, 128 );
-        m_Table.Chat( str );
-        // ¼ÓÈëÁÄÌì¼ÇÂ¼
-        CString strAdd;
-        strAdd.Format( _T("Äã Ëµ£º%s\r\n"), str );
-        m_ChatList.SetSel( -1, -1, TRUE );
-        m_ChatList.ReplaceSel( strAdd );
-        // Çå¿ÕÁÄÌìÊäÈë´°¿Ú
-        ::SetWindowText( m_hChat, _T("") );
-    }
+	if (WM_KEYDOWN == pMsg->message && VK_RETURN == pMsg->wParam && m_hChat == pMsg->hwnd)
+	{
+		// å¤„ç†èŠå¤©è¾“å…¥çª—å£çš„å›è½¦æ¶ˆæ¯
+		TCHAR str[128];
+		// å‘é€èŠå¤©å†…å®¹
+		::GetWindowText(m_hChat, str, 128);
+		m_Table.Chat(str);
+		// åŠ å…¥èŠå¤©è®°å½•
+		CString strAdd;
+		strAdd.Format(_T("ä½  è¯´ï¼š%s\r\n"), str);
+		m_ChatList.SetSel(-1, -1, TRUE);
+		m_ChatList.ReplaceSel(strAdd);
+		// æ¸…ç©ºèŠå¤©è¾“å…¥çª—å£
+		::SetWindowText(m_hChat, _T(""));
+	}
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
-void CFiveDlg::OnBtnHq() 
+void CFiveDlg::OnBtnHq()
 {
 	// TODO: Add your control notification handler code here
-    m_Table.DrawGame();
+	m_Table.DrawGame();
 }
 
-void CFiveDlg::OnBtnLost() 
+void CFiveDlg::OnBtnLost()
 {
 	// TODO: Add your control notification handler code here
 	m_Table.GiveUp();
 }
 
- 
- 
- 
- 
-
-void CFiveDlg::OnMenuExit() 
+void CFiveDlg::OnMenuExit()
 {
 	// TODO: Add your command handler code here
 	OnCancel();
 }
 
-void CFiveDlg::OnMenuAbout() 
+void CFiveDlg::OnMenuAbout()
 {
 	// TODO: Add your command handler code here
 	CAboutDlg dlg;
-    dlg.DoModal();
+	dlg.DoModal();
 }
 
-
-BOOL CFiveDlg::PreCreateWindow(CREATESTRUCT& cs)
+BOOL CFiveDlg::PreCreateWindow(CREATESTRUCT &cs)
 {
-	// TODO: ÔÚ´ËÌí¼Ó×¨ÓÃ´úÂëºÍ/»òµ÷ÓÃ»ùÀà
- 
+	// TODO: åœ¨æ­¤æ·»åŠ ä¸“ç”¨ä»£ç å’Œ/æˆ–è°ƒç”¨åŸºç±»
+
 	return CDialog::PreCreateWindow(cs);
 }

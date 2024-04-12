@@ -1,5 +1,5 @@
-//Download by http://www.NewXing.com
-// ChatEdit.cpp : implementation file
+// Download by http://www.NewXing.com
+//  ChatEdit.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -24,33 +24,32 @@ CChatEdit::~CChatEdit()
 {
 }
 
-
 BEGIN_MESSAGE_MAP(CChatEdit, CEdit)
-	//{{AFX_MSG_MAP(CChatEdit)
-	ON_WM_KEYDOWN()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CChatEdit)
+ON_WM_KEYDOWN()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CChatEdit message handlers
 
-void CChatEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CChatEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     // TODO: Add your message handler code here and/or call default
-    if ( '6' == nChar )
+    if ('6' == nChar)
     {
-        CTable *pTable = (CTable *)( AfxGetMainWnd()->GetDlgItem( IDC_TABLE ) );
-        // ·¢ËÍÁÄÌìÐÅÏ¢
+        CTable *pTable = (CTable *)(AfxGetMainWnd()->GetDlgItem(IDC_TABLE));
+        // å‘é€èŠå¤©ä¿¡æ¯
         TCHAR str[128];
-        GetWindowText( str, 128 );
-        pTable->Chat( str );
-        // Ð´ÈëÁÄÌì¼ÇÂ¼
-        CEdit *pEdit = (CEdit *)( AfxGetMainWnd()->GetDlgItem( IDC_EDT_CHAT ) );
+        GetWindowText(str, 128);
+        pTable->Chat(str);
+        // å†™å…¥èŠå¤©è®°å½•
+        CEdit *pEdit = (CEdit *)(AfxGetMainWnd()->GetDlgItem(IDC_EDT_CHAT));
         CString strAdd;
-        strAdd.Format( _T("Äã Ëµ£º%s\r\n"), str );
-        pEdit->SetSel( -1, -1, TRUE );
-        pEdit->ReplaceSel( str );
-        SetWindowText( _T("") );
+        strAdd.Format(_T("ä½  è¯´ï¼š%s\r\n"), str);
+        pEdit->SetSel(-1, -1, TRUE);
+        pEdit->ReplaceSel(str);
+        SetWindowText(_T(""));
     }
     else
     {

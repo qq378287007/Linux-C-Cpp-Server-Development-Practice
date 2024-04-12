@@ -22,87 +22,86 @@ int GetDateTime(char *psDateTime)
 	return 0;
 }
 
-int insert()
+int insert(char *name, int age)
 {
+	int status = 0;
+
 	MYSQL mysql;
 	mysql_init(&mysql);
-	if (!mysql_real_connect(&mysql, "localhost", "root", "mali", "test", 0, NULL, 0))
+	if (!mysql_real_connect(&mysql, "localhost", "root", "123456", "test", 0, NULL, 0))
 	{
 		printf("Failed to connect to Mysql!\n");
-		return 1;
+		status = 1;
+		goto end;
 	}
-	else
-		printf("Connected to Mysql successfully!\n");
+	printf("Connected to Mysql successfully!\n");
 
-	char cur_time[55] = "";
 	char buf[512] = "";
-	char szName[100] = "Jack2";
+	char cur_time[55] = "";
 	GetDateTime(cur_time);
-	sprintf(buf, "INSERT INTO student(name, age, SETTIME) VALUES(\'%s\', %d, \'%s\')", szName, 27, cur_time);
+	sprintf(buf, "INSERT INTO student(name, age, SETTIME) VALUES(\'%s\', %d, \'%s\')", name, age, cur_time);
 	int r = mysql_query(&mysql, buf);
 	if (r)
 	{
 		printf("Insert data failure!\n");
-		return 1;
+		status = 1;
+		goto end;
 	}
-	else
-	{
-		printf("Insert data success!\n");
-	}
+	printf("Insert data success!\n");
 
+end:
 	mysql_close(&mysql);
-	return 0;
+	return status;
 }
 
 int showTable()
 {
+	int status = 0;
+
 	MYSQL mysql;
-	mysql_init(&mysql);// 初始化连接句柄
+	mysql_init(&mysql);
 
-	// 连接server
-	// MYSQL句柄，serverIP地址，username，password，数据库等
-	if (!mysql_real_connect(&mysql, "localhost", "root", "mali", "test", 0, NULL, 0))
+	if (!mysql_real_connect(&mysql, "localhost", "root", "123456", "test", 0, NULL, 0))
+	{
 		printf("Error connecting to Mysql!\n");
-	else
-		printf("Connected Mysql successful!\n");
+		status = 1;
+		goto end;
+	}
+	printf("Connected Mysql successful!\n");
 
-	// 查询，成功0
 	char *query = "select * from student";
 	int flag = mysql_real_query(&mysql, query, (unsigned int)strlen(query));
 	if (flag)
 	{
 		printf("Query failed!\n");
-		return 1;
+		status = 1;
+		goto end;
 	}
-	else
-	{
-		printf("[%s] made...\n", query);
-	}
+	printf("[%s] made...\n", query);
 
-	// 读取所有查询结果
 	MYSQL_RES *res = mysql_store_result(&mysql);
+	int num = mysql_num_fields(res);
 	do
 	{
-		// 检索结果集的下一行
 		MYSQL_ROW row = mysql_fetch_row(res);
 		if (row == 0)
 			break;
 
-		// 返回结果集中的字段数目
-		for (int t = 0; t < mysql_num_fields(res); t++)
+		for (int t = 0; t < num; t++)
 			printf("%s\t", row[t]);
 		printf("\n");
 	} while (1);
 
-	// 关闭连接
+end:
 	mysql_close(&mysql);
-
-	return 0;
+	return status;
 }
 
 int main()
 {
-	insert();
+	char name[] = "Jack2";
+	int age = 27;
+	insert(name, age);
 	showTable();
 	return 0;
 }

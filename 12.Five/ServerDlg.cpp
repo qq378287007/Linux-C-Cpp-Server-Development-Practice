@@ -1,5 +1,5 @@
-//zww
-// ServerDlg.cpp : implementation file
+// zww
+//  ServerDlg.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -16,84 +16,80 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CServerDlg dialog
 
-
-CServerDlg::CServerDlg(CWnd* pParent /*=NULL*/)
+CServerDlg::CServerDlg(CWnd *pParent /*=NULL*/)
 	: CDialog(CServerDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CServerDlg)
-		// NOTE: the ClassWizard will add member initialization here
+	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
-
-void CServerDlg::DoDataExchange(CDataExchange* pDX)
+void CServerDlg::DoDataExchange(CDataExchange *pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CServerDlg)
-		// NOTE: the ClassWizard will add DDX and DDV calls here
+	// NOTE: the ClassWizard will add DDX and DDV calls here
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CServerDlg, CDialog)
-	//{{AFX_MSG_MAP(CServerDlg)
-	ON_BN_CLICKED(IDC_BTN_LEAVE, OnBtnLeave)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CServerDlg)
+ON_BN_CLICKED(IDC_BTN_LEAVE, OnBtnLeave)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CServerDlg message handlers
 
-BOOL CServerDlg::OnInitDialog() 
+BOOL CServerDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
+
 	// TODO: Add extra initialization here
 
-    // Ê×ÏÈ½ûÓÃÖ÷´°¿Ú´ïµ½Ä£Ê½¶Ô»°¿òµÄÄ¿µÄ
-    GetParent()->EnableWindow( FALSE );
-    // »ñÈ¡Ö÷»úÃû¼°IPµØÖ·
-    CHAR szHost[100];
-    CHAR *szIP;
-    hostent *host;
+	// é¦–å…ˆç¦ç”¨ä¸»çª—å£è¾¾åˆ°æ¨¡å¼å¯¹è¯æ¡†çš„ç›®çš„
+	GetParent()->EnableWindow(FALSE);
+	// èŽ·å–ä¸»æœºååŠIPåœ°å€
+	CHAR szHost[100];
+	CHAR *szIP;
+	hostent *host;
 
-    gethostname(szHost, 100);
-    SetDlgItemText( IDC_EDIT_HOST, szHost );
+	gethostname(szHost, 100);
+	SetDlgItemText(IDC_EDIT_HOST, szHost);
 
-    host = gethostbyname( szHost );
-    for ( int i = 0; host != NULL && host->h_addr_list[i] != NULL; i++ )
-    {
-        szIP = inet_ntoa( *( (in_addr *)host->h_addr_list[i] ) );
-        break;
-    }
-    SetDlgItemText( IDC_EDIT_IP, szIP );
+	host = gethostbyname(szHost);
+	for (int i = 0; host != NULL && host->h_addr_list[i] != NULL; i++)
+	{
+		szIP = inet_ntoa(*((in_addr *)host->h_addr_list[i]));
+		break;
+	}
+	SetDlgItemText(IDC_EDIT_IP, szIP);
 
 	startGame();
-	return FALSE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	return FALSE; // return TRUE unless you set the focus to a control
+				  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CServerDlg::OnBtnLeave() 
+void CServerDlg::OnBtnLeave()
 {
 	// TODO: Add your control notification handler code here
 	OnCancel();
 }
 
-void CServerDlg::startGame() 
+void CServerDlg::startGame()
 {
 	// TODO: Add your control notification handler code here
-	CTable *pTable = (CTable *)GetParent()->GetDlgItem( IDC_TABLE );
-    SetDlgItemText( IDC_ST_STATUS, _T("×´Ì¬£ºµÈ´ýÆäËûÍæ¼Ò¼ÓÈë...") );
-    pTable->m_sock.Create( 20000 );
-    pTable->m_sock.Listen();
-    
+	CTable *pTable = (CTable *)GetParent()->GetDlgItem(IDC_TABLE);
+	SetDlgItemText(IDC_ST_STATUS, _T("çŠ¶æ€ï¼šç­‰å¾…å…¶ä»–çŽ©å®¶åŠ å…¥..."));
+	pTable->m_sock.Create(20000);
+	pTable->m_sock.Listen();
 }
 
-void CServerDlg::OnCancel() 
+void CServerDlg::OnCancel()
 {
 	// TODO: Add extra cleanup here
-	CTable *pTable = (CTable *)GetParent()->GetDlgItem( IDC_TABLE );
-    pTable->m_sock.Close();
+	CTable *pTable = (CTable *)GetParent()->GetDlgItem(IDC_TABLE);
+	pTable->m_sock.Close();
 
 	CDialog::OnCancel();
 }

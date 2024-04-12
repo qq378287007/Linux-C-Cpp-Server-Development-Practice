@@ -29,9 +29,7 @@
 #define CL_CMD_CREATE_IS_BUSY 'b'
 
 int GetName(char str[], char szName[])
-
 {
-
 	// char str[] ="a,b,c,d*e";
 
 	const char *split = ",";
@@ -62,7 +60,6 @@ int GetName(char str[], char szName[])
 // 特别要注意分割处理后原字符串 str 会变，变成第一个子字符串
 
 void GetItem(char str[], char item1[], char item2[])
-
 {
 
 	const char *split = ",";
@@ -94,7 +91,6 @@ void GetItem(char str[], char item1[], char item2[])
 // 查找字符串中某个字符出现的次数
 
 int countChar(const char *p, const char chr)
-
 {
 
 	int count = 0, i = 0;
@@ -118,7 +114,6 @@ int countChar(const char *p, const char chr)
 MYLINK myhead; // 创建创建棋局的人的头指针，初始化为NULL
 
 int main(int argc, char *argv[])
-
 {
 
 	int i, maxi, maxfd, ret;
@@ -176,9 +171,7 @@ int main(int argc, char *argv[])
 	// 数组初始化为-1
 
 	maxi = -1;
-
 	for (i = 0; i < FD_SETSIZE; i++)
-
 		client[i] = -1;
 
 	// 集合清零
@@ -192,7 +185,6 @@ int main(int argc, char *argv[])
 	puts("Game server is running...");
 
 	for (;;)
-
 	{
 
 		// 关键点3
@@ -272,9 +264,7 @@ int main(int argc, char *argv[])
 		}
 
 		for (i = 0; i <= maxi; i++)
-
 		{
-
 			// 检测clients 哪个有数据就绪
 
 			if ((sockfd = client[i]) < 0)
@@ -284,9 +274,7 @@ int main(int argc, char *argv[])
 			// sockfd（connd）是否在rset集合中
 
 			if (FD_ISSET(sockfd, &rset))
-
 			{
-
 				// 进行读数据 不用阻塞立即读取（select已经帮忙处理阻塞环节）
 
 				if ((n = read(sockfd, buf, MAXLINE)) == 0)

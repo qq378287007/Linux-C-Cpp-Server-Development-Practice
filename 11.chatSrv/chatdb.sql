@@ -15,3 +15,5 @@ CREATE TABLE `qqnum` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- source chatdb.sql
+
+-- mysql -uroot -p123456 < chatdb.sql

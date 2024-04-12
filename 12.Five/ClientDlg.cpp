@@ -1,5 +1,5 @@
-//zww
-// ClientDlg.cpp : implementation file
+// zww
+//  ClientDlg.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -18,124 +18,121 @@ static char THIS_FILE[] = __FILE__;
 // CClientDlg dialog
 extern CFiveApp theApp;
 
-CClientDlg::CClientDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CClientDlg::IDD, pParent)
+CClientDlg::CClientDlg(CWnd *pParent /*=NULL*/)
+    : CDialog(CClientDlg::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(CClientDlg)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
+    //{{AFX_DATA_INIT(CClientDlg)
+    // NOTE: the ClassWizard will add member initialization here
+    //}}AFX_DATA_INIT
 }
 
-
-void CClientDlg::DoDataExchange(CDataExchange* pDX)
+void CClientDlg::DoDataExchange(CDataExchange *pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CClientDlg)
-	// NOTE: the ClassWizard will add DDX and DDV calls here
-	//}}AFX_DATA_MAP
-	DDX_Control(pDX, IDC_EDIT_HOST, m_edtHost);
+    CDialog::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CClientDlg)
+    // NOTE: the ClassWizard will add DDX and DDV calls here
+    //}}AFX_DATA_MAP
+    DDX_Control(pDX, IDC_EDIT_HOST, m_edtHost);
 }
-
 
 BEGIN_MESSAGE_MAP(CClientDlg, CDialog)
-	//{{AFX_MSG_MAP(CClientDlg)
-	ON_BN_CLICKED(IDC_BTN_OUT, OnBtnOut)
-	ON_EN_UPDATE(IDC_EDIT_HOST, OnUpdateEditHost)
-	ON_WM_TIMER()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CClientDlg)
+ON_BN_CLICKED(IDC_BTN_OUT, OnBtnOut)
+ON_EN_UPDATE(IDC_EDIT_HOST, OnUpdateEditHost)
+ON_WM_TIMER()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CClientDlg message handlers
 
-void CClientDlg::OnOK() 
+void CClientDlg::OnOK()
 {
-    // ÆÁ±ÎOnOK£¬Ê¹°´»Ø³µµÄÊ±ºò²»ÍË³ö
+    // å±è”½OnOKï¼Œä½¿æŒ‰å›žè½¦çš„æ—¶å€™ä¸é€€å‡º
 }
 
-
-void CClientDlg::Connect() 
+void CClientDlg::Connect()
 {
     // TODO: Add your control notification handler code here
     CString strHost;
-	m_edtHost.SetWindowText(theApp.m_szCreatorIPAsJoin);
-    // »ñÈ¡Ö÷»úÃû³Æ
-    GetDlgItemText( IDC_EDIT_HOST, strHost );
-    // ÉèÖÃ³¬Ê±Ê±¼ä
+    m_edtHost.SetWindowText(theApp.m_szCreatorIPAsJoin);
+    // èŽ·å–ä¸»æœºåç§°
+    GetDlgItemText(IDC_EDIT_HOST, strHost);
+    // è®¾ç½®è¶…æ—¶æ—¶é—´
     m_nTimer = 5;
-    // ³õÊ¼»¯Á¬½Ó×´Ì¬
+    // åˆå§‹åŒ–è¿žæŽ¥çŠ¶æ€
     m_pTable->m_bConnected = FALSE;
-    // ÉèÖÃ¿Ø¼þÉúÐ§×´Ì¬
-    GetDlgItem( IDC_BTN_CONNECT )->EnableWindow( FALSE );
-    GetDlgItem( IDC_EDIT_HOST )->EnableWindow( FALSE );
-    // ´´½¨Ì×½Ó×Ö²¢Á¬½Ó
+    // è®¾ç½®æŽ§ä»¶ç”Ÿæ•ˆçŠ¶æ€
+    GetDlgItem(IDC_BTN_CONNECT)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EDIT_HOST)->EnableWindow(FALSE);
+    // åˆ›å»ºå¥—æŽ¥å­—å¹¶è¿žæŽ¥
     m_pTable->m_conn.Create();
-    m_pTable->m_conn.Connect( strHost, 20000 );
-    // ¿ªÊ¼¼ÆÊ±
-    SetTimer( 1, 1000, NULL );
+    m_pTable->m_conn.Connect(strHost, 20000);
+    // å¼€å§‹è®¡æ—¶
+    SetTimer(1, 1000, NULL);
 }
 
-void CClientDlg::OnBtnOut() 
+void CClientDlg::OnBtnOut()
 {
-	// TODO: Add your control notification handler code here
-    KillTimer( 1 );
-	OnCancel();
+    // TODO: Add your control notification handler code here
+    KillTimer(1);
+    OnCancel();
 }
 
-void CClientDlg::OnUpdateEditHost() 
+void CClientDlg::OnUpdateEditHost()
 {
-	// TODO: If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CDialog::OnInitDialog()
-	// function to send the EM_SETEVENTMASK message to the control
-	// with the ENM_UPDATE flag ORed into the lParam mask.
-	
-	// TODO: Add your control notification handler code here
-    // Èç¹ûÎÞÖ÷»úÃû£¬ÔòÊ¹¡°Á¬½Ó¡±°´Å¥Ê§Ð§
-	CString str;
-    GetDlgItemText( IDC_EDIT_HOST, str );
-    GetDlgItem( IDC_BTN_CONNECT )->EnableWindow( !str.IsEmpty() );
+    // TODO: If this is a RICHEDIT control, the control will not
+    // send this notification unless you override the CDialog::OnInitDialog()
+    // function to send the EM_SETEVENTMASK message to the control
+    // with the ENM_UPDATE flag ORed into the lParam mask.
+
+    // TODO: Add your control notification handler code here
+    // å¦‚æžœæ— ä¸»æœºåï¼Œåˆ™ä½¿â€œè¿žæŽ¥â€æŒ‰é’®å¤±æ•ˆ
+    CString str;
+    GetDlgItemText(IDC_EDIT_HOST, str);
+    GetDlgItem(IDC_BTN_CONNECT)->EnableWindow(!str.IsEmpty());
 }
 
-BOOL CClientDlg::OnInitDialog() 
+BOOL CClientDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
-	
-	// TODO: Add extra initialization here
-    SetDlgItemText( IDC_ST_TIMER, _T("") );
-    m_pTable = (CTable *)GetParent()->GetDlgItem( IDC_TABLE );
+    CDialog::OnInitDialog();
 
-	Connect();
+    // TODO: Add extra initialization here
+    SetDlgItemText(IDC_ST_TIMER, _T(""));
+    m_pTable = (CTable *)GetParent()->GetDlgItem(IDC_TABLE);
 
-    return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+    Connect();
+
+    return TRUE; // return TRUE unless you set the focus to a control
+                 // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CClientDlg::OnTimer(UINT nIDEvent) 
+void CClientDlg::OnTimer(UINT nIDEvent)
 {
-	// TODO: Add your message handler code here and/or call default
-	if ( 1 == nIDEvent )
+    // TODO: Add your message handler code here and/or call default
+    if (1 == nIDEvent)
     {
-        if ( m_pTable->m_bConnected )
+        if (m_pTable->m_bConnected)
         {
-            KillTimer( 1 );
-            EndDialog( IDOK );
+            KillTimer(1);
+            EndDialog(IDOK);
         }
-        else if ( 0 == m_nTimer )
+        else if (0 == m_nTimer)
         {
-            KillTimer( 1 );
-            MessageBox( _T("Á¬½Ó¶Ô·½Ê§°Ü£¬Çë¼ì²éÖ÷»úÃû»òIPµØÖ·ÊÇ·ñÕýÈ·£¬ÒÔ¼°ÍøÂçÁ¬½ÓÊÇ·ñÕý³£¡£"),
-                _T("Á¬½ÓÊ§°Ü"), MB_ICONERROR );
-            SetDlgItemText( IDC_ST_TIMER, _T("") );
-            GetDlgItem( IDC_EDIT_HOST )->EnableWindow();
-            SetDlgItemText( IDC_EDIT_HOST, _T("") );
-            GetDlgItem( IDC_EDIT_HOST )->SetFocus();
+            KillTimer(1);
+            MessageBox(_T("è¿žæŽ¥å¯¹æ–¹å¤±è´¥ï¼Œè¯·æ£€æŸ¥ä¸»æœºåæˆ–IPåœ°å€æ˜¯å¦æ­£ç¡®ï¼Œä»¥åŠç½‘ç»œè¿žæŽ¥æ˜¯å¦æ­£å¸¸ã€‚"),
+                       _T("è¿žæŽ¥å¤±è´¥"), MB_ICONERROR);
+            SetDlgItemText(IDC_ST_TIMER, _T(""));
+            GetDlgItem(IDC_EDIT_HOST)->EnableWindow();
+            SetDlgItemText(IDC_EDIT_HOST, _T(""));
+            GetDlgItem(IDC_EDIT_HOST)->SetFocus();
         }
         else
         {
             CString str;
-            str.Format( _T("ÕýÔÚÁ¬½Ó...(%d)"), m_nTimer-- );
-            SetDlgItemText( IDC_ST_TIMER, str);
+            str.Format(_T("æ­£åœ¨è¿žæŽ¥...(%d)"), m_nTimer--);
+            SetDlgItemText(IDC_ST_TIMER, str);
         }
     }
-	CDialog::OnTimer(nIDEvent);
+    CDialog::OnTimer(nIDEvent);
 }

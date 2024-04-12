@@ -1,5 +1,4 @@
 #include "stdio.h"
-
 #include "mylink.h"
 
 void AppendNode(struct link *head, int fd, char szName[], char ip[])
@@ -98,26 +97,16 @@ void GetAllFreeCreators(struct link *head, char *buf)
 { // 输出函数，打印链表
 
 	struct link *p = head->next; // 定义p指针使其指向头节点
-
 	while (p != NULL)
-
 	{
-
 		if (p->isCreator && p->isFree)
-
 		{
-
 			strcat(buf, ","); // 所有在线用户名之间用逗号隔开
-
 			strcat(buf, p->usrName);
-
 			strcat(buf, "(");
-
 			strcat(buf, p->creatorIP);
-
 			strcat(buf, ")");
 		}
-
 		p = p->next;
 	}
 }
@@ -126,14 +115,11 @@ void DeleteMemory(struct link *head)
 { // 释放资源函数
 
 	struct link *p = head->next, *pr = NULL; // 定义p指针指向头节点
-
 	while (p != NULL)
 	{ // 当p的指针域不为NULL
 
-		pr = p; // 将每一个节点的地址赋值给pr指针
-
+		pr = p;		 // 将每一个节点的地址赋值给pr指针
 		p = p->next; // 使p指向下一个节点
-
-		free(pr); // 释放此时pr指向节点的内存
+		free(pr);	 // 释放此时pr指向节点的内存
 	}
 }

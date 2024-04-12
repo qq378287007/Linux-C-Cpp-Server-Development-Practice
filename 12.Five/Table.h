@@ -1,4 +1,3 @@
-//zww
 #ifndef CLASS_TABLE
 #define CLASS_TABLE
 
@@ -7,47 +6,48 @@
 
 class CTable : public CWnd
 {
-    CImageList m_iml; // Æå×ÓÍ¼Ïñ
-    int m_color; // Íæ¼ÒÑÕÉ«
-    BOOL m_bWait; // µÈ´ı±êÖ¾
+    CImageList m_iml; // æ£‹å­å›¾åƒ
+    int m_color;      // ç©å®¶é¢œè‰²
+    BOOL m_bWait;     // ç­‰å¾…æ ‡å¿—
     void Draw(int x, int y, int color);
-    CGame *m_pGame; // ÓÎÏ·Ä£Ê½Ö¸Õë
+    CGame *m_pGame; // æ¸¸æˆæ¨¡å¼æŒ‡é’ˆ
 public:
     void PlayAgain();
-    void SetMenuState( BOOL bEnable );
+    void SetMenuState(BOOL bEnable);
     void GiveUp();
     void RestoreWait();
-    BOOL m_bOldWait; // ÏÈÇ°µÄµÈ´ı±êÖ¾
-    void Chat( LPCTSTR lpszMsg );
-    // ÊÇ·ñÁ¬½ÓÍøÂç£¨¿Í»§¶ËÊ¹ÓÃ£©
+    BOOL m_bOldWait; // å…ˆå‰çš„ç­‰å¾…æ ‡å¿—
+    void Chat(LPCTSTR lpszMsg);
+    // æ˜¯å¦è¿æ¥ç½‘ç»œï¼ˆå®¢æˆ·ç«¯ä½¿ç”¨ï¼‰
     BOOL m_bConnected;
-    // ÎÒ·½Ãû×Ö
+    // æˆ‘æ–¹åå­—
     CString m_strMe;
-    // ¶Ô·½Ãû×Ö
+    // å¯¹æ–¹åå­—
     CString m_strAgainst;
-    // ´«ÊäÓÃÌ×½Ó×Ö
+    // ä¼ è¾“ç”¨å¥—æ¥å­—
     CFiveSocket m_conn;
     CFiveSocket m_sock;
-    int m_data[15][15]; // ÆåÅÌÊı¾İ
+    int m_data[15][15]; // æ£‹ç›˜æ•°æ®
     CTable();
     ~CTable();
-    void Clear( BOOL bWait );
+    void Clear(BOOL bWait);
     void SetColor(int color);
     int GetColor() const;
-    BOOL SetWait( BOOL bWait );
-    void SetData( int x, int y, int color );
+    BOOL SetWait(BOOL bWait);
+    void SetData(int x, int y, int color);
     BOOL Win(int color) const;
     void DrawGame();
-    void SetGameMode( int nGameMode );
+    void SetGameMode(int nGameMode);
     void Back();
     void Over();
-    void Accept( int nGameMode );
-    void Connect( int nGameMode );
+    void Accept(int nGameMode);
+    void Connect(int nGameMode);
     void Receive();
+
 protected:
     afx_msg void OnPaint();
-    afx_msg void OnLButtonUp( UINT nFlags, CPoint point );
+    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
     DECLARE_MESSAGE_MAP()
 };
 
-#endif // CLASS_TABLE
+#endif 

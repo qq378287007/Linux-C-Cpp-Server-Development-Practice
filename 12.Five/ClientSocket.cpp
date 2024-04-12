@@ -1,4 +1,4 @@
-// ClientSocket.cpp : ÊµÏÖÎÄ¼ş
+// ClientSocket.cpp : å®ç°æ–‡ä»¶
 //
 
 #include "stdafx.h"
@@ -9,7 +9,6 @@
 // CClientSocket
 extern CFiveApp theApp;
 
-
 CClientSocket::CClientSocket()
 {
 	m_pDlg = NULL;
@@ -19,18 +18,16 @@ CClientSocket::~CClientSocket()
 {
 }
 
-
-// CClientSocket ³ÉÔ±º¯Êı
+// CClientSocket æˆå‘˜å‡½æ•°
 void CClientSocket::SetWnd(CDlgRoom *pDlg)
 {
 	m_pDlg = pDlg;
 }
 
-
-void GetItem(char str[], char reply[],int n)//»ñÈ¡µÚn¸ö¶ººÅºóÃæºÍn+1¶ººÅÇ°ÃæµÄ×Ö·û´®
+void GetItem(char str[], char reply[], int n) // è·å–ç¬¬nä¸ªé€—å·åé¢å’Œn+1é€—å·å‰é¢çš„å­—ç¬¦ä¸²
 {
-	const char * split = ",";
-	char * p;
+	const char *split = ",";
+	char *p;
 	p = strtok(str, split);
 	int i = 0;
 	while (p != NULL)
@@ -46,11 +43,11 @@ void GetItem(char str[], char reply[],int n)//»ñÈ¡µÚn¸ö¶ººÅºóÃæºÍn+1¶ººÅÇ°ÃæµÄ×Ö
 	}
 }
 
-int GetName(char str[], char szName[],int n) //n±íÊ¾µÚ¼¸¸ö·Ö¸ô·ûºó
+int GetName(char str[], char szName[], int n) // nè¡¨ç¤ºç¬¬å‡ ä¸ªåˆ†éš”ç¬¦å
 {
-	//char str[] ="a,b,c,d*e"; 
-	const char * split = ",";
-	char * p;
+	// char str[] ="a,b,c,d*e";
+	const char *split = ",";
+	char *p;
 	p = strtok(str, split);
 	int i = 0;
 	while (p != NULL)
@@ -61,7 +58,7 @@ int GetName(char str[], char szName[],int n) //n±íÊ¾µÚ¼¸¸ö·Ö¸ô·ûºó
 			sprintf(szName, p);
 			return 0;
 		}
-	
+
 		i++;
 		p = strtok(NULL, split);
 	}
@@ -70,72 +67,70 @@ int GetName(char str[], char szName[],int n) //n±íÊ¾µÚ¼¸¸ö·Ö¸ô·ûºó
 
 void CClientSocket::OnReceive(int nErrorCode)
 {
-	// TODO:  ÔÚ´ËÌí¼Ó×¨ÓÃ´úÂëºÍ/»òµ÷ÓÃ»ùÀà
+	// TODO:  åœ¨æ­¤æ·»åŠ ä¸“ç”¨ä»£ç å’Œ/æˆ–è°ƒç”¨åŸºç±»
 	CString str;
-	int i = 1,r=0;
-	char buffer[2048], rep[128] = "",   szName[64]="";
-	if (m_pDlg) //m_pDlgÖ¸Ïò´óÌü¶Ô»°¿ò 
+	int i = 1, r = 0;
+	char buffer[2048], rep[128] = "", szName[64] = "";
+	if (m_pDlg) // m_pDlgæŒ‡å‘å¤§å…å¯¹è¯æ¡†
 	{
 		int len = Receive(buffer, 2048);
 		if (len != -1)
 		{
 			buffer[len] = '\0';
-			buffer[len+1] = '\0';
+			buffer[len + 1] = '\0';
 
-			if (buffer[0] == 'c')// create game reply
+			if (buffer[0] == 'c') // create game reply
 			{
-				GetName(buffer, szName,2);
+				GetName(buffer, szName, 2);
 				str.Format(_T("GAME created by %s"), szName);
 				m_pDlg->m_lst.AddString(str);
-				theApp.m_isCreator = 1; //µ±Ç°ÓÃ»§ÊÇÓÎÏ·´´½¨Õß
+				theApp.m_isCreator = 1; // å½“å‰ç”¨æˆ·æ˜¯æ¸¸æˆåˆ›å»ºè€…
 				theApp.m_pDlgLogin->setOK();
 				theApp.m_pDlgLogin = NULL;
 				m_pDlg->setOK();
 				m_pDlg = NULL;
-
 			}
-			else if (buffer[0] == 'g')// get all free tables reply
+			else if (buffer[0] == 'g') // get all free tables reply
 			{
 				i = 1;
 				m_pDlg->m_lst.ResetContent();
-				do 
+				do
 				{
 					r = GetName(buffer, szName, i);
-					if (r == -1)break;
+					if (r == -1)
+						break;
 					m_pDlg->m_lst.AddString(szName);
 				} while (1);
-				 
-
 			}
-			
 		}
 	}
 	else
 	{
-		//×¢²á»Ø¸´
+		// æ³¨å†Œå›å¤
 		int len = Receive(buffer, 2048);
 		if (len != -1)
 		{
 			buffer[len] = '\0';
 			buffer[len + 1] = '\0';
 			str.Format(_T("%s"), buffer);
-			if (buffer[0] == 'r')  
+			if (buffer[0] == 'r')
 			{
-				GetItem(buffer, rep,1);
-				if(strcmp("ok", rep)==0)
-					AfxMessageBox("×¢²á³É¹¦");
-				else if(strcmp("exist",rep)==0)
-					AfxMessageBox("×¢²áÊ§°Ü£¬ÓÃ»§ÃûÒÑ¾­´æÔÚ!");
+				GetItem(buffer, rep, 1);
+				if (strcmp("ok", rep) == 0)
+					AfxMessageBox("æ³¨å†ŒæˆåŠŸ");
+				else if (strcmp("exist", rep) == 0)
+					AfxMessageBox("æ³¨å†Œå¤±è´¥ï¼Œç”¨æˆ·åå·²ç»å­˜åœ¨!");
 			}
 			else if (buffer[0] == 'l')
 			{
-				GetItem(buffer, rep,1);
+				GetItem(buffer, rep, 1);
 				if (strcmp("noexist", rep) == 0)
-					AfxMessageBox("µÇÂ¼Ê§°Ü£¬ÓÃ»§Ãû²»´æÔÚ£¬ÇëÏÈ×¢²á.");
-				else if (strcmp("hasLogined", rep) == 0) AfxMessageBox("¸ÃÓÃ»§ÒÑ¾­µÇÂ¼!");
+					AfxMessageBox("ç™»å½•å¤±è´¥ï¼Œç”¨æˆ·åä¸å­˜åœ¨ï¼Œè¯·å…ˆæ³¨å†Œ.");
+				else if (strcmp("hasLogined", rep) == 0)
+					AfxMessageBox("è¯¥ç”¨æˆ·å·²ç»ç™»å½•!");
 				else if (strcmp("ok", rep) == 0)
 				{
-					AfxMessageBox("µÇÂ¼³É¹¦");
+					AfxMessageBox("ç™»å½•æˆåŠŸ");
 					CDlgRoom dlg;
 					theApp.m_clinetsock.SetWnd(&dlg);
 

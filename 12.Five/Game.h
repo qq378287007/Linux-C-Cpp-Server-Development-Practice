@@ -1,4 +1,4 @@
- 
+
 #ifndef CLASS_GAME
 #define CLASS_GAME
 
@@ -11,73 +11,78 @@ using std::list;
 
 class CTable;
 
-typedef struct _tagStep {
+typedef struct _tagStep
+{
     int x;
     int y;
     int color;
 } STEP;
 
-// ÓÎÏ·»ùÀà
+// æ¸¸æˆåŸºç±»
 class CGame
 {
 protected:
     CTable *m_pTable;
+
 public:
-    // Âä×Ó²½Öè
-    list< STEP > m_StepList;
+    // è½å­æ­¥éª¤
+    list<STEP> m_StepList;
+
 public:
-    // ¹¹Ôìº¯Êı
-    CGame( CTable *pTable ) : m_pTable( pTable ) {}
-    // Îö¹¹º¯Êı
+    // æ„é€ å‡½æ•°
+    CGame(CTable *pTable) : m_pTable(pTable) {}
+    // ææ„å‡½æ•°
     virtual ~CGame();
-    // ³õÊ¼»¯¹¤×÷£¬²»Í¬µÄÓÎÏ··½Ê½³õÊ¼»¯Ò²²»Ò»Ñù
+    // åˆå§‹åŒ–å·¥ä½œï¼Œä¸åŒçš„æ¸¸æˆæ–¹å¼åˆå§‹åŒ–ä¹Ÿä¸ä¸€æ ·
     virtual void Init() = 0;
-    // ´¦ÀíÊ¤ÀûºóµÄÇé¿ö£¬CTwoGameĞèÒª¸ÄĞ´´Ëº¯ÊıÍê³ÉÉÆºó¹¤×÷
-    virtual void Win( const STEP& stepSend );
-    // ·¢ËÍ¼º·½Âä×Ó
-    virtual void SendStep( const STEP& stepSend ) = 0;
-    // ½ÓÊÕ¶Ô·½ÏûÏ¢
-    virtual void ReceiveMsg( MSGSTRUCT *pMsg ) = 0;
-    // ·¢ËÍ»ÚÆåÇëÇó
+    // å¤„ç†èƒœåˆ©åçš„æƒ…å†µï¼ŒCTwoGameéœ€è¦æ”¹å†™æ­¤å‡½æ•°å®Œæˆå–„åå·¥ä½œ
+    virtual void Win(const STEP &stepSend);
+    // å‘é€å·±æ–¹è½å­
+    virtual void SendStep(const STEP &stepSend) = 0;
+    // æ¥æ”¶å¯¹æ–¹æ¶ˆæ¯
+    virtual void ReceiveMsg(MSGSTRUCT *pMsg) = 0;
+    // å‘é€æ‚”æ£‹è¯·æ±‚
     virtual void Back() = 0;
 };
 
-// Ò»ÈËÓÎÏ·ÅÉÉúÀà
+// ä¸€äººæ¸¸æˆæ´¾ç”Ÿç±»
 class COneGame : public CGame
 {
-    bool m_Computer[15][15][572]; // µçÄÔ»ñÊ¤×éºÏ
-    bool m_Player[15][15][572]; // Íæ¼Ò»ñÊ¤×éºÏ
-    int m_Win[2][572]; // ¸÷¸ö»ñÊ¤×éºÏÖĞÌîÈëµÄÆå×ÓÊı
-    bool m_bStart; // ÓÎÏ·ÊÇ·ñ¸Õ¸Õ¿ªÊ¼
-    STEP m_step; // ±£´æÂä×Ó½á¹û
-    // ÒÔÏÂÈı¸ö³ÉÔ±×ö»ÚÆåÖ®ÓÃ
+    bool m_Computer[15][15][572]; // ç”µè„‘è·èƒœç»„åˆ
+    bool m_Player[15][15][572];   // ç©å®¶è·èƒœç»„åˆ
+    int m_Win[2][572];            // å„ä¸ªè·èƒœç»„åˆä¸­å¡«å…¥çš„æ£‹å­æ•°
+    bool m_bStart;                // æ¸¸æˆæ˜¯å¦åˆšåˆšå¼€å§‹
+    STEP m_step;                  // ä¿å­˜è½å­ç»“æœ
+    // ä»¥ä¸‹ä¸‰ä¸ªæˆå‘˜åšæ‚”æ£‹ä¹‹ç”¨
     bool m_bOldPlayer[572];
     bool m_bOldComputer[572];
     int m_nOldWin[2][572];
+
 public:
-    COneGame( CTable *pTable ) : CGame( pTable ) {}
+    COneGame(CTable *pTable) : CGame(pTable) {}
     virtual ~COneGame();
     virtual void Init();
-    virtual void SendStep( const STEP& stepSend );
-    virtual void ReceiveMsg( MSGSTRUCT *pMsg );
+    virtual void SendStep(const STEP &stepSend);
+    virtual void ReceiveMsg(MSGSTRUCT *pMsg);
     virtual void Back();
+
 private:
-    // ¸ø³öÏÂÁËÒ»¸ö×ÓºóµÄ·ÖÊı
-    int GiveScore( const STEP& stepPut );
-    void GetTable( int tempTable[][15], int nowTable[][15] );
-    bool SearchBlank( int &i, int &j, int nowTable[][15] );
+    // ç»™å‡ºä¸‹äº†ä¸€ä¸ªå­åçš„åˆ†æ•°
+    int GiveScore(const STEP &stepPut);
+    void GetTable(int tempTable[][15], int nowTable[][15]);
+    bool SearchBlank(int &i, int &j, int nowTable[][15]);
 };
 
-// ¶şÈËÓÎÏ·ÅÉÉúÀà
+// äºŒäººæ¸¸æˆæ´¾ç”Ÿç±»
 class CTwoGame : public CGame
 {
 public:
-    CTwoGame( CTable *pTable ) : CGame( pTable ) {}
+    CTwoGame(CTable *pTable) : CGame(pTable) {}
     virtual ~CTwoGame();
     virtual void Init();
-    virtual void Win( const STEP& stepSend );
-    virtual void SendStep( const STEP& stepSend );
-    virtual void ReceiveMsg( MSGSTRUCT *pMsg );
+    virtual void Win(const STEP &stepSend);
+    virtual void SendStep(const STEP &stepSend);
+    virtual void ReceiveMsg(MSGSTRUCT *pMsg);
     virtual void Back();
 };
 

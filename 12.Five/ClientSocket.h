@@ -1,6 +1,6 @@
 #pragma once
 
-// CClientSocket ÃüÁîÄ¿±ê
+// CClientSocket å‘½ä»¤ç›®æ ‡
 #include "CDlgRoom.h"
 class CClientSocket : public CSocket
 {
@@ -11,5 +11,3 @@ public:
 	virtual ~CClientSocket();
 	virtual void OnReceive(int nErrorCode);
 };
-
-

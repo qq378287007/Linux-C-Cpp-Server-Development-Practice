@@ -1,5 +1,5 @@
-//zww
-// Five.cpp : Defines the class behaviors for the application.
+// zww
+//  Five.cpp : Defines the class behaviors for the application.
 //
 
 #include "stdafx.h"
@@ -17,11 +17,11 @@ static char THIS_FILE[] = __FILE__;
 // CFiveApp
 
 BEGIN_MESSAGE_MAP(CFiveApp, CWinApp)
-	//{{AFX_MSG_MAP(CFiveApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG
-	ON_COMMAND(ID_HELP, CWinApp::OnHelp)
+//{{AFX_MSG_MAP(CFiveApp)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG
+ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -55,16 +55,16 @@ BOOL CFiveApp::InitInstance()
 	//  the specific initialization routines you do not need.
 
 #ifdef _AFXDLL
-	Enable3dControls();			// Call this when using MFC in a shared DLL
+	Enable3dControls(); // Call this when using MFC in a shared DLL
 #else
-	Enable3dControlsStatic();	// Call this when linking to MFC statically
+	Enable3dControlsStatic(); // Call this when linking to MFC statically
 #endif
 
 	WSADATA wsd;
 	AfxSocketInit(&wsd);
-	m_clinetsock.Create();  //±Õ¸º«¡À
+	m_clinetsock.Create(); // Âà´ÂøòËÆ∞‰∫Ü
 
-	//±£¥Êœ¬±æª˙IP,“‘∫Û¥¥Ω®∆Â≈Ã ±∫Ú£¨“™∑¢≤ºµΩ¥ÛÃ¸¿Ô°£
+	// ‰øùÂ≠ò‰∏ãÊú¨Êú∫IP,‰ª•ÂêéÂàõÂª∫Ê£ãÁõòÊó∂ÂÄôÔºåË¶ÅÂèëÂ∏ÉÂà∞Â§ßÂéÖÈáå„ÄÇ
 	hostent *host;
 	CHAR szHost[100];
 	gethostname(szHost, 100);
@@ -72,38 +72,34 @@ BOOL CFiveApp::InitInstance()
 	for (int i = 0; host != NULL && host->h_addr_list[i] != NULL; i++)
 	{
 		strcpy(m_szMyIPAsCreator, inet_ntoa(*((in_addr *)host->h_addr_list[i])));
-	//	AfxMessageBox(m_szIP);
+		//	AfxMessageBox(m_szIP);
 		break;
 	}
 
+	CDlgLogin dlgLogin;
+	if (IDOK != dlgLogin.DoModal())
+		return FALSE;
 
-
-
- 	CDlgLogin dlgLogin;
- 	if (IDOK != dlgLogin.DoModal())
- 		return FALSE;
-
-
-    // ªÒµ√≈‰÷√Œƒº˛Œª÷√
-    ::GetModuleFileName( NULL, m_szIni, MAX_PATH );
-    lstrcpy( &m_szIni[lstrlen( m_szIni ) - 3], _T("ini") );
-    // ∂¡»°’Ωº®Õ≥º∆,“‘∫Û¿©’π
-    m_nWin = ::GetPrivateProfileInt( _T("Stats"), _T("Win"), 0, m_szIni );
-    m_nDraw = ::GetPrivateProfileInt( _T("Stats"), _T("Draw"), 0, m_szIni );
-    m_nLost = ::GetPrivateProfileInt( _T("Stats"), _T("Lost"), 0, m_szIni );
-    // ◊¢≤·∆Â≈Ã¥∞ø⁄¿‡
-    WNDCLASS wc;
-    wc.cbClsExtra = 0;
-    wc.cbWndExtra = 0;
-    wc.hbrBackground = (HBRUSH)GetStockObject( WHITE_BRUSH );
-    wc.hCursor = LoadCursor( IDC_ARROW );
-    wc.hIcon = NULL;
-    wc.hInstance = AfxGetInstanceHandle();
-    wc.lpfnWndProc = ::DefWindowProc;
-    wc.lpszClassName = _T("ChessTable");
-    wc.lpszMenuName = NULL;
-    wc.style = 0;
-    AfxRegisterClass( &wc );
+	// Ëé∑ÂæóÈÖçÁΩÆÊñá‰ª∂‰ΩçÁΩÆ
+	::GetModuleFileName(NULL, m_szIni, MAX_PATH);
+	lstrcpy(&m_szIni[lstrlen(m_szIni) - 3], _T("ini"));
+	// ËØªÂèñÊàòÁª©ÁªüËÆ°,‰ª•ÂêéÊâ©Â±ï
+	m_nWin = ::GetPrivateProfileInt(_T("Stats"), _T("Win"), 0, m_szIni);
+	m_nDraw = ::GetPrivateProfileInt(_T("Stats"), _T("Draw"), 0, m_szIni);
+	m_nLost = ::GetPrivateProfileInt(_T("Stats"), _T("Lost"), 0, m_szIni);
+	// Ê≥®ÂÜåÊ£ãÁõòÁ™óÂè£Á±ª
+	WNDCLASS wc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wc.hCursor = LoadCursor(IDC_ARROW);
+	wc.hIcon = NULL;
+	wc.hInstance = AfxGetInstanceHandle();
+	wc.lpfnWndProc = ::DefWindowProc;
+	wc.lpszClassName = _T("ChessTable");
+	wc.lpszMenuName = NULL;
+	wc.style = 0;
+	AfxRegisterClass(&wc);
 	CFiveDlg dlg;
 	m_pMainWnd = &dlg;
 	int nResponse = dlg.DoModal();

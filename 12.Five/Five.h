@@ -1,7 +1,6 @@
-//zww
-// Five.h : main header file for the FIVE application
+// zww
+//  Five.h : main header file for the FIVE application
 //
-
 
 #if !defined(AFX_FIVE_H__C6EF525F_4D94_4C1A_B242_7FA2ED813893__INCLUDED_)
 #define AFX_FIVE_H__C6EF525F_4D94_4C1A_B242_7FA2ED813893__INCLUDED_
@@ -11,49 +10,47 @@
 #endif // _MSC_VER > 1000
 
 #ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
+#error include 'stdafx.h' before including this file for PCH
 #endif
 
 #include "ClientSocket.h"
-#include "resource.h"		// main symbols
+#include "resource.h" // main symbols
 #include "CDlgLogin.h"
 /////////////////////////////////////////////////////////////////////////////
 // CFiveApp:
 // See Five.cpp for the implementation of this class
 //
- 
 
 class CFiveApp : public CWinApp
 {
 public:
-	//m_szCreatorIPAsJoinÊÇÎÒ×÷Îª¼ÓÈëÆå¾ÖÕß£¬¿´µ½µÄ´´½¨ÕßµÄIP£»m_szMyIPAsCreatorÊÇÎÒ×÷Îª´´½¨ÆåÅÌÕßµÄIP£¬¸ÃIPÒÔºóÒªÔÚ´óÌüÀï¹«Ê¾¡£
-	char m_szCreatorIPAsJoin[100],m_szMyIPAsCreator[100];
+	// m_szCreatorIPAsJoinæ˜¯æˆ‘ä½œä¸ºåŠ å…¥æ£‹å±€è€…ï¼Œçœ‹åˆ°çš„åˆ›å»ºè€…çš„IPï¼›m_szMyIPAsCreatoræ˜¯æˆ‘ä½œä¸ºåˆ›å»ºæ£‹ç›˜è€…çš„IPï¼Œè¯¥IPä»¥åè¦åœ¨å¤§å…é‡Œå…¬ç¤ºã€‚
+	char m_szCreatorIPAsJoin[100], m_szMyIPAsCreator[100];
 	int m_isCreator;
 	CDlgLogin *m_pDlgLogin;
-	CString m_strName;//µ±Ç°µÇÂ¼µ½·şÎñÆ÷¶ËµÄÓÃ»§Ãû
+	CString m_strName; // å½“å‰ç™»å½•åˆ°æœåŠ¡å™¨ç«¯çš„ç”¨æˆ·å
 	CClientSocket m_clinetsock;
-    TCHAR m_szIni[MAX_PATH];
-    int m_nWin;
-    int m_nDraw;
-    int m_nLost;
+	TCHAR m_szIni[MAX_PATH];
+	int m_nWin;
+	int m_nDraw;
+	int m_nLost;
 	CFiveApp();
 
-// Overrides
+	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CFiveApp)
-	public:
+public:
 	virtual BOOL InitInstance();
 	//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 
 	//{{AFX_MSG(CFiveApp)
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code !
+	// NOTE - the ClassWizard will add and remove member functions here.
+	//    DO NOT EDIT what you see in these blocks of generated code !
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
 
 /////////////////////////////////////////////////////////////////////////////
 

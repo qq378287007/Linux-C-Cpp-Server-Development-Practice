@@ -1,4 +1,4 @@
-//zww
+// zww
 #include "StdAfx.h"
 #include "Table.h"
 #include "Game.h"
@@ -6,51 +6,51 @@
 #include "Resource.h"
 
 //////////////////////////////////////////////////////////////////////////
-// CGameÀàµÄÊµÏÖ²¿·Ö
+// CGameç±»çš„å®ç°éƒ¨åˆ†
 //////////////////////////////////////////////////////////////////////////
 CGame::~CGame()
 {
 }
-void CGame::Win( const STEP& stepSend )
+void CGame::Win(const STEP &stepSend)
 {
 }
 //////////////////////////////////////////////////////////////////////////
-// COneGameÀàµÄÊµÏÖ²¿·Ö
+// COneGameç±»çš„å®ç°éƒ¨åˆ†
 //////////////////////////////////////////////////////////////////////////
 COneGame::~COneGame()
 {
 }
 void COneGame::Init()
 {
-    // ÉèÖÃÍøÂçÁ¬½Ó×´Ì¬
+    // è®¾ç½®ç½‘ç»œè¿æ¥çŠ¶æ€
     m_pTable->m_bConnected = FALSE;
-    // ÉèÖÃµĞÈËĞÕÃû
-    m_pTable->GetParent()->SetDlgItemText( IDC_ST_ENEMY, _T("¼ÆËã»ú") );
-    // ¼ÆËã»ñÊ¤×éºÏÇé¿ö
+    // è®¾ç½®æ•Œäººå§“å
+    m_pTable->GetParent()->SetDlgItemText(IDC_ST_ENEMY, _T("è®¡ç®—æœº"));
+    // è®¡ç®—è·èƒœç»„åˆæƒ…å†µ
     int i, j, k, nCount = 0;
-    for ( i = 0; i < 15; i++ )
+    for (i = 0; i < 15; i++)
     {
-        for ( j = 0; j < 15; j++ )
+        for (j = 0; j < 15; j++)
         {
-            for ( k = 0; k < 572; k++ )
+            for (k = 0; k < 572; k++)
             {
                 m_Player[i][j][k] = false;
                 m_Computer[i][j][k] = false;
             }
         }
     }
-    for ( i = 0; i < 2; i++ )
+    for (i = 0; i < 2; i++)
     {
-        for ( j = 0; j < 572; j++ )
+        for (j = 0; j < 572; j++)
         {
             m_Win[i][j] = 0;
         }
     }
-    for ( i = 0; i < 15; i++ )
+    for (i = 0; i < 15; i++)
     {
-        for ( j = 0; j < 11; j++ )
+        for (j = 0; j < 11; j++)
         {
-            for ( k = 0; k < 5; k++ )
+            for (k = 0; k < 5; k++)
             {
                 m_Player[j + k][i][nCount] = true;
                 m_Computer[j + k][i][nCount] = true;
@@ -58,11 +58,11 @@ void COneGame::Init()
             nCount++;
         }
     }
-    for ( i = 0; i < 15; i++ )
+    for (i = 0; i < 15; i++)
     {
-        for ( j = 0; j < 11; j++ )
+        for (j = 0; j < 11; j++)
         {
-            for ( k = 0; k < 5; k++ )
+            for (k = 0; k < 5; k++)
             {
                 m_Player[i][j + k][nCount] = true;
                 m_Computer[i][j + k][nCount] = true;
@@ -70,11 +70,11 @@ void COneGame::Init()
             nCount++;
         }
     }
-    for ( i = 0; i < 11; i++ )
+    for (i = 0; i < 11; i++)
     {
-        for ( j = 0; j < 11; j++ )
+        for (j = 0; j < 11; j++)
         {
-            for ( k = 0; k < 5; k++ )
+            for (k = 0; k < 5; k++)
             {
                 m_Player[j + k][i + k][nCount] = true;
                 m_Computer[j + k][i + k][nCount] = true;
@@ -82,11 +82,11 @@ void COneGame::Init()
             nCount++;
         }
     }
-    for ( i = 0; i < 11; i++ )
+    for (i = 0; i < 11; i++)
     {
-        for ( j = 14; j >= 4; j-- )
+        for (j = 14; j >= 4; j--)
         {
-            for ( k = 0; k < 5; k++ )
+            for (k = 0; k < 5; k++)
             {
                 m_Player[j - k][i + k][nCount] = true;
                 m_Computer[j - k][i + k][nCount] = true;
@@ -94,27 +94,27 @@ void COneGame::Init()
             nCount++;
         }
     }
-    if ( 1 == m_pTable->GetColor() )
+    if (1 == m_pTable->GetColor())
     {
-        // Èç¹ûÍæ¼Òºó×ß£¬ÔòÊÖ¶¯¿ØÖÆµçÄÔÕ¼¾İÌìÔª
-        m_pTable->SetData( 7, 7, 0 );
-        PlaySound( MAKEINTRESOURCE( IDR_WAVE_PUT ), NULL, SND_RESOURCE | SND_SYNC );
+        // å¦‚æœç©å®¶åèµ°ï¼Œåˆ™æ‰‹åŠ¨æ§åˆ¶ç”µè„‘å æ®å¤©å…ƒ
+        m_pTable->SetData(7, 7, 0);
+        PlaySound(MAKEINTRESOURCE(IDR_WAVE_PUT), NULL, SND_RESOURCE | SND_SYNC);
         m_bStart = false;
-        for ( i = 0; i < 572; i++ )
+        for (i = 0; i < 572; i++)
         {
-            // ±£´æÏÈÇ°Êı¾İ£¬×ö»ÚÆåÖ®ÓÃ
+            // ä¿å­˜å…ˆå‰æ•°æ®ï¼Œåšæ‚”æ£‹ä¹‹ç”¨
             m_nOldWin[0][i] = m_Win[0][i];
             m_nOldWin[1][i] = m_Win[1][i];
             m_bOldPlayer[i] = m_Player[7][7][i];
         }
-        for ( i = 0; i < 572; i++ )
+        for (i = 0; i < 572; i++)
         {
-            // ĞŞ¸Ä¼ÆËã»úÏÂ×Óºó£¬ÆåÅÌµÄ±ä»¯×´¿ö
-            if ( m_Computer[7][7][i] && m_Win[1][i] != -1 )
+            // ä¿®æ”¹è®¡ç®—æœºä¸‹å­åï¼Œæ£‹ç›˜çš„å˜åŒ–çŠ¶å†µ
+            if (m_Computer[7][7][i] && m_Win[1][i] != -1)
             {
                 m_Win[1][i]++;
             }
-            if ( m_Player[7][7][i] )
+            if (m_Player[7][7][i])
             {
                 m_Player[7][7][i] = false;
                 m_Win[0][i] = -1;
@@ -126,37 +126,37 @@ void COneGame::Init()
         m_bStart = true;
     }
 }
-void COneGame::SendStep( const STEP& stepPut )
+void COneGame::SendStep(const STEP &stepPut)
 {
     int bestx, besty, i, j, pi, pj, ptemp, ctemp, pscore = 10, cscore = -10000;
     int ctempTable[15][15], ptempTable[15][15];
-    int m, n, temp1[20], temp2[20]; // Ôİ´æµÚÒ»²½ËÑË÷µÄĞÅÏ¢
+    int m, n, temp1[20], temp2[20]; // æš‚å­˜ç¬¬ä¸€æ­¥æœç´¢çš„ä¿¡æ¯
 
-    m_pTable->GetParent()->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-    // ±£´æÏÈÇ°Êı¾İ£¬×ö»ÚÆåÖ®ÓÃ
-    for ( i = 0; i < 572; i++)
+    m_pTable->GetParent()->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+    // ä¿å­˜å…ˆå‰æ•°æ®ï¼Œåšæ‚”æ£‹ä¹‹ç”¨
+    for (i = 0; i < 572; i++)
     {
         m_nOldWin[0][i] = m_Win[0][i];
         m_nOldWin[1][i] = m_Win[1][i];
         m_bOldPlayer[i] = m_Player[stepPut.x][stepPut.y][i];
         m_bOldComputer[i] = m_Computer[stepPut.x][stepPut.y][i];
     }
-    // ĞŞ¸ÄÍæ¼ÒÏÂ×ÓºóÆåÅÌ×´Ì¬µÄ±ä»¯
-    for ( i = 0; i < 572; i++ )
+    // ä¿®æ”¹ç©å®¶ä¸‹å­åæ£‹ç›˜çŠ¶æ€çš„å˜åŒ–
+    for (i = 0; i < 572; i++)
     {
-        // ĞŞ¸Ä×´Ì¬±ä»¯
-        if ( m_Player[stepPut.x][stepPut.y][i] && m_Win[0][i] != -1 )
+        // ä¿®æ”¹çŠ¶æ€å˜åŒ–
+        if (m_Player[stepPut.x][stepPut.y][i] && m_Win[0][i] != -1)
             m_Win[0][i]++;
-        if ( m_Computer[stepPut.x][stepPut.y][i] )
+        if (m_Computer[stepPut.x][stepPut.y][i])
         {
             m_Computer[stepPut.x][stepPut.y][i] = false;
             m_Win[1][i] = -1;
         }
     }
-    if ( m_bStart )
+    if (m_bStart)
     {
-        // ÊÖ¶¯È·¶¨µÚÒ»²½£ºÌìÔª»ò(8, 8)
-        if ( -1 == m_pTable->m_data[7][7] )
+        // æ‰‹åŠ¨ç¡®å®šç¬¬ä¸€æ­¥ï¼šå¤©å…ƒæˆ–(8, 8)
+        if (-1 == m_pTable->m_data[7][7])
         {
             bestx = 7;
             besty = 7;
@@ -171,23 +171,23 @@ void COneGame::SendStep( const STEP& stepPut )
     else
     {
         STEP step;
-        // Ñ°ÕÒ×î¼ÑÎ»ÖÃ
-        GetTable( ctempTable, m_pTable->m_data );
-        while ( SearchBlank( i, j, ctempTable ) )
+        // å¯»æ‰¾æœ€ä½³ä½ç½®
+        GetTable(ctempTable, m_pTable->m_data);
+        while (SearchBlank(i, j, ctempTable))
         {
             n = 0;
             pscore = 10;
-            GetTable( ptempTable, m_pTable->m_data );
-            ctempTable[i][j] = 2; // ±ê¼ÇÒÑ±»²éÕÒ
+            GetTable(ptempTable, m_pTable->m_data);
+            ctempTable[i][j] = 2; // æ ‡è®°å·²è¢«æŸ¥æ‰¾
             step.color = 1 - m_pTable->GetColor();
             step.x = i;
             step.y = j;
-            // ¸øÕâ¸ö¿ÕÎ»´ò·Ö
-            ctemp = GiveScore( step );
-            for ( m = 0; m < 572; m++ )
+            // ç»™è¿™ä¸ªç©ºä½æ‰“åˆ†
+            ctemp = GiveScore(step);
+            for (m = 0; m < 572; m++)
             {
-                // ÔİÊ±¸ü¸ÄÍæ¼ÒĞÅÏ¢
-                if ( m_Player[i][j][m] )
+                // æš‚æ—¶æ›´æ”¹ç©å®¶ä¿¡æ¯
+                if (m_Player[i][j][m])
                 {
                     temp1[n] = m;
                     m_Player[i][j][m] = false;
@@ -197,27 +197,27 @@ void COneGame::SendStep( const STEP& stepPut )
                 }
             }
             ptempTable[i][j] = 0;
-            
+
             pi = i;
             pj = j;
-            while ( SearchBlank( i, j, ptempTable ) )
+            while (SearchBlank(i, j, ptempTable))
             {
-                
-                ptempTable[i][j] = 2; // ±ê¼ÇÒÑ±»²éÕÒ
+
+                ptempTable[i][j] = 2; // æ ‡è®°å·²è¢«æŸ¥æ‰¾
                 step.color = m_pTable->GetColor();
                 step.x = i;
                 step.y = j;
-                ptemp = GiveScore( step );
-                if ( pscore > ptemp ) // ´ËÊ±ÎªÍæ¼ÒÏÂ×Ó£¬ÔËÓÃ¼«Ğ¡¼«´ó·¨Ê±Ó¦Ñ¡È¡×îĞ¡Öµ
+                ptemp = GiveScore(step);
+                if (pscore > ptemp) // æ­¤æ—¶ä¸ºç©å®¶ä¸‹å­ï¼Œè¿ç”¨æå°æå¤§æ³•æ—¶åº”é€‰å–æœ€å°å€¼
                     pscore = ptemp;
             }
-            for ( m = 0; m < n; m++ )
+            for (m = 0; m < n; m++)
             {
-                // »Ö¸´Íæ¼ÒĞÅÏ¢
+                // æ¢å¤ç©å®¶ä¿¡æ¯
                 m_Player[pi][pj][temp1[m]] = true;
                 m_Win[0][temp1[m]] = temp2[m];
             }
-            if ( ctemp + pscore > cscore ) // ´ËÊ±Îª¼ÆËã»úÏÂ×Ó£¬ÔËÓÃ¼«Ğ¡¼«´ó·¨Ê±Ó¦Ñ¡È¡×î×î´óÖµ
+            if (ctemp + pscore > cscore) // æ­¤æ—¶ä¸ºè®¡ç®—æœºä¸‹å­ï¼Œè¿ç”¨æå°æå¤§æ³•æ—¶åº”é€‰å–æœ€æœ€å¤§å€¼
             {
                 cscore = ctemp + pscore;
                 bestx = pi;
@@ -228,22 +228,22 @@ void COneGame::SendStep( const STEP& stepPut )
     m_step.color = 1 - m_pTable->GetColor();
     m_step.x = bestx;
     m_step.y = besty;
-    for ( i = 0; i < 572; i++ )
+    for (i = 0; i < 572; i++)
     {
-        // ĞŞ¸Ä¼ÆËã»úÏÂ×Óºó£¬ÆåÅÌµÄ±ä»¯×´¿ö
-        if ( m_Computer[bestx][besty][i] && m_Win[1][i] != -1 )
+        // ä¿®æ”¹è®¡ç®—æœºä¸‹å­åï¼Œæ£‹ç›˜çš„å˜åŒ–çŠ¶å†µ
+        if (m_Computer[bestx][besty][i] && m_Win[1][i] != -1)
             m_Win[1][i]++;
-        if ( m_Player[bestx][besty][i] )
+        if (m_Player[bestx][besty][i])
         {
             m_Player[bestx][besty][i] = false;
             m_Win[0][i] = -1;
         }
     }
-    m_pTable->GetParent()->GetDlgItem( IDC_BTN_BACK )->EnableWindow();
-    // ÓÉÓÚÊÇµ¥ÈËÓÎÏ·£¬ËùÒÔÖ±½Ó½ÓÊÕÊı¾İ
+    m_pTable->GetParent()->GetDlgItem(IDC_BTN_BACK)->EnableWindow();
+    // ç”±äºæ˜¯å•äººæ¸¸æˆï¼Œæ‰€ä»¥ç›´æ¥æ¥æ”¶æ•°æ®
     m_pTable->Receive();
 }
-void COneGame::ReceiveMsg( MSGSTRUCT *pMsg )
+void COneGame::ReceiveMsg(MSGSTRUCT *pMsg)
 {
     pMsg->color = m_step.color;
     pMsg->x = m_step.x;
@@ -253,43 +253,43 @@ void COneGame::ReceiveMsg( MSGSTRUCT *pMsg )
 void COneGame::Back()
 {
     int i;
-    // µ¥ÈËÓÎÏ·Ö±½ÓÔÊĞí»ÚÆå
+    // å•äººæ¸¸æˆç›´æ¥å…è®¸æ‚”æ£‹
     STEP step;
-    // »ÚµÚÒ»²½£¨µçÄÔÂä×Ó£©
-    step = *( m_StepList.begin() );
+    // æ‚”ç¬¬ä¸€æ­¥ï¼ˆç”µè„‘è½å­ï¼‰
+    step = *(m_StepList.begin());
     m_StepList.pop_front();
     m_pTable->m_data[step.x][step.y] = -1;
-    // »Ö¸´Ô­ÓĞÊ¤¸º²¼¾Ö
-    for ( i = 0; i < 572; i++ )
+    // æ¢å¤åŸæœ‰èƒœè´Ÿå¸ƒå±€
+    for (i = 0; i < 572; i++)
     {
         m_Win[0][i] = m_nOldWin[0][i];
         m_Win[1][i] = m_nOldWin[1][i];
         m_Player[step.x][step.y][i] = m_bOldPlayer[i];
     }
-    // »ÚµÚ¶ş²½£¨Íæ¼ÒÂä×Ó£©
-    step = *( m_StepList.begin() );
+    // æ‚”ç¬¬äºŒæ­¥ï¼ˆç©å®¶è½å­ï¼‰
+    step = *(m_StepList.begin());
     m_StepList.pop_front();
     m_pTable->m_data[step.x][step.y] = -1;
-    // »Ö¸´Ô­ÓĞÊ¤¸º²¼¾Ö
-    for ( i = 0; i < 572; i++ )
+    // æ¢å¤åŸæœ‰èƒœè´Ÿå¸ƒå±€
+    for (i = 0; i < 572; i++)
     {
         m_Computer[step.x][step.y][i] = m_bOldComputer[i];
     }
     m_pTable->Invalidate();
-    // ¿¼ÂÇµ½³ÌĞòµÄ¸ººÉ£¬ÕâÊ±ºò¾Í²»ÔÊĞí»ÚÆåÁË
-    AfxGetMainWnd()->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
+    // è€ƒè™‘åˆ°ç¨‹åºçš„è´Ÿè·ï¼Œè¿™æ—¶å€™å°±ä¸å…è®¸æ‚”æ£‹äº†
+    AfxGetMainWnd()->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
 }
-int COneGame::GiveScore( const STEP& stepPut )
+int COneGame::GiveScore(const STEP &stepPut)
 {
     int i, nScore = 0;
-    for ( i = 0; i < 572; i++ )
+    for (i = 0; i < 572; i++)
     {
-        if ( m_pTable->GetColor() == stepPut.color )
+        if (m_pTable->GetColor() == stepPut.color)
         {
-            // Íæ¼ÒÏÂ
-            if ( m_Player[stepPut.x][stepPut.y][i] )
+            // ç©å®¶ä¸‹
+            if (m_Player[stepPut.x][stepPut.y][i])
             {
-                switch ( m_Win[0][i] )
+                switch (m_Win[0][i])
                 {
                 case 1:
                     nScore -= 5;
@@ -310,10 +310,10 @@ int COneGame::GiveScore( const STEP& stepPut )
         }
         else
         {
-            // ¼ÆËã»úÏÂ
-            if ( m_Computer[stepPut.x][stepPut.y][i] )
+            // è®¡ç®—æœºä¸‹
+            if (m_Computer[stepPut.x][stepPut.y][i])
             {
-                switch ( m_Win[1][i] )
+                switch (m_Win[1][i])
                 {
                 case 1:
                     nScore += 5;
@@ -335,25 +335,25 @@ int COneGame::GiveScore( const STEP& stepPut )
     }
     return nScore;
 }
-void COneGame::GetTable( int tempTable[][15], int nowTable[][15] )
+void COneGame::GetTable(int tempTable[][15], int nowTable[][15])
 {
     int i, j;
-    for ( i = 0; i < 15; i++ )
+    for (i = 0; i < 15; i++)
     {
-        for ( j = 0; j < 15; j++ )
+        for (j = 0; j < 15; j++)
         {
             tempTable[i][j] = nowTable[i][j];
         }
     }
 }
-bool COneGame::SearchBlank( int &i, int &j, int nowTable[][15] )
+bool COneGame::SearchBlank(int &i, int &j, int nowTable[][15])
 {
     int x, y;
-    for ( x = 0; x < 15; x++ )
+    for (x = 0; x < 15; x++)
     {
-        for ( y = 0; y < 15; y++ )
+        for (y = 0; y < 15; y++)
         {
-            if ( nowTable[x][y] == -1 && nowTable[x][y] != 2 )
+            if (nowTable[x][y] == -1 && nowTable[x][y] != 2)
             {
                 i = x;
                 j = y;
@@ -364,7 +364,7 @@ bool COneGame::SearchBlank( int &i, int &j, int nowTable[][15] )
     return false;
 }
 //////////////////////////////////////////////////////////////////////////
-// CTwoGameÀàµÄÊµÏÖ²¿·Ö
+// CTwoGameç±»çš„å®ç°éƒ¨åˆ†
 //////////////////////////////////////////////////////////////////////////
 CTwoGame::~CTwoGame()
 {
@@ -373,11 +373,11 @@ CTwoGame::~CTwoGame()
 void CTwoGame::Init()
 {
 }
-void CTwoGame::Win( const STEP& stepSend )
+void CTwoGame::Win(const STEP &stepSend)
 {
-    SendStep( stepSend );
+    SendStep(stepSend);
 }
-void CTwoGame::SendStep( const STEP& stepPut )
+void CTwoGame::SendStep(const STEP &stepPut)
 {
     MSGSTRUCT msg;
     msg.uMsg = MSG_PUTSTEP;
@@ -385,28 +385,28 @@ void CTwoGame::SendStep( const STEP& stepPut )
     msg.x = stepPut.x;
     msg.y = stepPut.y;
 
-    m_pTable->m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
+    m_pTable->m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
 }
-void CTwoGame::ReceiveMsg( MSGSTRUCT *pMsg )
+void CTwoGame::ReceiveMsg(MSGSTRUCT *pMsg)
 {
-    int nRet = m_pTable->m_conn.Receive( pMsg, sizeof( MSGSTRUCT ) );
-    if ( SOCKET_ERROR == nRet )
+    int nRet = m_pTable->m_conn.Receive(pMsg, sizeof(MSGSTRUCT));
+    if (SOCKET_ERROR == nRet)
     {
-        AfxGetMainWnd()->MessageBox( _T("½ÓÊÕÊı¾İÊ±·¢Éú´íÎó£¬Çë¼ì²éÄúµÄÍøÂçÁ¬½Ó¡£"), _T("´íÎó"), MB_ICONSTOP );
+        AfxGetMainWnd()->MessageBox(_T("æ¥æ”¶æ•°æ®æ—¶å‘ç”Ÿé”™è¯¯ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œè¿æ¥ã€‚"), _T("é”™è¯¯"), MB_ICONSTOP);
     }
 }
 void CTwoGame::Back()
 {
     CDialog *pDlg = (CDialog *)AfxGetMainWnd();
-    // Ê¹°´Å¥Ê§Ğ§
-    pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-    pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow( FALSE );
-    pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow( FALSE );
-    // ÉèÖÃµÈ´ı±êÖ¾
-    m_pTable->SetWait( TRUE );
+    // ä½¿æŒ‰é’®å¤±æ•ˆ
+    pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+    pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow(FALSE);
+    pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow(FALSE);
+    // è®¾ç½®ç­‰å¾…æ ‡å¿—
+    m_pTable->SetWait(TRUE);
 
     MSGSTRUCT msg;
     msg.uMsg = MSG_BACK;
 
-    m_pTable->m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
+    m_pTable->m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
 }

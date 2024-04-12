@@ -1,4 +1,4 @@
-//zww
+// zww
 #include "stdafx.h"
 #include "Five.h"
 #include "Table.h"
@@ -9,275 +9,275 @@
 extern CFiveApp theApp;
 
 //////////////////////////////////////////////////////////////////////////
-// ¹¹Ôìº¯Êı£¬³õÊ¼»¯ÆåÅÌÊı¾İÒÔ¼°Í¼ÏñÊı¾İ
+// æ„é€ å‡½æ•°ï¼Œåˆå§‹åŒ–æ£‹ç›˜æ•°æ®ä»¥åŠå›¾åƒæ•°æ®
 //////////////////////////////////////////////////////////////////////////
 CTable::CTable()
 {
-    // ³õÊ¼»¯Íæ¼ÒĞÕÃû
+    // åˆå§‹åŒ–ç©å®¶å§“å
     TCHAR str[10];
     CFiveApp *pApp = (CFiveApp *)AfxGetApp();
-    ::GetPrivateProfileString( _T("Options"), _T("Name"), _T("Renjiu"), str, 15, pApp->m_szIni );
+    ::GetPrivateProfileString(_T("Options"), _T("Name"), _T("Renjiu"), str, 15, pApp->m_szIni);
     m_strMe = str;
-    // ³õÊ¼»¯Í¼ÏñÁĞ±í
-    m_iml.Create( 24, 24, ILC_COLOR24 | ILC_MASK, 0, 2 );
-    // ÔØÈëºÚ¡¢°×Æå×ÓÑÚÂëÎ»Í¼
+    // åˆå§‹åŒ–å›¾åƒåˆ—è¡¨
+    m_iml.Create(24, 24, ILC_COLOR24 | ILC_MASK, 0, 2);
+    // è½½å…¥é»‘ã€ç™½æ£‹å­æ©ç ä½å›¾
     CBitmap bmpBlack, bmpWhite;
-    bmpBlack.LoadBitmap( IDB_BMP_BLACK );
-    m_iml.Add( &bmpBlack, 0xff00ff );
-    bmpWhite.LoadBitmap( IDB_BMP_WHITE );
-    m_iml.Add( &bmpWhite, 0xff00ff );
-    // ³õÊ¼»¯ÓÎÏ·Ä£Ê½
+    bmpBlack.LoadBitmap(IDB_BMP_BLACK);
+    m_iml.Add(&bmpBlack, 0xff00ff);
+    bmpWhite.LoadBitmap(IDB_BMP_WHITE);
+    m_iml.Add(&bmpWhite, 0xff00ff);
+    // åˆå§‹åŒ–æ¸¸æˆæ¨¡å¼
     m_pGame = NULL;
 }
 //////////////////////////////////////////////////////////////////////////
-// Îö¹¹º¯Êı£¬ÊÍ·Åm_pGameÖ¸Õë
+// ææ„å‡½æ•°ï¼Œé‡Šæ”¾m_pGameæŒ‡é’ˆ
 //////////////////////////////////////////////////////////////////////////
 CTable::~CTable()
 {
-    // Ğ´ÈëÍæ¼ÒĞÕÃû
+    // å†™å…¥ç©å®¶å§“å
     CFiveApp *pApp = (CFiveApp *)AfxGetApp();
-    ::WritePrivateProfileString( _T("Options"), _T("Name"), m_strMe, pApp->m_szIni );
-    // Ğ´ÈëÕ½¼¨Í³¼Æ
+    ::WritePrivateProfileString(_T("Options"), _T("Name"), m_strMe, pApp->m_szIni);
+    // å†™å…¥æˆ˜ç»©ç»Ÿè®¡
     TCHAR str[10];
-    wsprintf( str, _T("%d"), pApp->m_nWin );
-    ::WritePrivateProfileString( _T("Stats"), _T("Win"), str, pApp->m_szIni );
-    wsprintf( str, _T("%d"), pApp->m_nDraw );
-    ::WritePrivateProfileString( _T("Stats"), _T("Draw"), str, pApp->m_szIni );
-    wsprintf( str, _T("%d"), pApp->m_nLost );
-    ::WritePrivateProfileString( _T("Stats"), _T("Lost"), str, pApp->m_szIni );
-    if ( NULL != m_pGame )
+    wsprintf(str, _T("%d"), pApp->m_nWin);
+    ::WritePrivateProfileString(_T("Stats"), _T("Win"), str, pApp->m_szIni);
+    wsprintf(str, _T("%d"), pApp->m_nDraw);
+    ::WritePrivateProfileString(_T("Stats"), _T("Draw"), str, pApp->m_szIni);
+    wsprintf(str, _T("%d"), pApp->m_nLost);
+    ::WritePrivateProfileString(_T("Stats"), _T("Lost"), str, pApp->m_szIni);
+    if (NULL != m_pGame)
         delete m_pGame;
 }
 //////////////////////////////////////////////////////////////////////////
-// ÔÚÖ¸¶¨ÆåÅÌ×ø±ê´¦»æÖÆÖ¸¶¨ÑÕÉ«µÄÆå×Ó
+// åœ¨æŒ‡å®šæ£‹ç›˜åæ ‡å¤„ç»˜åˆ¶æŒ‡å®šé¢œè‰²çš„æ£‹å­
 //////////////////////////////////////////////////////////////////////////
-void CTable::Draw( int x, int y, int color )
+void CTable::Draw(int x, int y, int color)
 {
     POINT pt;
     pt.x = 12 + 25 * x;
     pt.y = 84 + 25 * y;
     CDC *pDC = GetDC();
     CPen pen;
-    pen.CreatePen( PS_SOLID, 1, 0xff );
-    pDC->SelectObject( &pen );
-    pDC->SetROP2( R2_NOTXORPEN );
-    m_iml.Draw( pDC, color, pt, ILD_TRANSPARENT );
+    pen.CreatePen(PS_SOLID, 1, 0xff);
+    pDC->SelectObject(&pen);
+    pDC->SetROP2(R2_NOTXORPEN);
+    m_iml.Draw(pDC, color, pt, ILD_TRANSPARENT);
     STEP step;
-    // ÀûÓÃR2_NOTXORPEN²Á³ıÏÈÇ°»­³öµÄ¾ØĞÎ
-    if ( !m_pGame->m_StepList.empty() )
+    // åˆ©ç”¨R2_NOTXORPENæ“¦é™¤å…ˆå‰ç”»å‡ºçš„çŸ©å½¢
+    if (!m_pGame->m_StepList.empty())
     {
-        // »ñÈ¡×îºóÒ»¸öµã
-        step = *( m_pGame->m_StepList.begin() );
-        pDC->MoveTo( 11 + 25 * step.x, 83 + 25 * step.y );
-        pDC->LineTo( 36 + 25 * step.x, 83 + 25 * step.y );
-        pDC->LineTo( 36 + 25 * step.x, 108 + 25 * step.y );
-        pDC->LineTo( 11 + 25 * step.x, 108 + 25 * step.y );
-        pDC->LineTo( 11 + 25 * step.x, 83 + 25 * step.y );
+        // è·å–æœ€åä¸€ä¸ªç‚¹
+        step = *(m_pGame->m_StepList.begin());
+        pDC->MoveTo(11 + 25 * step.x, 83 + 25 * step.y);
+        pDC->LineTo(36 + 25 * step.x, 83 + 25 * step.y);
+        pDC->LineTo(36 + 25 * step.x, 108 + 25 * step.y);
+        pDC->LineTo(11 + 25 * step.x, 108 + 25 * step.y);
+        pDC->LineTo(11 + 25 * step.x, 83 + 25 * step.y);
     }
-    // ¸üĞÂ×îºóÂä×Ó×ø±êÊı¾İ£¬»­ĞÂµÄ¾ØĞÎ
+    // æ›´æ–°æœ€åè½å­åæ ‡æ•°æ®ï¼Œç”»æ–°çš„çŸ©å½¢
     step.color = color;
     step.x = x;
     step.y = y;
-    m_pGame->m_StepList.push_front( step );
-    pDC->MoveTo( 11 + 25 * step.x, 83 + 25 * step.y );
-    pDC->LineTo( 36 + 25 * step.x, 83 + 25 * step.y );
-    pDC->LineTo( 36 + 25 * step.x, 108 + 25 * step.y );
-    pDC->LineTo( 11 + 25 * step.x, 108 + 25 * step.y );
-    pDC->LineTo( 11 + 25 * step.x, 83 + 25 * step.y );
-    ReleaseDC( pDC );
+    m_pGame->m_StepList.push_front(step);
+    pDC->MoveTo(11 + 25 * step.x, 83 + 25 * step.y);
+    pDC->LineTo(36 + 25 * step.x, 83 + 25 * step.y);
+    pDC->LineTo(36 + 25 * step.x, 108 + 25 * step.y);
+    pDC->LineTo(11 + 25 * step.x, 108 + 25 * step.y);
+    pDC->LineTo(11 + 25 * step.x, 83 + 25 * step.y);
+    ReleaseDC(pDC);
 }
 //////////////////////////////////////////////////////////////////////////
-// Çå¿ÕÆåÅÌ
+// æ¸…ç©ºæ£‹ç›˜
 //////////////////////////////////////////////////////////////////////////
-void CTable::Clear( BOOL bWait )
+void CTable::Clear(BOOL bWait)
 {
     int x, y;
-    for ( y = 0; y < 15; y++ )
+    for (y = 0; y < 15; y++)
     {
-        for ( x = 0; x < 15; x++ )
+        for (x = 0; x < 15; x++)
         {
             m_data[x][y] = -1;
         }
     }
-    // ÉèÖÃµÈ´ı±êÖ¾
+    // è®¾ç½®ç­‰å¾…æ ‡å¿—
     m_bWait = bWait;
     Invalidate();
-    // É¾³ıÓÎÏ·
-    if ( m_pGame != NULL )
+    // åˆ é™¤æ¸¸æˆ
+    if (m_pGame != NULL)
     {
         delete m_pGame;
         m_pGame = NULL;
     }
 }
 //////////////////////////////////////////////////////////////////////////
-// ÉèÖÃÍæ¼ÒÑÕÉ«
+// è®¾ç½®ç©å®¶é¢œè‰²
 //////////////////////////////////////////////////////////////////////////
-void CTable::SetColor( int color )
+void CTable::SetColor(int color)
 {
     m_color = color;
 }
 //////////////////////////////////////////////////////////////////////////
-// »ñÈ¡Íæ¼ÒÑÕÉ«
+// è·å–ç©å®¶é¢œè‰²
 //////////////////////////////////////////////////////////////////////////
 int CTable::GetColor() const
 {
     return m_color;
 }
 //////////////////////////////////////////////////////////////////////////
-// ÉèÖÃµÈ´ı±êÖ¾£¬·µ»ØÏÈÇ°µÄµÈ´ı±êÖ¾
+// è®¾ç½®ç­‰å¾…æ ‡å¿—ï¼Œè¿”å›å…ˆå‰çš„ç­‰å¾…æ ‡å¿—
 //////////////////////////////////////////////////////////////////////////
-BOOL CTable::SetWait( BOOL bWait )
+BOOL CTable::SetWait(BOOL bWait)
 {
     m_bOldWait = m_bWait;
     m_bWait = bWait;
     return m_bOldWait;
 }
 //////////////////////////////////////////////////////////////////////////
-// ÉèÖÃÆåÅÌÊı¾İ£¬²¢»æÖÆÆå×Ó
+// è®¾ç½®æ£‹ç›˜æ•°æ®ï¼Œå¹¶ç»˜åˆ¶æ£‹å­
 //////////////////////////////////////////////////////////////////////////
-void CTable::SetData( int x, int y, int color )
+void CTable::SetData(int x, int y, int color)
 {
     m_data[x][y] = color;
-    Draw( x, y, color );
+    Draw(x, y, color);
 }
 //////////////////////////////////////////////////////////////////////////
-// ÅĞ¶ÏÖ¸¶¨ÑÕÉ«ÊÇ·ñÊ¤Àû
+// åˆ¤æ–­æŒ‡å®šé¢œè‰²æ˜¯å¦èƒœåˆ©
 //////////////////////////////////////////////////////////////////////////
-BOOL CTable::Win( int color ) const
+BOOL CTable::Win(int color) const
 {
     int x, y;
-    // ÅĞ¶ÏºáÏò
-    for ( y = 0; y < 15; y++ )
+    // åˆ¤æ–­æ¨ªå‘
+    for (y = 0; y < 15; y++)
     {
-        for ( x = 0; x < 11; x++ )
+        for (x = 0; x < 11; x++)
         {
-            if ( color == m_data[x][y] && color == m_data[x + 1][y] &&
+            if (color == m_data[x][y] && color == m_data[x + 1][y] &&
                 color == m_data[x + 2][y] && color == m_data[x + 3][y] &&
-                color == m_data[x + 4][y] )
+                color == m_data[x + 4][y])
             {
                 return TRUE;
             }
         }
     }
-    // ÅĞ¶Ï×İÏò
-    for ( y = 0; y < 11; y++ )
+    // åˆ¤æ–­çºµå‘
+    for (y = 0; y < 11; y++)
     {
-        for ( x = 0; x < 15; x++ )
+        for (x = 0; x < 15; x++)
         {
-            if ( color == m_data[x][y] && color == m_data[x][y + 1] &&
+            if (color == m_data[x][y] && color == m_data[x][y + 1] &&
                 color == m_data[x][y + 2] && color == m_data[x][y + 3] &&
-                color == m_data[x][y + 4] )
+                color == m_data[x][y + 4])
             {
                 return TRUE;
             }
         }
     }
-    // ÅĞ¶Ï¡°\¡±·½Ïò
-    for ( y = 0; y < 11; y++ )
+    // åˆ¤æ–­â€œ\â€æ–¹å‘
+    for (y = 0; y < 11; y++)
     {
-        for ( x = 0; x < 11; x++ )
+        for (x = 0; x < 11; x++)
         {
-            if ( color == m_data[x][y] && color == m_data[x + 1][y + 1] &&
+            if (color == m_data[x][y] && color == m_data[x + 1][y + 1] &&
                 color == m_data[x + 2][y + 2] && color == m_data[x + 3][y + 3] &&
-                color == m_data[x + 4][y + 4] )
+                color == m_data[x + 4][y + 4])
             {
                 return TRUE;
             }
         }
     }
-    // ÅĞ¶Ï¡°/¡±·½Ïò
-    for ( y = 0; y < 11; y++ )
+    // åˆ¤æ–­â€œ/â€æ–¹å‘
+    for (y = 0; y < 11; y++)
     {
-        for ( x = 4; x < 15; x++ )
+        for (x = 4; x < 15; x++)
         {
-            if ( color == m_data[x][y] && color == m_data[x - 1][y + 1] &&
+            if (color == m_data[x][y] && color == m_data[x - 1][y + 1] &&
                 color == m_data[x - 2][y + 2] && color == m_data[x - 3][y + 3] &&
-                color == m_data[x - 4][y + 4] )
+                color == m_data[x - 4][y + 4])
             {
                 return TRUE;
             }
         }
     }
-    // ²»Âú×ãÊ¤ÀûÌõ¼ş
+    // ä¸æ»¡è¶³èƒœåˆ©æ¡ä»¶
     return FALSE;
 }
 //////////////////////////////////////////////////////////////////////////
-// ·¢ËÍÔÙÍæÒ»´ÎÇëÇó
+// å‘é€å†ç©ä¸€æ¬¡è¯·æ±‚
 //////////////////////////////////////////////////////////////////////////
 void CTable::PlayAgain()
 {
     MSGSTRUCT msg;
     msg.uMsg = MSG_PLAYAGAIN;
-    m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
+    m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
 }
 //////////////////////////////////////////////////////////////////////////
-// ·¢ËÍºÍÆåÇëÇó
+// å‘é€å’Œæ£‹è¯·æ±‚
 //////////////////////////////////////////////////////////////////////////
 void CTable::DrawGame()
 {
     CDialog *pDlg = (CDialog *)AfxGetMainWnd();
-    // Ê¹°´Å¥Ê§Ğ§
-    pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-    pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow( FALSE );
-    pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow( FALSE );
+    // ä½¿æŒ‰é’®å¤±æ•ˆ
+    pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+    pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow(FALSE);
+    pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow(FALSE);
 
-    // ÉèÖÃµÈ´ı±êÖ¾
-    SetWait( TRUE );
+    // è®¾ç½®ç­‰å¾…æ ‡å¿—
+    SetWait(TRUE);
 
     MSGSTRUCT msg;
     msg.uMsg = MSG_DRAW;
-    m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
+    m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
 }
 //////////////////////////////////////////////////////////////////////////
-// ÉèÖÃÓÎÏ·Ä£Ê½
+// è®¾ç½®æ¸¸æˆæ¨¡å¼
 //////////////////////////////////////////////////////////////////////////
-void CTable::SetGameMode( int nGameMode )
+void CTable::SetGameMode(int nGameMode)
 {
-    if ( 1 == nGameMode )
-        m_pGame = new COneGame( this );
+    if (1 == nGameMode)
+        m_pGame = new COneGame(this);
     else
-        m_pGame = new CTwoGame( this );
+        m_pGame = new CTwoGame(this);
     m_pGame->Init();
 }
 //////////////////////////////////////////////////////////////////////////
-// »ÚÆå
+// æ‚”æ£‹
 //////////////////////////////////////////////////////////////////////////
 void CTable::Back()
 {
     m_pGame->Back();
 }
 //////////////////////////////////////////////////////////////////////////
-// ´¦Àí¶Ô·½Âä×ÓºóµÄ¹¤×÷
+// å¤„ç†å¯¹æ–¹è½å­åçš„å·¥ä½œ
 //////////////////////////////////////////////////////////////////////////
 void CTable::Over()
 {
-    // ÅĞ¶Ï¶Ô·½ÊÇ·ñÊ¤Àû
-    if ( Win( 1 - m_color ) )
+    // åˆ¤æ–­å¯¹æ–¹æ˜¯å¦èƒœåˆ©
+    if (Win(1 - m_color))
     {
         CFiveApp *pApp = (CFiveApp *)AfxGetApp();
         pApp->m_nLost++;
         CDialog *pDlg = (CDialog *)GetParent();
-        PlaySound( MAKEINTRESOURCE( IDR_WAVE_LOST ), NULL, SND_RESOURCE | SND_SYNC );
-        pDlg->MessageBox( _T("ÄúÊäÁË£¬²»¹ı²»Òª»ÒĞÄ£¬Ê§°ÜÄË³É¹¦Ö®Ä¸Å¶£¡"), _T("Ê§°Ü"), MB_ICONINFORMATION );
-        pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow( FALSE );
-        pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-        pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow( FALSE );
-        // Èç¹ûÊÇÍøÂç¶ÔÕ½£¬ÔòÉúĞ§¡°ÖØÍæ¡±
-        if ( m_bConnected )
+        PlaySound(MAKEINTRESOURCE(IDR_WAVE_LOST), NULL, SND_RESOURCE | SND_SYNC);
+        pDlg->MessageBox(_T("æ‚¨è¾“äº†ï¼Œä¸è¿‡ä¸è¦ç°å¿ƒï¼Œå¤±è´¥ä¹ƒæˆåŠŸä¹‹æ¯å“¦ï¼"), _T("å¤±è´¥"), MB_ICONINFORMATION);
+        pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow(FALSE);
+        pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+        pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow(FALSE);
+        // å¦‚æœæ˜¯ç½‘ç»œå¯¹æˆ˜ï¼Œåˆ™ç”Ÿæ•ˆâ€œé‡ç©â€
+        if (m_bConnected)
         {
-            pDlg->GetMenu()->EnableMenuItem( ID_MENU_PLAYAGAIN, MF_ENABLED | MF_BYCOMMAND );
+            pDlg->GetMenu()->EnableMenuItem(ID_MENU_PLAYAGAIN, MF_ENABLED | MF_BYCOMMAND);
         }
         return;
     }
     m_bWait = FALSE;
 }
 //////////////////////////////////////////////////////////////////////////
-// ÉèÖÃ²Ëµ¥×´Ì¬£¨Ö÷ÒªÎªÍøÂç¶ÔÕ½×¼±¸£©
+// è®¾ç½®èœå•çŠ¶æ€ï¼ˆä¸»è¦ä¸ºç½‘ç»œå¯¹æˆ˜å‡†å¤‡ï¼‰
 //////////////////////////////////////////////////////////////////////////
-void CTable::SetMenuState( BOOL bEnable )
+void CTable::SetMenuState(BOOL bEnable)
 {
     UINT uEnable, uDisable;
-    if ( bEnable )
+    if (bEnable)
     {
         uEnable = MF_ENABLED;
         uDisable = MF_GRAYED | MF_DISABLED;
@@ -288,412 +288,410 @@ void CTable::SetMenuState( BOOL bEnable )
         uDisable = MF_ENABLED;
     }
     CMenu *pMenu = GetParent()->GetMenu();
-    pMenu->GetSubMenu( 0 )->EnableMenuItem( 0, uEnable | MF_BYPOSITION );
-    pMenu->EnableMenuItem( ID_MENU_SERVER, uEnable );
-    pMenu->EnableMenuItem( ID_MENU_CLIENT, uEnable );
-    pMenu->EnableMenuItem( ID_MENU_LEAVE, uDisable );
-    pMenu->EnableMenuItem( ID_MENU_PLAYAGAIN, uEnable );
+    pMenu->GetSubMenu(0)->EnableMenuItem(0, uEnable | MF_BYPOSITION);
+    pMenu->EnableMenuItem(ID_MENU_SERVER, uEnable);
+    pMenu->EnableMenuItem(ID_MENU_CLIENT, uEnable);
+    pMenu->EnableMenuItem(ID_MENU_LEAVE, uDisable);
+    pMenu->EnableMenuItem(ID_MENU_PLAYAGAIN, uEnable);
 }
 //////////////////////////////////////////////////////////////////////////
-// ½ÓÊÜÁ¬½Ó
+// æ¥å—è¿æ¥
 //////////////////////////////////////////////////////////////////////////
-void CTable::Accept( int nGameMode )
+void CTable::Accept(int nGameMode)
 {
-    if ( 2 == nGameMode )
+    if (2 == nGameMode)
     {
-        m_sock.Accept( m_conn );
+        m_sock.Accept(m_conn);
     }
     m_bConnected = TRUE;
 
 #if 1
-	//¿ÍÈËÀ´ÁË£¬¾ÍÒªÍ¨ÖªÏÂ·şÎñÆ÷ÎÒ²»½Ó¿ÍÁË¡£
-	CString  strInfo;
-	int len;
- 
-	
-	strInfo.Format(_T("%c,%s"), CL_CMD_CREATOR_IS_BUSY, theApp.m_strName);//±ê¼Çm_strNameÎªÃ¦×´Ì¬
-	len = theApp.m_clinetsock.Send(strInfo.GetBuffer(strInfo.GetLength()), 2 * strInfo.GetLength());
-	if (SOCKET_ERROR == len)
-		AfxMessageBox(_T("·¢ËÍ´íÎó"));
+    // å®¢äººæ¥äº†ï¼Œå°±è¦é€šçŸ¥ä¸‹æœåŠ¡å™¨æˆ‘ä¸æ¥å®¢äº†ã€‚
+    CString strInfo;
+    int len;
+
+    strInfo.Format(_T("%c,%s"), CL_CMD_CREATOR_IS_BUSY, theApp.m_strName); // æ ‡è®°m_strNameä¸ºå¿™çŠ¶æ€
+    len = theApp.m_clinetsock.Send(strInfo.GetBuffer(strInfo.GetLength()), 2 * strInfo.GetLength());
+    if (SOCKET_ERROR == len)
+        AfxMessageBox(_T("å‘é€é”™è¯¯"));
 #endif
 
-
-	SetColor( 0 );
-    Clear( FALSE );
-    SetGameMode( nGameMode );
+    SetColor(0);
+    Clear(FALSE);
+    SetGameMode(nGameMode);
 }
 //////////////////////////////////////////////////////////////////////////
-// Ö÷¶¯Á¬½Ó
+// ä¸»åŠ¨è¿æ¥
 //////////////////////////////////////////////////////////////////////////
-void CTable::Connect( int nGameMode )
+void CTable::Connect(int nGameMode)
 {
-    SetColor( 1 );
-    Clear( TRUE );
-    SetGameMode( nGameMode );
+    SetColor(1);
+    Clear(TRUE);
+    SetGameMode(nGameMode);
 }
 //////////////////////////////////////////////////////////////////////////
-// ·¢ËÍÁÄÌìÏûÏ¢
+// å‘é€èŠå¤©æ¶ˆæ¯
 //////////////////////////////////////////////////////////////////////////
-void CTable::Chat( LPCTSTR lpszMsg )
+void CTable::Chat(LPCTSTR lpszMsg)
 {
     MSGSTRUCT msg;
     msg.uMsg = MSG_CHAT;
-    lstrcpy( msg.szMsg, lpszMsg );
+    lstrcpy(msg.szMsg, lpszMsg);
 
-    m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
+    m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
 }
 //////////////////////////////////////////////////////////////////////////
-// ·¢ËÍÈÏÊäÏûÏ¢
+// å‘é€è®¤è¾“æ¶ˆæ¯
 //////////////////////////////////////////////////////////////////////////
 void CTable::GiveUp()
 {
     CFiveApp *pApp = (CFiveApp *)AfxGetApp();
     pApp->m_nLost++;
     CDialog *pDlg = (CDialog *)AfxGetMainWnd();
-    // Ê¹°´Å¥Ê§Ğ§
-    pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-    pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow( FALSE );
-    pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow( FALSE );
-    // ĞŞ¸ÄµÈ´ı×´Ì¬
-    SetWait( TRUE );
-    // ÉúĞ§²Ëµ¥Ïî
+    // ä½¿æŒ‰é’®å¤±æ•ˆ
+    pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+    pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow(FALSE);
+    pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow(FALSE);
+    // ä¿®æ”¹ç­‰å¾…çŠ¶æ€
+    SetWait(TRUE);
+    // ç”Ÿæ•ˆèœå•é¡¹
     CMenu *pMenu = pDlg->GetMenu();
-    pMenu->EnableMenuItem( ID_MENU_PLAYAGAIN, MF_ENABLED | MF_BYCOMMAND );
+    pMenu->EnableMenuItem(ID_MENU_PLAYAGAIN, MF_ENABLED | MF_BYCOMMAND);
 
-    // ·¢ËÍÈÏÊäÏûÏ¢
+    // å‘é€è®¤è¾“æ¶ˆæ¯
     MSGSTRUCT msg;
     msg.uMsg = MSG_GIVEUP;
 
-    m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
+    m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
 }
 //////////////////////////////////////////////////////////////////////////
-// ½ÓÊÕÀ´×Ô¶Ô·½µÄÊı¾İ
+// æ¥æ”¶æ¥è‡ªå¯¹æ–¹çš„æ•°æ®
 //////////////////////////////////////////////////////////////////////////
 void CTable::Receive()
 {
     MSGSTRUCT msgRecv;
-    m_pGame->ReceiveMsg( &msgRecv );
-    // ¶Ô¸÷ÖÖÏûÏ¢·Ö±ğ½øĞĞ´¦Àí
-    switch ( msgRecv.uMsg )
+    m_pGame->ReceiveMsg(&msgRecv);
+    // å¯¹å„ç§æ¶ˆæ¯åˆ†åˆ«è¿›è¡Œå¤„ç†
+    switch (msgRecv.uMsg)
     {
     case MSG_PUTSTEP:
-        {
-            PlaySound( MAKEINTRESOURCE( IDR_WAVE_PUT ), NULL, SND_RESOURCE | SND_SYNC );
-            SetData( msgRecv.x, msgRecv.y, msgRecv.color );
-            // ´óÓÚ1²½²ÅÄÜ»ÚÆå
-            GetParent()->GetDlgItem( IDC_BTN_BACK )->EnableWindow( m_pGame->m_StepList.size() > 1 );
-            Over();
-        }
-        break;
+    {
+        PlaySound(MAKEINTRESOURCE(IDR_WAVE_PUT), NULL, SND_RESOURCE | SND_SYNC);
+        SetData(msgRecv.x, msgRecv.y, msgRecv.color);
+        // å¤§äº1æ­¥æ‰èƒ½æ‚”æ£‹
+        GetParent()->GetDlgItem(IDC_BTN_BACK)->EnableWindow(m_pGame->m_StepList.size() > 1);
+        Over();
+    }
+    break;
     case MSG_BACK:
+    {
+        if (IDYES == GetParent()->MessageBox(_T("å¯¹æ–¹è¯·æ±‚æ‚”æ£‹ï¼Œæ¥å—è¿™ä¸ªè¯·æ±‚å—ï¼Ÿ"),
+                                             _T("æ‚”æ£‹"), MB_ICONQUESTION | MB_YESNO))
         {
-            if ( IDYES == GetParent()->MessageBox( _T("¶Ô·½ÇëÇó»ÚÆå£¬½ÓÊÜÕâ¸öÇëÇóÂğ£¿"),
-                _T("»ÚÆå"), MB_ICONQUESTION | MB_YESNO ) )
-            {
-                // ·¢ËÍÔÊĞí»ÚÆåÏûÏ¢
-                MSGSTRUCT msg;
-                msg.uMsg = MSG_AGREEBACK;
-                m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
-                // ¸ø×Ô¼º»ÚÆå
-                STEP step;
-                step = *( m_pGame->m_StepList.begin() );
-                m_pGame->m_StepList.pop_front();
-                m_data[step.x][step.y] = -1;
-                step = *( m_pGame->m_StepList.begin() );
-                m_pGame->m_StepList.pop_front();
-                m_data[step.x][step.y] = -1;
-                // ´óÓÚ1²½²ÅÄÜ»ÚÆå
-                GetParent()->GetDlgItem( IDC_BTN_BACK )->EnableWindow( m_pGame->m_StepList.size() > 1 );
-                Invalidate();
-            }
-            else
-            {
-                // ·¢ËÍ²»ÔÊĞí»ÚÆåÏûÏ¢
-                MSGSTRUCT msg;
-                msg.uMsg = MSG_REFUSEBACK;
-                m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
-            }
-        }
-        break;
-    case MSG_REFUSEBACK:
-        {
-            CDialog *pDlg = (CDialog *)AfxGetMainWnd();
-            pDlg->MessageBox( _T("ºÜ±§Ç¸£¬¶Ô·½¾Ü¾øÁËÄúµÄ»ÚÆåÇëÇó¡£"), _T("»ÚÆå"), MB_ICONINFORMATION );
-            pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow();
-            pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow();
-            pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow();
-            RestoreWait();
-        }
-        break;
-    case MSG_AGREEBACK:
-        {
+            // å‘é€å…è®¸æ‚”æ£‹æ¶ˆæ¯
+            MSGSTRUCT msg;
+            msg.uMsg = MSG_AGREEBACK;
+            m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
+            // ç»™è‡ªå·±æ‚”æ£‹
             STEP step;
-            step = *( m_pGame->m_StepList.begin() );
+            step = *(m_pGame->m_StepList.begin());
             m_pGame->m_StepList.pop_front();
             m_data[step.x][step.y] = -1;
-            step = *( m_pGame->m_StepList.begin() );
+            step = *(m_pGame->m_StepList.begin());
             m_pGame->m_StepList.pop_front();
             m_data[step.x][step.y] = -1;
-
-            CDialog *pDlg = (CDialog *)AfxGetMainWnd();
-            pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow();
-            pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow();
-            // ´óÓÚ1²½²ÅÄÜ»ÚÆå
-            pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( m_pGame->m_StepList.size() > 1 );
-            RestoreWait();
+            // å¤§äº1æ­¥æ‰èƒ½æ‚”æ£‹
+            GetParent()->GetDlgItem(IDC_BTN_BACK)->EnableWindow(m_pGame->m_StepList.size() > 1);
             Invalidate();
         }
-        break;
-    case MSG_DRAW:
+        else
         {
-            if ( IDYES == GetParent()->MessageBox( _T("¶Ô·½ÇëÇóºÍÆå£¬½ÓÊÜÕâ¸öÇëÇóÂğ£¿"),
-                _T("ºÍÆå"), MB_ICONQUESTION | MB_YESNO ) )
-            {
-                CFiveApp *pApp = (CFiveApp *)AfxGetApp();
-                pApp->m_nDraw++;
-                // ·¢ËÍÔÊĞíºÍÆåÏûÏ¢
-                MSGSTRUCT msg;
-                msg.uMsg = MSG_AGREEDRAW;
-                m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
-                // ºÍÆåºó£¬½ûÓÃ°´Å¥ºÍÆåÅÌ
-                CDialog *pDlg = (CDialog *)GetParent();
-                pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow( FALSE );
-                pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow( FALSE );
-                pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-                SetWait( TRUE );
-                // Ê¹¡°ÖØÍæ¡±²Ëµ¥ÉúĞ§
-                pDlg->GetMenu()->EnableMenuItem( ID_MENU_PLAYAGAIN, MF_ENABLED | MF_BYCOMMAND );
-            }
-            else
-            {
-                // ·¢ËÍ¾Ü¾øºÍÆåÏûÏ¢
-                MSGSTRUCT msg;
-                msg.uMsg = MSG_REFUSEDRAW;
-                m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
-            }
+            // å‘é€ä¸å…è®¸æ‚”æ£‹æ¶ˆæ¯
+            MSGSTRUCT msg;
+            msg.uMsg = MSG_REFUSEBACK;
+            m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
         }
-        break;
-    case MSG_AGREEDRAW:
+    }
+    break;
+    case MSG_REFUSEBACK:
+    {
+        CDialog *pDlg = (CDialog *)AfxGetMainWnd();
+        pDlg->MessageBox(_T("å¾ˆæŠ±æ­‰ï¼Œå¯¹æ–¹æ‹’ç»äº†æ‚¨çš„æ‚”æ£‹è¯·æ±‚ã€‚"), _T("æ‚”æ£‹"), MB_ICONINFORMATION);
+        pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow();
+        pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow();
+        pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow();
+        RestoreWait();
+    }
+    break;
+    case MSG_AGREEBACK:
+    {
+        STEP step;
+        step = *(m_pGame->m_StepList.begin());
+        m_pGame->m_StepList.pop_front();
+        m_data[step.x][step.y] = -1;
+        step = *(m_pGame->m_StepList.begin());
+        m_pGame->m_StepList.pop_front();
+        m_data[step.x][step.y] = -1;
+
+        CDialog *pDlg = (CDialog *)AfxGetMainWnd();
+        pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow();
+        pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow();
+        // å¤§äº1æ­¥æ‰èƒ½æ‚”æ£‹
+        pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(m_pGame->m_StepList.size() > 1);
+        RestoreWait();
+        Invalidate();
+    }
+    break;
+    case MSG_DRAW:
+    {
+        if (IDYES == GetParent()->MessageBox(_T("å¯¹æ–¹è¯·æ±‚å’Œæ£‹ï¼Œæ¥å—è¿™ä¸ªè¯·æ±‚å—ï¼Ÿ"),
+                                             _T("å’Œæ£‹"), MB_ICONQUESTION | MB_YESNO))
         {
             CFiveApp *pApp = (CFiveApp *)AfxGetApp();
             pApp->m_nDraw++;
+            // å‘é€å…è®¸å’Œæ£‹æ¶ˆæ¯
+            MSGSTRUCT msg;
+            msg.uMsg = MSG_AGREEDRAW;
+            m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
+            // å’Œæ£‹åï¼Œç¦ç”¨æŒ‰é’®å’Œæ£‹ç›˜
             CDialog *pDlg = (CDialog *)GetParent();
-            pDlg->MessageBox( _T("¿´À´ÕæÊÇÆå·ê¶ÔÊÖ£¬¶Ô·½½ÓÊÜÁËÄúµÄºÍÆåÇëÇó¡£"), _T("ºÍÆå"), MB_ICONINFORMATION );
-            // ºÍÆåºó£¬Ê¹¡°ÖØÍæ¡±²Ëµ¥ÉúĞ§
-            pDlg->GetMenu()->EnableMenuItem( ID_MENU_PLAYAGAIN, MF_ENABLED | MF_BYCOMMAND );
+            pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow(FALSE);
+            pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow(FALSE);
+            pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+            SetWait(TRUE);
+            // ä½¿â€œé‡ç©â€èœå•ç”Ÿæ•ˆ
+            pDlg->GetMenu()->EnableMenuItem(ID_MENU_PLAYAGAIN, MF_ENABLED | MF_BYCOMMAND);
         }
-        break;
+        else
+        {
+            // å‘é€æ‹’ç»å’Œæ£‹æ¶ˆæ¯
+            MSGSTRUCT msg;
+            msg.uMsg = MSG_REFUSEDRAW;
+            m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
+        }
+    }
+    break;
+    case MSG_AGREEDRAW:
+    {
+        CFiveApp *pApp = (CFiveApp *)AfxGetApp();
+        pApp->m_nDraw++;
+        CDialog *pDlg = (CDialog *)GetParent();
+        pDlg->MessageBox(_T("çœ‹æ¥çœŸæ˜¯æ£‹é€¢å¯¹æ‰‹ï¼Œå¯¹æ–¹æ¥å—äº†æ‚¨çš„å’Œæ£‹è¯·æ±‚ã€‚"), _T("å’Œæ£‹"), MB_ICONINFORMATION);
+        // å’Œæ£‹åï¼Œä½¿â€œé‡ç©â€èœå•ç”Ÿæ•ˆ
+        pDlg->GetMenu()->EnableMenuItem(ID_MENU_PLAYAGAIN, MF_ENABLED | MF_BYCOMMAND);
+    }
+    break;
     case MSG_REFUSEDRAW:
-        {
-            CDialog *pDlg = (CDialog *)GetParent();
-            pDlg->MessageBox( _T("¿´À´¶Ô·½ºÜÓĞĞÅĞÄÈ¡µÃÊ¤Àû£¬ËùÒÔ¾Ü¾øÁËÄúµÄºÍÆåÇëÇó¡£"),
-                _T("ºÍÆå"), MB_ICONINFORMATION );
-            // ÖØĞÂÉèÖÃ°´Å¥×´Ì¬£¬²¢»Ö¸´ÆåÅÌ×´Ì¬
-            pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow();
-            pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow();
-            pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow();
-            RestoreWait();
-        }
-        break;
+    {
+        CDialog *pDlg = (CDialog *)GetParent();
+        pDlg->MessageBox(_T("çœ‹æ¥å¯¹æ–¹å¾ˆæœ‰ä¿¡å¿ƒå–å¾—èƒœåˆ©ï¼Œæ‰€ä»¥æ‹’ç»äº†æ‚¨çš„å’Œæ£‹è¯·æ±‚ã€‚"),
+                         _T("å’Œæ£‹"), MB_ICONINFORMATION);
+        // é‡æ–°è®¾ç½®æŒ‰é’®çŠ¶æ€ï¼Œå¹¶æ¢å¤æ£‹ç›˜çŠ¶æ€
+        pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow();
+        pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow();
+        pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow();
+        RestoreWait();
+    }
+    break;
     case MSG_CHAT:
-        {
-            CString strAdd;
-            strAdd.Format( _T("%s Ëµ£º%s\r\n"), m_strAgainst, msgRecv.szMsg );
-            CEdit *pEdit = (CEdit *)GetParent()->GetDlgItem( IDC_EDT_CHAT );
-            pEdit->SetSel( -1, -1, TRUE );
-            pEdit->ReplaceSel( strAdd );
-        }
-        break;
+    {
+        CString strAdd;
+        strAdd.Format(_T("%s è¯´ï¼š%s\r\n"), m_strAgainst, msgRecv.szMsg);
+        CEdit *pEdit = (CEdit *)GetParent()->GetDlgItem(IDC_EDT_CHAT);
+        pEdit->SetSel(-1, -1, TRUE);
+        pEdit->ReplaceSel(strAdd);
+    }
+    break;
     case MSG_INFORMATION:
+    {
+        m_strAgainst = msgRecv.szMsg;
+        GetParent()->GetDlgItem(IDC_ST_ENEMY)->SetWindowText(m_strAgainst);
+
+        // åœ¨å…ˆæ‰‹æ¥åˆ°å§“åä¿¡æ¯åï¼Œå›è¿”è‡ªå·±çš„å§“åä¿¡æ¯
+        if (0 == m_color)
         {
-            m_strAgainst = msgRecv.szMsg;
-            GetParent()->GetDlgItem( IDC_ST_ENEMY )->SetWindowText( m_strAgainst );
+            MSGSTRUCT msg;
+            msg.uMsg = MSG_INFORMATION;
+            lstrcpy(msg.szMsg, m_strMe);
 
-            // ÔÚÏÈÊÖ½Óµ½ĞÕÃûĞÅÏ¢ºó£¬»Ø·µ×Ô¼ºµÄĞÕÃûĞÅÏ¢
-            if ( 0 == m_color )
-            {
-                MSGSTRUCT msg;
-                msg.uMsg = MSG_INFORMATION;
-                lstrcpy( msg.szMsg, m_strMe );
-
-                m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
-            }
+            m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
         }
-        break;
+    }
+    break;
     case MSG_GIVEUP:
-        {
-            CFiveApp *pApp = (CFiveApp *)AfxGetApp();
-            pApp->m_nWin++;
-            CDialog *pDlg = (CDialog *)GetParent();
-            pDlg->MessageBox( _T("¶Ô·½ÒÑ¾­Í¶×ÓÈÏÊä£¬¹§Ï²Äú²»Õ½¶øÇüÈËÖ®±ø£¡"), _T("Ê¤Àû"), MB_ICONINFORMATION );
-            // ½ûÓÃ¸÷°´Å¥¼°ÆåÅÌ
-            pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-            pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow( FALSE );
-            pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow( FALSE );
-            SetWait( TRUE );
-            // ÉèÖÃ¡°ÖØÍæ¡±ÎªÕæ
-            pDlg->GetMenu()->EnableMenuItem( ID_MENU_PLAYAGAIN, MF_ENABLED | MF_BYCOMMAND );
-        }
-        break;
-    case MSG_PLAYAGAIN:
-        {
-            CDialog *pDlg = (CDialog *)GetParent();
-            if ( IDYES == pDlg->MessageBox( _T("¶Ô·½¿´À´ÒâÓÌÎ´¾¡£¬ÇëÇóÓëÄúÔÙÕ½Ò»¾Ö£¬½ÓÊÜÕâ¸öÇëÇóÂğ£¿\n\nÑ¡¡°·ñ¡±½«¶Ï¿ªÓëËûµÄÁ¬½Ó¡£"),
-                _T("ÔÙÕ½"), MB_YESNO | MB_ICONQUESTION ) )
-            {
-                pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-                pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow();
-                pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow();
-
-                MSGSTRUCT msg;
-                msg.uMsg = MSG_AGREEAGAIN;
-
-                m_conn.Send( (LPCVOID)&msg, sizeof( MSGSTRUCT ) );
-
-                Clear( (BOOL)m_color );
-                SetGameMode( 2 );
-            }
-            else
-            {
-                m_conn.Close();
-                m_sock.Close();
-                pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-                pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow( FALSE );
-                pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow( FALSE );
-                pDlg->GetDlgItem( IDC_CMB_CHAT )->EnableWindow( FALSE );
-                // ÉèÖÃ²Ëµ¥×´Ì¬
-                SetMenuState( TRUE );
-                // ÉèÖÃÆåÅÌµÈ´ı×´Ì¬
-                SetWait( TRUE );
-                // ÉèÖÃÍøÂçÁ¬½Ó×´Ì¬
-                m_bConnected = FALSE;
-                // ÖØĞÂÉèÖÃÍæ¼ÒÃû³Æ
-                pDlg->SetDlgItemText( IDC_ST_ENEMY, _T("ÎŞÍæ¼Ò¼ÓÈë") );
-            }
-        }
-        break;
-    case MSG_AGREEAGAIN:
-        {
-            CDialog *pDlg = (CDialog *)GetParent();
-            pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-            pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow();
-            pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow();
-            Clear( (BOOL)m_color );
-            SetGameMode( 2 );
-        }
-        break;
-    }
-}
-// ÏûÏ¢Ó³Éä±í
-BEGIN_MESSAGE_MAP( CTable, CWnd )
-	//{{AFX_MSG_MAP(CTable)
-    ON_WM_PAINT()
-    ON_WM_LBUTTONUP()
-	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-//////////////////////////////////////////////////////////////////////////
-// ´¦ÀíWM_PAINTÏûÏ¢
-//////////////////////////////////////////////////////////////////////////
-void CTable::OnPaint()
-{
-    CPaintDC dc( this );
-    CDC MemDC;
-    MemDC.CreateCompatibleDC( &dc );
-    // ×°ÔØÆåÅÌ
-    CBitmap bmp;
-    CPen pen;
-    bmp.LoadBitmap( IDB_BMP_QP );
-    pen.CreatePen( PS_SOLID, 1, 0xff );
-    MemDC.SelectObject( &bmp );
-    MemDC.SelectObject( &pen );
-    MemDC.SetROP2( R2_NOTXORPEN );
-    // ¸ù¾İÆåÅÌÊı¾İ»æÖÆÆå×Ó
-    int x, y;
-    POINT pt;
-    for ( y = 0; y < 15; y++ )
-    {
-        for ( x = 0; x < 15; x++ )
-        {
-            if ( -1 != m_data[x][y] )
-            {
-                pt.x = 12 + 25 * x;
-                pt.y = 84 + 25 * y;
-                m_iml.Draw( &MemDC, m_data[x][y], pt, ILD_TRANSPARENT );
-            }
-        }
-    }
-    // »æÖÆ×îºóÂä×ÓµÄÖ¸Ê¾¾ØĞÎ
-    if ( NULL != m_pGame && !m_pGame->m_StepList.empty() )
-    {
-        STEP step = *( m_pGame->m_StepList.begin() );
-        MemDC.MoveTo( 11 + 25 * step.x, 83 + 25 * step.y );
-        MemDC.LineTo( 36 + 25 * step.x, 83 + 25 * step.y );
-        MemDC.LineTo( 36 + 25 * step.x, 108 + 25 * step.y );
-        MemDC.LineTo( 11 + 25 * step.x, 108 + 25 * step.y );
-        MemDC.LineTo( 11 + 25 * step.x, 83 + 25 * step.y );
-    }
-    // Íê³É»æÖÆ
-    dc.BitBlt( 0, 0, 395, 472, &MemDC,0, 0, SRCCOPY );
-}
-//////////////////////////////////////////////////////////////////////////
-// ´¦Àí×ó¼üµ¯ÆğÏûÏ¢£¬ÎªÍæ¼ÒÂä×ÓÖ®ÓÃ
-//////////////////////////////////////////////////////////////////////////
-void CTable::OnLButtonUp( UINT nFlags, CPoint point )
-{
-    STEP stepPut;
-    if ( m_bWait )
-    {
-        MessageBeep( MB_OK );
-        return;
-    }
-    int x, y;
-    x = ( point.x - 12 ) / 25;
-    y = ( point.y - 84 ) / 25;
-    // Èç¹ûÔÚ(0, 0)¡«(14, 14)·¶Î§ÄÚ£¬ÇÒ¸Ã×ø±êÃ»ÓĞÂä×Ó£¬ÔòÂä×ÓÓÚ´Ë£¬·ñÔò·¢Éù¾¯¸æ²¢ÍË³ö¹ı³Ì
-    if ( x < 0 || x > 14 || y < 0 || y > 14 || m_data[x][y] != -1 )
-    {
-        MessageBeep( MB_OK );
-        return;
-    }
-    else
-    {
-        // Èç¹ûÎ»ÖÃºÏ·¨£¬ÔòÂä×Ó
-        SetData( x, y, m_color );
-        stepPut.color = m_color;
-        stepPut.x = x;
-        stepPut.y = y;
-        // ´óÓÚ1²½²ÅÄÜ»ÚÆå
-        GetParent()->GetDlgItem( IDC_BTN_BACK )->EnableWindow( m_pGame->m_StepList.size() > 1 );
-    }
-    // ÅĞ¶ÏÊ¤ÀûµÄÇé¿ö
-    if ( Win( m_color ) )
     {
         CFiveApp *pApp = (CFiveApp *)AfxGetApp();
         pApp->m_nWin++;
-        m_pGame->Win( stepPut );
         CDialog *pDlg = (CDialog *)GetParent();
-        PlaySound( MAKEINTRESOURCE( IDR_WAVE_WIN ), NULL, SND_SYNC | SND_RESOURCE );
-        pDlg->MessageBox( _T("¹§Ï²£¬Äú»ñµÃÁËÊ¤Àû£¡"), _T("Ê¤Àû"), MB_ICONINFORMATION );
-        pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow( FALSE );
-        pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-        pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow( FALSE );
+        pDlg->MessageBox(_T("å¯¹æ–¹å·²ç»æŠ•å­è®¤è¾“ï¼Œæ­å–œæ‚¨ä¸æˆ˜è€Œå±ˆäººä¹‹å…µï¼"), _T("èƒœåˆ©"), MB_ICONINFORMATION);
+        // ç¦ç”¨å„æŒ‰é’®åŠæ£‹ç›˜
+        pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+        pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow(FALSE);
+        pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow(FALSE);
+        SetWait(TRUE);
+        // è®¾ç½®â€œé‡ç©â€ä¸ºçœŸ
+        pDlg->GetMenu()->EnableMenuItem(ID_MENU_PLAYAGAIN, MF_ENABLED | MF_BYCOMMAND);
+    }
+    break;
+    case MSG_PLAYAGAIN:
+    {
+        CDialog *pDlg = (CDialog *)GetParent();
+        if (IDYES == pDlg->MessageBox(_T("å¯¹æ–¹çœ‹æ¥æ„çŠ¹æœªå°½ï¼Œè¯·æ±‚ä¸æ‚¨å†æˆ˜ä¸€å±€ï¼Œæ¥å—è¿™ä¸ªè¯·æ±‚å—ï¼Ÿ\n\né€‰â€œå¦â€å°†æ–­å¼€ä¸ä»–çš„è¿æ¥ã€‚"),
+                                      _T("å†æˆ˜"), MB_YESNO | MB_ICONQUESTION))
+        {
+            pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+            pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow();
+            pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow();
+
+            MSGSTRUCT msg;
+            msg.uMsg = MSG_AGREEAGAIN;
+
+            m_conn.Send((LPCVOID)&msg, sizeof(MSGSTRUCT));
+
+            Clear((BOOL)m_color);
+            SetGameMode(2);
+        }
+        else
+        {
+            m_conn.Close();
+            m_sock.Close();
+            pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+            pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow(FALSE);
+            pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow(FALSE);
+            pDlg->GetDlgItem(IDC_CMB_CHAT)->EnableWindow(FALSE);
+            // è®¾ç½®èœå•çŠ¶æ€
+            SetMenuState(TRUE);
+            // è®¾ç½®æ£‹ç›˜ç­‰å¾…çŠ¶æ€
+            SetWait(TRUE);
+            // è®¾ç½®ç½‘ç»œè¿æ¥çŠ¶æ€
+            m_bConnected = FALSE;
+            // é‡æ–°è®¾ç½®ç©å®¶åç§°
+            pDlg->SetDlgItemText(IDC_ST_ENEMY, _T("æ— ç©å®¶åŠ å…¥"));
+        }
+    }
+    break;
+    case MSG_AGREEAGAIN:
+    {
+        CDialog *pDlg = (CDialog *)GetParent();
+        pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+        pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow();
+        pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow();
+        Clear((BOOL)m_color);
+        SetGameMode(2);
+    }
+    break;
+    }
+}
+// æ¶ˆæ¯æ˜ å°„è¡¨
+BEGIN_MESSAGE_MAP(CTable, CWnd)
+//{{AFX_MSG_MAP(CTable)
+ON_WM_PAINT()
+ON_WM_LBUTTONUP()
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+//////////////////////////////////////////////////////////////////////////
+// å¤„ç†WM_PAINTæ¶ˆæ¯
+//////////////////////////////////////////////////////////////////////////
+void CTable::OnPaint()
+{
+    CPaintDC dc(this);
+    CDC MemDC;
+    MemDC.CreateCompatibleDC(&dc);
+    // è£…è½½æ£‹ç›˜
+    CBitmap bmp;
+    CPen pen;
+    bmp.LoadBitmap(IDB_BMP_QP);
+    pen.CreatePen(PS_SOLID, 1, 0xff);
+    MemDC.SelectObject(&bmp);
+    MemDC.SelectObject(&pen);
+    MemDC.SetROP2(R2_NOTXORPEN);
+    // æ ¹æ®æ£‹ç›˜æ•°æ®ç»˜åˆ¶æ£‹å­
+    int x, y;
+    POINT pt;
+    for (y = 0; y < 15; y++)
+    {
+        for (x = 0; x < 15; x++)
+        {
+            if (-1 != m_data[x][y])
+            {
+                pt.x = 12 + 25 * x;
+                pt.y = 84 + 25 * y;
+                m_iml.Draw(&MemDC, m_data[x][y], pt, ILD_TRANSPARENT);
+            }
+        }
+    }
+    // ç»˜åˆ¶æœ€åè½å­çš„æŒ‡ç¤ºçŸ©å½¢
+    if (NULL != m_pGame && !m_pGame->m_StepList.empty())
+    {
+        STEP step = *(m_pGame->m_StepList.begin());
+        MemDC.MoveTo(11 + 25 * step.x, 83 + 25 * step.y);
+        MemDC.LineTo(36 + 25 * step.x, 83 + 25 * step.y);
+        MemDC.LineTo(36 + 25 * step.x, 108 + 25 * step.y);
+        MemDC.LineTo(11 + 25 * step.x, 108 + 25 * step.y);
+        MemDC.LineTo(11 + 25 * step.x, 83 + 25 * step.y);
+    }
+    // å®Œæˆç»˜åˆ¶
+    dc.BitBlt(0, 0, 395, 472, &MemDC, 0, 0, SRCCOPY);
+}
+//////////////////////////////////////////////////////////////////////////
+// å¤„ç†å·¦é”®å¼¹èµ·æ¶ˆæ¯ï¼Œä¸ºç©å®¶è½å­ä¹‹ç”¨
+//////////////////////////////////////////////////////////////////////////
+void CTable::OnLButtonUp(UINT nFlags, CPoint point)
+{
+    STEP stepPut;
+    if (m_bWait)
+    {
+        MessageBeep(MB_OK);
+        return;
+    }
+    int x, y;
+    x = (point.x - 12) / 25;
+    y = (point.y - 84) / 25;
+    // å¦‚æœåœ¨(0, 0)ï½(14, 14)èŒƒå›´å†…ï¼Œä¸”è¯¥åæ ‡æ²¡æœ‰è½å­ï¼Œåˆ™è½å­äºæ­¤ï¼Œå¦åˆ™å‘å£°è­¦å‘Šå¹¶é€€å‡ºè¿‡ç¨‹
+    if (x < 0 || x > 14 || y < 0 || y > 14 || m_data[x][y] != -1)
+    {
+        MessageBeep(MB_OK);
+        return;
+    }
+    else
+    {
+        // å¦‚æœä½ç½®åˆæ³•ï¼Œåˆ™è½å­
+        SetData(x, y, m_color);
+        stepPut.color = m_color;
+        stepPut.x = x;
+        stepPut.y = y;
+        // å¤§äº1æ­¥æ‰èƒ½æ‚”æ£‹
+        GetParent()->GetDlgItem(IDC_BTN_BACK)->EnableWindow(m_pGame->m_StepList.size() > 1);
+    }
+    // åˆ¤æ–­èƒœåˆ©çš„æƒ…å†µ
+    if (Win(m_color))
+    {
+        CFiveApp *pApp = (CFiveApp *)AfxGetApp();
+        pApp->m_nWin++;
+        m_pGame->Win(stepPut);
+        CDialog *pDlg = (CDialog *)GetParent();
+        PlaySound(MAKEINTRESOURCE(IDR_WAVE_WIN), NULL, SND_SYNC | SND_RESOURCE);
+        pDlg->MessageBox(_T("æ­å–œï¼Œæ‚¨è·å¾—äº†èƒœåˆ©ï¼"), _T("èƒœåˆ©"), MB_ICONINFORMATION);
+        pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow(FALSE);
+        pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+        pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow(FALSE);
         m_bWait = TRUE;
         return;
     }
     else
     {
-        // ¿ªÊ¼µÈ´ı
+        // å¼€å§‹ç­‰å¾…
         m_bWait = TRUE;
-        // ·¢ËÍÂä×ÓĞÅÏ¢
-        PlaySound( MAKEINTRESOURCE( IDR_WAVE_PUT ), NULL, SND_SYNC | SND_RESOURCE );
-        m_pGame->SendStep( stepPut );
+        // å‘é€è½å­ä¿¡æ¯
+        PlaySound(MAKEINTRESOURCE(IDR_WAVE_PUT), NULL, SND_SYNC | SND_RESOURCE);
+        m_pGame->SendStep(stepPut);
     }
 }
 //////////////////////////////////////////////////////////////////////////
-// ÖØĞÂÉèÖÃÏÈÇ°µÄµÈ´ı±êÖ¾
+// é‡æ–°è®¾ç½®å…ˆå‰çš„ç­‰å¾…æ ‡å¿—
 //////////////////////////////////////////////////////////////////////////
 void CTable::RestoreWait()
 {
-    SetWait( m_bOldWait );
+    SetWait(m_bOldWait);
 }

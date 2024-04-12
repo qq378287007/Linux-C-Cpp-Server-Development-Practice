@@ -1,5 +1,5 @@
-//zww
-// FiveSocket.cpp : implementation file
+// zww
+//  FiveSocket.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -25,58 +25,57 @@ CFiveSocket::~CFiveSocket()
 {
 }
 
-
 // Do not edit the following lines, which are needed by ClassWizard.
 #if 0
 BEGIN_MESSAGE_MAP(CFiveSocket, CAsyncSocket)
 	//{{AFX_MSG_MAP(CFiveSocket)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-#endif	// 0
+#endif // 0
 
 /////////////////////////////////////////////////////////////////////////////
 // CFiveSocket member functions
 
-void CFiveSocket::OnAccept( int nErrorCode )
+void CFiveSocket::OnAccept(int nErrorCode)
 {
     CFiveDlg *pDlg = (CFiveDlg *)AfxGetMainWnd();
-    // Ê¹±¾´°¿ÚÉúÐ§
+    // ä½¿æœ¬çª—å£ç”Ÿæ•ˆ
     pDlg->EnableWindow();
-    delete []pDlg->m_pDlg;
+    delete[] pDlg->m_pDlg;
     pDlg->m_pDlg = NULL;
-    pDlg->m_Table.Accept( 2 );
-    pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow( TRUE );
-    pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-    pDlg->GetDlgItem( IDC_CMB_CHAT )->EnableWindow( TRUE );
-    pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow( TRUE );
-    pDlg->m_Table.SetMenuState( FALSE );
+    pDlg->m_Table.Accept(2);
+    pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow(TRUE);
+    pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+    pDlg->GetDlgItem(IDC_CMB_CHAT)->EnableWindow(TRUE);
+    pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow(TRUE);
+    pDlg->m_Table.SetMenuState(FALSE);
 }
 
-void CFiveSocket::OnClose( int nErrorCode )
+void CFiveSocket::OnClose(int nErrorCode)
 {
     CFiveDlg *pDlg = (CFiveDlg *)AfxGetMainWnd();
-    pDlg->MessageBox( _T("¶Ô·½ÒÑ¾­Àë¿ªÓÎÏ·£¬¸ÄÈÕÔÙ½ÏÁ¿²»³Ù¡£"), _T("Îå×ÓÆå"), MB_ICONINFORMATION);
-    // ½ûÓÃËùÓÐÏîÄ¿£¬²¢Ê¹²Ëµ¥ÉúÐ§
-    pDlg->GetDlgItem( IDC_BTN_HQ )->EnableWindow( FALSE );
-    pDlg->GetDlgItem( IDC_BTN_BACK )->EnableWindow( FALSE );
-    pDlg->GetDlgItem( IDC_CMB_CHAT )->EnableWindow( FALSE );
-    pDlg->GetDlgItem( IDC_BTN_LOST )->EnableWindow( FALSE );
-    pDlg->m_Table.SetMenuState( TRUE );
-    pDlg->GetMenu()->EnableMenuItem( ID_MENU_PLAYAGAIN, MF_BYCOMMAND | MF_GRAYED | MF_DISABLED );
-    pDlg->m_Table.SetWait( TRUE );
-    // ÖØÐÂÉèÖÃ¶Ô·½ÐÕÃû
-    pDlg->SetDlgItemText( IDC_ST_ENEMY, _T("ÎÞÍæ¼Ò¼ÓÈë") );
+    pDlg->MessageBox(_T("å¯¹æ–¹å·²ç»ç¦»å¼€æ¸¸æˆï¼Œæ”¹æ—¥å†è¾ƒé‡ä¸è¿Ÿã€‚"), _T("äº”å­æ£‹"), MB_ICONINFORMATION);
+    // ç¦ç”¨æ‰€æœ‰é¡¹ç›®ï¼Œå¹¶ä½¿èœå•ç”Ÿæ•ˆ
+    pDlg->GetDlgItem(IDC_BTN_HQ)->EnableWindow(FALSE);
+    pDlg->GetDlgItem(IDC_BTN_BACK)->EnableWindow(FALSE);
+    pDlg->GetDlgItem(IDC_CMB_CHAT)->EnableWindow(FALSE);
+    pDlg->GetDlgItem(IDC_BTN_LOST)->EnableWindow(FALSE);
+    pDlg->m_Table.SetMenuState(TRUE);
+    pDlg->GetMenu()->EnableMenuItem(ID_MENU_PLAYAGAIN, MF_BYCOMMAND | MF_GRAYED | MF_DISABLED);
+    pDlg->m_Table.SetWait(TRUE);
+    // é‡æ–°è®¾ç½®å¯¹æ–¹å§“å
+    pDlg->SetDlgItemText(IDC_ST_ENEMY, _T("æ— çŽ©å®¶åŠ å…¥"));
 }
 
-void CFiveSocket::OnConnect( int nErrorCode )
+void CFiveSocket::OnConnect(int nErrorCode)
 {
-    CTable *pTable = (CTable *)AfxGetMainWnd()->GetDlgItem( IDC_TABLE );
+    CTable *pTable = (CTable *)AfxGetMainWnd()->GetDlgItem(IDC_TABLE);
     pTable->m_bConnected = TRUE;
-    pTable->Connect( 2 );
+    pTable->Connect(2);
 }
 
-void CFiveSocket::OnReceive( int nErrorCode )
+void CFiveSocket::OnReceive(int nErrorCode)
 {
-    CTable *pTable = (CTable *)AfxGetMainWnd()->GetDlgItem( IDC_TABLE );
+    CTable *pTable = (CTable *)AfxGetMainWnd()->GetDlgItem(IDC_TABLE);
     pTable->Receive();
 }

@@ -7,4 +7,3 @@
 #define CL_CMD_JOIN_GAME 'j'
 #define CL_CMD_OFFLINE 'o'
 #define CL_CMD_CREATOR_IS_BUSY 'b'
- 
