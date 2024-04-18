@@ -1,6 +1,4 @@
 #include <stdio.h>
-
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <netinet/in.h>
@@ -18,112 +16,97 @@ int GetName(char str[], char szName[])
 {
 	// char str[] ="a,b,c,d*e";
 	const char *split = ",";
-	char *p;
-	p = strtok(str, split);
+
 	int i = 0;
-	while (p != NULL)
+	for (char *p = strtok(str, split); p != NULL; p = strtok(NULL, split))
 	{
 		printf("%s\n", p);
 		if (i == 1)
 			sprintf(szName, p);
 		i++;
-		p = strtok(NULL, split);
 	}
 }
 
 // 查找字符串中某个字符出现的次数
 int countChar(const char *p, const char chr)
 {
-	int count = 0, i = 0;
-	while (*(p + i))
-	{
-		if (p[i] == chr) // 字符数组存放在一块内存区域中，按索引找字符，指针本身不变
+	int count = 0;
+	for (int i = 0; p[i]; i++)
+		if (p[i] == chr)
 			++count;
-		++i; // 按数组的索引值找到对应指针变量的值
-	}
-	// printf("字符串中w出现的次数：%d",count);
 	return count;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
-	int i, maxi, maxfd;
-	int listenfd, connfd, sockfd;
-	int nready, client[FD_SETSIZE];
-	ssize_t n;
-
-	char szName[255] = "", szPwd[128] = "", repBuf[512] = "";
-
-	// 两个集合
-	fd_set rset, allset;
-
-	char buf[MAXLINE];
-	char str[INET_ADDRSTRLEN]; /* #define INET_ADDRSTRLEN 16 */
-	socklen_t cliaddr_len;
-	struct sockaddr_in cliaddr, servaddr;
-
-	// 创建套接字
-	listenfd = socket(AF_INET, SOCK_STREAM, 0);
-
-	int val = 1;
-	int ret = setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, (void *)&val, sizeof(int));
-
-	// 绑定
+	struct sockaddr_in servaddr;
 	bzero(&servaddr, sizeof(servaddr));
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	servaddr.sin_port = htons(SERV_PORT);
 
+	// 创建套接字
+	int listenfd = socket(AF_INET, SOCK_STREAM, 0);
+
+	int val = 1;
+	int ret = setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, (void *)&val, sizeof(int));
+
+	// 绑定
 	bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
 
 	// 监听
 	listen(listenfd, 20); /* 默认最大128 */
 
 	// 需要接收最大文件描述符
-	maxfd = listenfd;
+	int maxfd = listenfd;
 
 	// 数组初始化为-1
-	maxi = -1;
-	for (i = 0; i < FD_SETSIZE; i++)
+	int maxi = -1;
+	int client[FD_SETSIZE];
+	for (int i = 0; i < FD_SETSIZE; i++)
 		client[i] = -1;
 
 	// 集合清零
+	fd_set allset;
 	FD_ZERO(&allset);
-
-	// 将listenfd加入allset集合
-	FD_SET(listenfd, &allset);
+	FD_SET(listenfd, &allset); // 将listenfd加入allset集合
 
 	puts("Chat server is running...");
 
-	for (;;)
+	while (1)
 	{
 		// 关键点3
-		rset = allset; /* 每次循环时都重新设置select监控信号集 */
+		fd_set rset = allset; /* 每次循环时都重新设置select监控信号集 */
 
 		// select返回rest集合中发生读事件的总数  参数1：最大文件描述符+1
-		nready = select(maxfd + 1, &rset, NULL, NULL, NULL);
+		int nready = select(maxfd + 1, &rset, NULL, NULL, NULL);
 		if (nready < 0)
 			puts("select error");
 
 		// listenfd是否在rset集合中
 		if (FD_ISSET(listenfd, &rset))
 		{
+			struct sockaddr_in cliaddr;
 			// accept接收
-			cliaddr_len = sizeof(cliaddr);
+			socklen_t cliaddr_len = sizeof(cliaddr);
 			// accept返回通信套接字，当前非阻塞，因为select已经发生读写事件
-			connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &cliaddr_len);
+			int connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &cliaddr_len);
 
+			char str[INET_ADDRSTRLEN]; /* #define INET_ADDRSTRLEN 16 */
 			printf("received from %s at PORT %d\n",
 				   inet_ntop(AF_INET, &cliaddr.sin_addr, str, sizeof(str)),
 				   ntohs(cliaddr.sin_port));
 
 			// 关键点1
+			int i;
 			for (i = 0; i < FD_SETSIZE; i++)
+			{
 				if (client[i] < 0)
 				{
 					client[i] = connfd; /* 保存accept返回的通信套接字connfd存到client[]里 */
 					break;
 				}
+			}
 
 			/* 是否达到select能监控的文件个数上限 1024 */
 			if (i == FD_SETSIZE)
@@ -146,15 +129,18 @@ int main(int argc, char *argv[])
 				continue;
 		}
 
-		for (i = 0; i <= maxi; i++)
+		for (int i = 0; i <= maxi; i++)
 		{
 			// 检测clients 哪个有数据就绪
+			int sockfd;
 			if ((sockfd = client[i]) < 0)
 				continue;
 
 			// sockfd（connd）是否在rset集合中
 			if (FD_ISSET(sockfd, &rset))
 			{
+				ssize_t n;
+				char buf[MAXLINE];
 				// 进行读数据 不用阻塞立即读取（select已经帮忙处理阻塞环节）
 				if ((n = read(sockfd, buf, MAXLINE)) == 0)
 				{
@@ -165,6 +151,9 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
+					char szName[255] = "";
+					char repBuf[512] = "";
+
 					char code = buf[0];
 					switch (code)
 					{
@@ -190,8 +179,8 @@ int main(int argc, char *argv[])
 							printf("reg ok,%s\n", szName);
 						}
 						write(sockfd, repBuf, strlen(repBuf)); // 回复客户端
-
 						break;
+
 					case CL_CMD_LOGIN: // 登录命令处理
 						if (1 != countChar(buf, ','))
 						{
@@ -211,21 +200,22 @@ int main(int argc, char *argv[])
 							sprintf(repBuf, "l,noexist");
 						write(sockfd, repBuf, strlen(repBuf)); // 回复客户端
 						break;
+
 					case CL_CMD_CHAT: // 聊天命令处理
 						puts("send all");
-
-						// 群发
-						for (i = 0; i <= maxi; i++)
+						for (int i = 0; i <= maxi; i++) // 群发
 							if (client[i] != -1)
 								write(client[i], buf + 2, n); // 写回客户端，+2表示去掉命令头(c,)，这样只发送聊天内容
 						break;
-					} // switch
+					}
 				}
+
 				if (--nready == 0)
 					break;
 			}
 		}
 	}
+
 	close(listenfd);
 	return 0;
 }

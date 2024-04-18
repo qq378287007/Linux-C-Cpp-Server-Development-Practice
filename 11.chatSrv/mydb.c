@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <string.h>
-#include <mysql.h>
 #include <time.h>
+#include <mysql.h>
 
 int insert(char *name)
 {
 	MYSQL mysql;
 	mysql_init(&mysql);
+
 	if (!mysql_real_connect(&mysql, "localhost", "root", "123456", "chatdb", 0, NULL, 0))
 	{
 		printf("Failed to connect to Mysql!\n");
@@ -76,6 +77,7 @@ int showTable()
 {
 	MYSQL mysql;
 	mysql_init(&mysql);
+	
 	if (!mysql_real_connect(&mysql, "localhost", "root", "123456", "chatdb", 0, NULL, 0))
 		printf("Error connecting to Mysql!\n");
 	printf("Connected Mysql successful!\n");
