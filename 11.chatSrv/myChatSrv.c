@@ -4,6 +4,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/select.h>
+#include <unistd.h>
+#include "mydb.h"
 
 #define MAXLINE 80
 #define SERV_PORT 8000
@@ -12,19 +14,31 @@
 #define CL_CMD_LOGIN 'l'
 #define CL_CMD_CHAT 'c'
 
-int GetName(char str[], char szName[])
+int GetName(char *str, char *szName)
 {
-	// char str[] ="a,b,c,d*e";
-	const char *split = ",";
+	int e_ind = strlen(str) - 1;
+	int s_ind = e_ind + 1;
 
-	int i = 0;
-	for (char *p = strtok(str, split); p != NULL; p = strtok(NULL, split))
+	for (int i = 0; i <= e_ind; i++)
 	{
-		printf("%s\n", p);
-		if (i == 1)
-			sprintf(szName, p);
-		i++;
+		if (str[i] == ',')
+		{
+			s_ind = i + 1;
+			break;
+		}
 	}
+
+	for (int i = s_ind; i <= e_ind; i++)
+	{
+		if (str[i] == ',')
+		{
+			e_ind = i - 1;
+			break;
+		}
+	}
+
+	for (int i = s_ind; i <= e_ind; i++)
+		szName[i - s_ind] = str[i];
 }
 
 // 查找字符串中某个字符出现的次数
@@ -55,7 +69,7 @@ int main()
 	bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
 
 	// 监听
-	listen(listenfd, 20); /* 默认最大128 */
+	listen(listenfd, 20); // 默认最大128
 
 	// 需要接收最大文件描述符
 	int maxfd = listenfd;
@@ -219,3 +233,5 @@ int main()
 	close(listenfd);
 	return 0;
 }
+
+// gcc *.c -o myChatSrv -lpthread -I/usr/include/mysql/ -L/usr/lib/x86_64-linux-gnu -lmysqlclient & ./myChatSrv

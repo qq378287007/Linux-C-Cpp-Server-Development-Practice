@@ -2,6 +2,7 @@
 #include <string.h>
 #include <time.h>
 #include <mysql.h>
+#include "mydb.h"
 
 int insert(char *name)
 {
@@ -37,6 +38,7 @@ int IsExist(char *name)
 
 	MYSQL mysql;
 	mysql_init(&mysql);
+	
 	if (!mysql_real_connect(&mysql, "localhost", "root", "123456", "chatdb", 0, NULL, 0))
 	{
 		printf("Failed to connect to Mysql!\n");
@@ -77,7 +79,7 @@ int showTable()
 {
 	MYSQL mysql;
 	mysql_init(&mysql);
-	
+
 	if (!mysql_real_connect(&mysql, "localhost", "root", "123456", "chatdb", 0, NULL, 0))
 		printf("Error connecting to Mysql!\n");
 	printf("Connected Mysql successful!\n");
@@ -93,15 +95,13 @@ int showTable()
 
 	MYSQL_RES *res = mysql_store_result(&mysql);
 	int num = mysql_num_fields(res);
-	do
+	MYSQL_ROW row;
+	while (row = mysql_fetch_row(res))
 	{
-		MYSQL_ROW row = mysql_fetch_row(res);
-		if (row == 0)
-			break;
 		for (int t = 0; t < num; t++)
 			printf("%s\t", row[t]);
 		printf("\n");
-	} while (1);
+	};
 
 	mysql_close(&mysql);
 	return 0;

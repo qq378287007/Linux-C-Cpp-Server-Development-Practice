@@ -4,8 +4,7 @@
 void GetReply(char str[], char reply[])
 {
 	const char *split = ",";
-	char *p;
-	p = strtok(str, split);
+	char *p = strtok(str, split);
 	int i = 0;
 	while (p != NULL)
 	{

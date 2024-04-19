@@ -43,3 +43,5 @@ int main()
 
 	return 0;
 }
+
+// sudo apt install libmysqlclient-dev
